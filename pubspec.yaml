@@ -31,18 +31,17 @@ dependencies:
   cupertino_icons: ^1.0.8
   flutter:
     sdk: flutter
+  
+  flutter_native_splash: 2.4.4
   responsive_framework: ^1.5.1
 
 dev_dependencies:
-
-  # The "flutter_lints" package below contains a set of recommended lints to
-  # encourage good coding practices. The lint set provided by the package is
-  # activated in the `analysis_options.yaml` file located at the root of your
-  # package. See that file for information about deactivating specific lint
-  # rules and activating additional ones.
   flutter_lints: ^4.0.0
   flutter_test:
     sdk: flutter
+  
+
+
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -76,6 +75,5 @@ flutter:
           weight: 400
         - asset: assets/fonts/montserrat_semiBold.ttf
           weight: 600
-  #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/to/font-from-package
