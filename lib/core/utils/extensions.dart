@@ -1,24 +1,26 @@
 import 'package:flutter/material.dart';
 
 extension Navigation on BuildContext {
-
-  // Method to push a named route onto the stack
-  Future<T?> pushNamed<T>(String routeName, {Object? arguments}) {
-    return Navigator.of(this).pushNamed<T>(routeName, arguments: arguments);
+  Future<T?> push<T>(Widget page) {
+    return Navigator.of(this).push<T>(
+      MaterialPageRoute(builder: (_) => page),
+    );
   }
 
-  // Method to replace the current route with a new named route
-  Future<T?> pushReplacementNamed<T, TO>(String routeName, {Object? arguments}) {
-    return Navigator.of(this).pushReplacementNamed<T, TO>(routeName, arguments: arguments);
+  Future<T?> pushReplacement<T, TO>(Widget page) {
+    return Navigator.of(this).pushReplacement<T, TO>(
+      MaterialPageRoute(builder: (_) => page),
+    );
   }
 
-  // Method to push a named route and remove all the routes until a condition is met
-  Future<T?> pushNamedAndRemoveUntil<T>(String newRouteName, RoutePredicate predicate, {Object? arguments}) {
-    return Navigator.of(this).pushNamedAndRemoveUntil<T>(newRouteName, predicate, arguments: arguments);
+  Future<T?> pushAndRemoveUntil<T>(Widget page) {
+    return Navigator.of(this).pushAndRemoveUntil<T>(
+      MaterialPageRoute(builder: (_) => page),
+      (route) => false,
+    );
   }
 
-  // Method to pop the current route off the stack
-  void pop(){
+  void pop() {
     Navigator.of(this).pop();
   }
 }

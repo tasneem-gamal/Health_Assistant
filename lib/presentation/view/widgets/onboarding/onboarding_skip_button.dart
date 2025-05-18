@@ -13,7 +13,7 @@ class OnboardingSkipButton extends StatelessWidget {
       alignment: Alignment.bottomLeft,
       child: TextButton(
         onPressed: (){
-          OnboardingController.instance.skipToLastPage();
+          OnboardingController.instance.skipToLastPage(context);
         }, 
         child: Text(
           'Skip',
