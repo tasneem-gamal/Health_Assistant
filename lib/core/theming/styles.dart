@@ -17,7 +17,7 @@ class CustomTextStyles {
         color: Colors.black,
       );
 
-  static TextStyle font16LightGreyRegular(BuildContext context) => TextStyle(
+  static TextStyle font16LightGrayRegular(BuildContext context) => TextStyle(
         fontSize: ResponsiveValue<double>(
           context,
           defaultValue: 16.0,
@@ -30,7 +30,7 @@ class CustomTextStyles {
         color: ColorsManager.lightGray
       );
 
-  static TextStyle font16LightgreyBold(BuildContext context) => TextStyle(
+  static TextStyle font16LightGrayBold(BuildContext context) => TextStyle(
         fontSize: ResponsiveValue<double>(
           context,
           defaultValue: 16.0,
@@ -67,5 +67,31 @@ class CustomTextStyles {
         ).value,
         fontWeight: FontWeightHelper.bold,
         color: Colors.white
+      );
+
+  static TextStyle font12BlackMedium(BuildContext context) => TextStyle(
+        fontSize: ResponsiveValue<double>(
+          context,
+          defaultValue: 12.0,
+          conditionalValues: [
+            const Condition.smallerThan(name: MOBILE, value: 10.0),
+            const Condition.largerThan(name: TABLET, value: 14.0),
+          ],
+        ).value,
+        fontWeight: FontWeightHelper.medium,
+        color: Colors.black
+      );
+
+  static TextStyle font12MainColorMedium(BuildContext context) => TextStyle(
+        fontSize: ResponsiveValue<double>(
+          context,
+          defaultValue: 12.0,
+          conditionalValues: [
+            const Condition.smallerThan(name: MOBILE, value: 10.0),
+            const Condition.largerThan(name: TABLET, value: 14.0),
+          ],
+        ).value,
+        fontWeight: FontWeightHelper.medium,
+        color: ColorsManager.mainColor
       );
 }

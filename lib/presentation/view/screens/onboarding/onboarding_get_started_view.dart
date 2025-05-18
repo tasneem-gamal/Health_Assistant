@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:health_assistant/core/theming/styles.dart';
+import 'package:health_assistant/core/utils/extensions.dart';
 import 'package:health_assistant/core/utils/spacing.dart';
 import 'package:health_assistant/core/widgets/custom_app_button.dart';
+import 'package:health_assistant/presentation/view/screens/auth/login/login_view.dart';
 
 class OnboardingGetStartedView extends StatelessWidget {
   const OnboardingGetStartedView({super.key});
@@ -25,12 +27,14 @@ class OnboardingGetStartedView extends StatelessWidget {
             Text(
               'Get started on your journey to  better health and wellness.',
               textAlign: TextAlign.center,
-              style: CustomTextStyles.font16LightGreyRegular(context),
+              style: CustomTextStyles.font16LightGrayRegular(context),
             ),
             verticalSpace(context, 24),
             CustomAppButton(
               btnText: 'Started',
-              onPressed: (){},
+              onPressed: (){
+                context.pushAndRemoveUntil(const LoginView());
+              },
             )
           ],
         ),
