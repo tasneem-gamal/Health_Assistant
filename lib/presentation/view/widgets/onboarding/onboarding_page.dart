@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:health_assistant/core/theming/styles.dart';
 import 'package:health_assistant/core/utils/spacing.dart';
 
-class OnBoardingPage extends StatelessWidget {
-  const OnBoardingPage({
+class OnboardingPage extends StatelessWidget {
+  const OnboardingPage({
     super.key, 
     required this.image,
     required this.title, 

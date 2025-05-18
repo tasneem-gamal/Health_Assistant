@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:health_assistant/presentation/view/screens/on_boarding/on_boarding_view.dart';
+import 'package:health_assistant/presentation/view/screens/onboarding/onboarding_view.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 
 class HealthAssistant extends StatelessWidget {
@@ -22,7 +22,7 @@ class HealthAssistant extends StatelessWidget {
         fontFamily: 'Montserrat'
       ),
       themeMode: ThemeMode.light,
-      home: const OnBoardingView(),
+      home: const OnboardingView(),
     );
   }
 }
