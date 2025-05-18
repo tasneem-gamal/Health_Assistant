@@ -18,6 +18,9 @@ class HealthAssistant extends StatelessWidget {
         ],
         child: child!
       ),
+      theme: ThemeData(
+        fontFamily: 'Montserrat'
+      ),
       themeMode: ThemeMode.light,
       home: const OnBoardingView(),
     );
