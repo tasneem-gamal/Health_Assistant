@@ -30,6 +30,19 @@ class CustomTextStyles {
         color: ColorsManager.lightGray
       );
 
+  static TextStyle font16LightgreyBold(BuildContext context) => TextStyle(
+        fontSize: ResponsiveValue<double>(
+          context,
+          defaultValue: 16.0,
+          conditionalValues: [
+            const Condition.smallerThan(name: MOBILE, value: 14.0),
+            const Condition.largerThan(name: TABLET, value: 18.0),
+          ],
+        ).value,
+        fontWeight: FontWeightHelper.bold,
+        color: ColorsManager.lightGray
+      );
+
   static TextStyle font14MainColorRegular(BuildContext context) => TextStyle(
         fontSize: ResponsiveValue<double>(
           context,
