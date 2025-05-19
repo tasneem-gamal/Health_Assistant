@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:health_assistant/core/theming/styles.dart';
 
-class OnBoardingSkipButton extends StatelessWidget {
-  const OnBoardingSkipButton({
+class OnboardingSkipButton extends StatelessWidget {
+  const OnboardingSkipButton({
     super.key,
   });
 

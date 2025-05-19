@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:health_assistant/core/theming/colors.dart';
 
-class OnBoardingNextButton extends StatelessWidget {
-  const OnBoardingNextButton({
+class OnboardingNextButton extends StatelessWidget {
+  const OnboardingNextButton({
     super.key,
   });
 

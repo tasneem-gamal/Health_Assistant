@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:health_assistant/core/theming/colors.dart';
 import 'package:health_assistant/core/theming/styles.dart';
 import 'package:health_assistant/core/utils/constants.dart';
-import 'package:health_assistant/presentation/view/widgets/on_boarding/on_boarding_next_button.dart';
-import 'package:health_assistant/presentation/view/widgets/on_boarding/on_boarding_page.dart';
-import 'package:health_assistant/presentation/view/widgets/on_boarding/on_boarding_skip_button.dart';
+import 'package:health_assistant/presentation/view/widgets/onboarding/onboarding_next_button.dart';
+import 'package:health_assistant/presentation/view/widgets/onboarding/onboarding_page.dart';
+import 'package:health_assistant/presentation/view/widgets/onboarding/onboarding_skip_button.dart';
 
-class OnBoardingViewBody extends StatelessWidget {
-  const OnBoardingViewBody({super.key});
+class OnboardingViewBody extends StatelessWidget {
+  const OnboardingViewBody({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +18,7 @@ class OnBoardingViewBody extends StatelessWidget {
           PageView(
             physics: const NeverScrollableScrollPhysics(),
             children: [
-              OnBoardingPage(
+              OnboardingPage(
                 image: 'assets/images/boarding_1.png',
                 title: 'Welcome to ',
                 subTitle: 'Health Assistant',
@@ -32,8 +32,8 @@ class OnBoardingViewBody extends StatelessWidget {
               )
             ],
           ),
-          const OnBoardingSkipButton(),
-          const OnBoardingNextButton()
+          const OnboardingSkipButton(),
+          const OnboardingNextButton()
         ],
       ),
     );
