@@ -19,4 +19,9 @@ class OnboardingController extends GetxController{
       pageController.jumpToPage(page);
     }
   }
+
+  void skipToLastPage(){
+    pageController.jumpToPage(3);
+    currentPageIndex.value = 3;
+  }
 }
