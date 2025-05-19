@@ -24,7 +24,7 @@ class LoginForm extends StatelessWidget {
           verticalSpace(context, 20),
           CustomTextFormField(
             validator: (validator){}, 
-            hintText: 'Username or email'
+            hintText: 'Email'
           ),
           verticalSpace(context, 20),
           CustomTextFormField(
