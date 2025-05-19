@@ -29,4 +29,17 @@ class CustomTextStyles {
         fontWeight: FontWeightHelper.regular,
         color: ColorsManager.lightGray
       );
+
+  static TextStyle font14MainColorRegular(BuildContext context) => TextStyle(
+        fontSize: ResponsiveValue<double>(
+          context,
+          defaultValue: 14.0,
+          conditionalValues: [
+            const Condition.smallerThan(name: MOBILE, value: 12.0),
+            const Condition.largerThan(name: TABLET, value: 16.0),
+          ],
+        ).value,
+        fontWeight: FontWeightHelper.regular,
+        color: ColorsManager.mainColor
+      );
 }
