@@ -31,6 +31,15 @@ class _SignUpFormState extends State<SignUpForm> {
   bool isObsecureText = true;
   bool isPasswordConfirmationObscureText = true;
   
+
+  @override
+  void dispose() {
+    emailController.dispose();
+    passwordController.dispose();
+    phoneController.dispose();
+    passwordConfirmController.dispose();
+    super.dispose();
+  }
   @override
   Widget build(BuildContext context) {
     return Form(

@@ -23,6 +23,13 @@ class _LoginFormState extends State<LoginForm> {
   bool isObsecureText = true;
 
   @override
+  void dispose() {
+    emailController.dispose();
+    passwordController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Form(
       key: loginFormKey,
