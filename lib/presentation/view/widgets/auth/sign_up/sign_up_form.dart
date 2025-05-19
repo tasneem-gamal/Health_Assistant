@@ -17,43 +17,46 @@ class SignUpForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Text(
-          'Create Your Account',
-          style: CustomTextStyles.font14WhiteBold(context)
-              .copyWith(color: Colors.black),
-        ),
-        verticalSpace(context, 20),
-        CustomTextFormField(
-            validator: (validator) {}, 
-            hintText: 'Email'
+    return Form(
+      key: GlobalKey(),
+      child: Column(
+        children: [
+          Text(
+            'Create Your Account',
+            style: CustomTextStyles.font14WhiteBold(context)
+                .copyWith(color: Colors.black),
           ),
-        verticalSpace(context, 20),
-        CustomTextFormField(
-          validator: (validator) {},
-          hintText: 'Phone Number',
-        ),
-        verticalSpace(context, 20),
-        CustomTextFormField(
-          validator: (validator) {},
-          hintText: 'Password',
-          suffixIcon: const Icon(Icons.visibility_off),
-        ),
-        verticalSpace(context, 20),
-        CustomTextFormField(
-          validator: (validator) {},
-          hintText: 'Confirm Password',
-          suffixIcon: const Icon(Icons.visibility_off),
-        ),
-        verticalSpace(context, 20),
-        PrivacyPolicyCheckBox(isChecked: isChecked),
-        verticalSpace(context, 24),
-        CustomAppButton(
-          btnText: 'Sign Up',
-          onPressed: (){},
-        ),
-      ],
+          verticalSpace(context, 20),
+          CustomTextFormField(
+              validator: (validator) {}, 
+              hintText: 'Email'
+            ),
+          verticalSpace(context, 20),
+          CustomTextFormField(
+            validator: (validator) {},
+            hintText: 'Phone Number',
+          ),
+          verticalSpace(context, 20),
+          CustomTextFormField(
+            validator: (validator) {},
+            hintText: 'Password',
+            suffixIcon: const Icon(Icons.visibility_off),
+          ),
+          verticalSpace(context, 20),
+          CustomTextFormField(
+            validator: (validator) {},
+            hintText: 'Confirm Password',
+            suffixIcon: const Icon(Icons.visibility_off),
+          ),
+          verticalSpace(context, 20),
+          PrivacyPolicyCheckBox(isChecked: isChecked),
+          verticalSpace(context, 24),
+          CustomAppButton(
+            btnText: 'Sign Up',
+            onPressed: (){},
+          ),
+        ],
+      ),
     );
   }
 }
