@@ -7,12 +7,13 @@ class OnboardingPage extends StatelessWidget {
     super.key, 
     required this.image,
     required this.title, 
-    required this.subTitle, 
+    this.subTitle, 
     required this.description, 
     this.subTitleStyle,
   });
 
-  final String image, title, subTitle, description;
+  final String image, title, description;
+  final String? subTitle;
   final TextStyle? subTitleStyle;
 
   @override
