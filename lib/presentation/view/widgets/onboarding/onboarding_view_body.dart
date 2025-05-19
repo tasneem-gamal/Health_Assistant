@@ -35,10 +35,31 @@ class OnboardingViewBody extends StatelessWidget {
                           ).createShader(const Rect.fromLTWH(200.0, 0.0, 50.0, 0.0)),
                     ),
               ),
-              OnboardingPage(
-                image: 'assets/images/boarding_2.png', 
-                title: 'Empower Your Health', 
-                description: ''
+              const OnboardingPage(
+                image: 'assets/images/boarding_2.png',
+                title: 'Empower Your Health',
+                dash: [
+                  'Analyze: Your Symptoms To Gain Health Insights.',
+                  'Upload: Lab Results For Early Disease Detection.',
+                  'Receive: Personalized Fitness And Nutrition Plans.',
+                ],
+              ),
+              const OnboardingPage(
+                image: 'assets/images/boarding_3.png',
+                title: 'Prioritize Your Mental Wellness',
+                dash: [
+                  'Chat: with a virtual mental health coach.',
+                  'Track: your mood and receive therapeutic advice',
+                  'Learn: stress-management techniques tailored to you.',
+                ],
+              ),
+              const OnboardingPage(
+                image: 'assets/images/boarding_4.png',
+                title: 'Your Data, Your Control',
+                dash: [
+                  ': Your health data is secure and private.',
+                  ': Personalized recommendations tailored just for you.',
+                ],
               )
             ],
           ),

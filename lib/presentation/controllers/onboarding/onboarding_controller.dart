@@ -12,7 +12,7 @@ class OnboardingController extends GetxController{
   }
 
   void nextPage(BuildContext context){
-    if(currentPageIndex.value == 2){
+    if(currentPageIndex.value == 3){
       //context.pushNamed(Routes.onBoardingGetStartedView);
     } else{
       int page = currentPageIndex.value + 1 ;
