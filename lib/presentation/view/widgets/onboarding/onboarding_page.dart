@@ -42,7 +42,7 @@ class OnboardingPage extends StatelessWidget {
           Text(
             description!,
             softWrap: true,
-            style: CustomTextStyles.font16LightGreyRegular(context),
+            style: CustomTextStyles.font16LightGrayRegular(context),
           )
         else if (dash != null)
           Column(
@@ -58,11 +58,11 @@ class OnboardingPage extends StatelessWidget {
                     children: [
                       TextSpan(
                         text: '- $title ',
-                        style: CustomTextStyles.font16LightgreyBold(context),
+                        style: CustomTextStyles.font16LightGrayBold(context),
                       ),
                       TextSpan(
                         text: body,
-                        style: CustomTextStyles.font16LightGreyRegular(context),
+                        style: CustomTextStyles.font16LightGrayRegular(context),
                       ),
                     ],
                   ),
