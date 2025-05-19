@@ -17,7 +17,7 @@ class CustomTextStyles {
         color: Colors.black,
       );
 
-  static TextStyle font16LightGreyReular(BuildContext context) => TextStyle(
+  static TextStyle font16LightGreyRegular(BuildContext context) => TextStyle(
         fontSize: ResponsiveValue<double>(
           context,
           defaultValue: 16.0,
