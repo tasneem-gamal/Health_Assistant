@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:health_assistant/core/utils/extensions.dart';
+import 'package:health_assistant/presentation/view/screens/onboarding/onboarding_get_started_view.dart';
 
 class OnboardingController extends GetxController{
   static OnboardingController get instance => Get.find();
@@ -13,15 +15,14 @@ class OnboardingController extends GetxController{
 
   void nextPage(BuildContext context){
     if(currentPageIndex.value == 3){
-      //context.pushNamed(Routes.onBoardingGetStartedView);
+      context.push(const OnboardingGetStartedView());
     } else{
       int page = currentPageIndex.value + 1 ;
       pageController.jumpToPage(page);
     }
   }
 
-  void skipToLastPage(){
-    pageController.jumpToPage(3);
-    currentPageIndex.value = 3;
+  void skipToLastPage(BuildContext context){
+    context.pushAndRemoveUntil(const OnboardingGetStartedView());
   }
 }
