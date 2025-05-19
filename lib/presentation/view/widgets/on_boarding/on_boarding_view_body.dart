@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:health_assistant/core/theming/colors.dart';
 import 'package:health_assistant/core/theming/styles.dart';
 import 'package:health_assistant/core/utils/constants.dart';
+import 'package:health_assistant/presentation/view/widgets/on_boarding/on_boarding_next_button.dart';
 import 'package:health_assistant/presentation/view/widgets/on_boarding/on_boarding_page.dart';
 import 'package:health_assistant/presentation/view/widgets/on_boarding/on_boarding_skip_button.dart';
 
@@ -31,12 +32,14 @@ class OnBoardingViewBody extends StatelessWidget {
               )
             ],
           ),
-          const OnBoardingSkipButton()
+          const OnBoardingSkipButton(),
+          const OnBoardingNextButton()
         ],
       ),
     );
   }
 }
+
 
 
 
