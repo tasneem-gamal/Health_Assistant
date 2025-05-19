@@ -15,6 +15,7 @@ class LoginForm extends StatelessWidget {
       key: GlobalKey(),
       autovalidateMode: AutovalidateMode.disabled,
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
             'Login to Your Account',

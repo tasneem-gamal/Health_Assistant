@@ -24,7 +24,6 @@ class LoginViewBody extends StatelessWidget {
       padding: Constants.appPadding,
       child: SingleChildScrollView(
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             verticalSpace(context, 70),
             Center(child: Image.asset('assets/images/splash.png')),
