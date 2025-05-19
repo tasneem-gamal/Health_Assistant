@@ -18,6 +18,8 @@ class _LoginFormState extends State<LoginForm> {
 
   final GlobalKey<FormState> loginFormKey = GlobalKey();
   AutovalidateMode autovalidateMode = AutovalidateMode.disabled;
+  final TextEditingController passwordController = TextEditingController();
+  final TextEditingController emailController = TextEditingController();
   bool isObsecureText = true;
 
   @override
@@ -35,11 +37,13 @@ class _LoginFormState extends State<LoginForm> {
           verticalSpace(context, 20),
           CustomTextFormField(
             validator: emailValidate, 
+            controller: emailController,
             hintText: 'Email'
           ),
           verticalSpace(context, 20),
           CustomTextFormField(
             validator: passwordValidate, 
+            controller: passwordController,
             hintText: 'Password',
             suffixIcon: GestureDetector(
             onTap: () {
