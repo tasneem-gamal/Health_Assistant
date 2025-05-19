@@ -53,6 +53,7 @@ class _LoginFormState extends State<LoginForm> {
           CustomTextFormField(
             validator: passwordValidate, 
             controller: passwordController,
+            isObsecureText: isObsecureText,
             hintText: 'Password',
             suffixIcon: GestureDetector(
             onTap: () {

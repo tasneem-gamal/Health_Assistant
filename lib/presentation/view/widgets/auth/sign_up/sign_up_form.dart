@@ -68,6 +68,7 @@ class _SignUpFormState extends State<SignUpForm> {
           CustomTextFormField(
             validator: passwordValidate,
             controller: passwordController,
+            isObsecureText: isObsecureText,
             hintText: 'Password',
             suffixIcon: GestureDetector(
                 onTap: () {
@@ -83,6 +84,7 @@ class _SignUpFormState extends State<SignUpForm> {
           CustomTextFormField(
             validator: confirmPasswordValidate,
             controller: passwordConfirmController,
+            isObsecureText: isPasswordConfirmationObscureText,
             hintText: 'Confirm Password',
             suffixIcon: GestureDetector(
                 onTap: () {

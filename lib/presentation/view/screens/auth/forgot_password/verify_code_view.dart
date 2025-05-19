@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:health_assistant/core/theming/font_weight_helper.dart';
 import 'package:health_assistant/core/theming/styles.dart';
 import 'package:health_assistant/core/utils/constants.dart';
+import 'package:health_assistant/core/utils/extensions.dart';
 import 'package:health_assistant/core/utils/spacing.dart';
 import 'package:health_assistant/core/widgets/custom_app_button.dart';
+import 'package:health_assistant/presentation/view/screens/auth/forgot_password/create_new_password_view.dart';
 import 'package:health_assistant/presentation/view/widgets/auth/forgot_password/otp_boxes.dart';
 import 'package:health_assistant/presentation/view/widgets/auth/forgot_password/resend_code_button.dart';
 
@@ -27,7 +29,7 @@ class VerifyCodeViewBody extends StatelessWidget {
       padding: Constants.appPadding,
       child: SingleChildScrollView(
         child: SizedBox(
-          height: MediaQuery.of(context).size.height * 0.7,
+          height: MediaQuery.of(context).size.height * 0.8,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -68,7 +70,9 @@ class VerifyCodeViewBody extends StatelessWidget {
                 const ResendCodeButton(),
                 verticalSpace(context, 16),
                 CustomAppButton(
-                  onPressed: (){},
+                  onPressed: (){
+                    context.push(const CreateNewPasswordView());
+                  },
                   btnText: 'Next'
                 )
             ],
