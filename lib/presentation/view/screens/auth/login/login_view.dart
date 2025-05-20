@@ -4,6 +4,7 @@ import 'package:health_assistant/core/utils/constants.dart';
 import 'package:health_assistant/core/utils/extensions.dart';
 import 'package:health_assistant/core/utils/spacing.dart';
 import 'package:health_assistant/presentation/view/screens/auth/sign_up/sign_up_view.dart';
+import 'package:health_assistant/presentation/view/widgets/auth/login/login_bloc_listner.dart';
 import 'package:health_assistant/presentation/view/widgets/auth/login/login_form.dart';
 
 class LoginView extends StatelessWidget {
@@ -51,6 +52,7 @@ class LoginViewBody extends StatelessWidget {
                 style: CustomTextStyles.font12MainColorMedium(context)
               ),
             ),
+            const LoginBlocListner()
             ],
             )
           ],

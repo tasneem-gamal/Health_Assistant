@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:health_assistant/core/utils/app_regex.dart';
 import 'package:health_assistant/core/utils/spacing.dart';
 import 'package:health_assistant/core/widgets/custom_app_button.dart';
 import 'package:health_assistant/core/widgets/custom_text_form_field.dart';
+import 'package:health_assistant/presentation/controllers/auth/auth_cubit.dart';
 import 'package:health_assistant/presentation/view/widgets/auth/sign_up/privacy_policy_check_box.dart';
 import 'package:health_assistant/core/theming/styles.dart';
 
@@ -46,6 +48,7 @@ class _SignUpFormState extends State<SignUpForm> {
       key: signUpFormKey,
       autovalidateMode: autovalidateMode,
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
             'Create Your Account',
@@ -152,7 +155,11 @@ class _SignUpFormState extends State<SignUpForm> {
 
     void validateThenSignUp(BuildContext context){
     if(signUpFormKey.currentState!.validate()){
-      
+      context.read<AuthCubit>().emitSignUpState(
+        email: emailController.text,
+        password: passwordController.text,
+        phone: phoneController.text
+      );
     }
   }
 }
