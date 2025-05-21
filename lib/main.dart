@@ -6,10 +6,10 @@ import 'package:health_assistant/health_assistant.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  setUpGetIt();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  setUpGetIt();
   runApp(const HealthAssistant());
 }
 
