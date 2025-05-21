@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:health_assistant/core/theming/colors.dart';
 import 'package:health_assistant/core/theming/styles.dart';
 import 'package:health_assistant/core/utils/extensions.dart';
 import 'package:health_assistant/core/widgets/custom_loading_indicator.dart';
 import 'package:health_assistant/presentation/controllers/auth/auth_cubit.dart';
+import 'package:health_assistant/presentation/view/screens/home/home_view.dart';
 
-class SignupBlocListner extends StatelessWidget {
-  const SignupBlocListner({super.key});
+class LoginBlocListner extends StatelessWidget {
+  const LoginBlocListner({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -23,44 +23,13 @@ class SignupBlocListner extends StatelessWidget {
             builder: (context) => const CustomLoadingIndicator()
           );
         } else if (state is AuthSuccess){
-          showSuccessDialog(context, 'Signup Successful', 'Congratulations, you have signed up successfully!');
+          context.pushAndRemoveUntil(const HomeView());
         } else if(state is AuthFailure){
           setupErrorState(context, state.error);
         }
       },
       child: const SizedBox.shrink(),
     );
-  }
-
-      dynamic showSuccessDialog(BuildContext context, String sucessMessage, String message ) {
-    showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-            title: Text(sucessMessage),
-            content: SingleChildScrollView(
-              child: ListBody(
-                children: [
-                  Text(message),
-                ],
-              ),
-            ),
-            actions: [
-              TextButton(
-                style: TextButton.styleFrom(
-                  foregroundColor: Colors.white,
-                  backgroundColor: ColorsManager.mainColor,
-                  disabledForegroundColor: Colors.grey.withOpacity(0.38),
-                ),
-                onPressed: () {
-                  context.pop();
-                },
-                child: const Text('Continue'),
-              )
-            ],
-          );
-        }
-      );
   }
 
       void setupErrorState(BuildContext context, String error) {

@@ -48,6 +48,7 @@ class _SignUpFormState extends State<SignUpForm> {
       key: signUpFormKey,
       autovalidateMode: autovalidateMode,
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
             'Create Your Account',
