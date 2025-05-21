@@ -44,7 +44,7 @@ class LoginBlocListner extends StatelessWidget {
         ),
         content: Text(
           error,
-          style: CustomTextStyles.font12BlackMedium(context),
+          style: CustomTextStyles.font12MainColorMedium(context),
         ),
         actions: [
           TextButton(
