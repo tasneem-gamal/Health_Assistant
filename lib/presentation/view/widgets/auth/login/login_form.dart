@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:health_assistant/core/theming/styles.dart';
 import 'package:health_assistant/core/utils/app_regex.dart';
 import 'package:health_assistant/core/utils/extensions.dart';
 import 'package:health_assistant/core/utils/spacing.dart';
 import 'package:health_assistant/core/widgets/custom_app_button.dart';
 import 'package:health_assistant/core/widgets/custom_text_form_field.dart';
+import 'package:health_assistant/presentation/controllers/auth/auth_cubit.dart';
 import 'package:health_assistant/presentation/view/screens/auth/forgot_password/reset_password_view.dart';
 
 class LoginForm extends StatefulWidget {
@@ -111,7 +113,10 @@ class _LoginFormState extends State<LoginForm> {
 
   void validateThenDologin(BuildContext context){
     if(loginFormKey.currentState!.validate()){
-      
+      context.read<AuthCubit>().emitLoginState(
+        email: emailController.text, 
+        password: passwordController.text
+      );
     }
   }
 }

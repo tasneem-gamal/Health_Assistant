@@ -5,6 +5,7 @@ import 'package:health_assistant/core/utils/constants.dart';
 import 'package:health_assistant/core/utils/extensions.dart';
 import 'package:health_assistant/core/utils/spacing.dart';
 import 'package:health_assistant/presentation/view/widgets/auth/sign_up/sign_up_form.dart';
+import 'package:health_assistant/presentation/view/widgets/auth/sign_up/signup_bloc_listner.dart';
 
 class SignUpView extends StatelessWidget {
   const SignUpView({super.key});
@@ -47,6 +48,7 @@ class SignUpViewBody extends StatelessWidget {
           )),
           verticalSpace(context, 80),
           SignUpForm(isChecked: isChecked),
+          const SignupBlocListner()
         ],
       )),
     );
