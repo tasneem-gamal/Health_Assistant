@@ -20,13 +20,14 @@ class CustomAppButton extends StatelessWidget {
   final double? buttonHeight;
   @override
   Widget build(BuildContext context) {
+    final isDisabled = onPressed == null;
     return SizedBox(
       width: buttonWidth ?? double.infinity,
       height: buttonHeight ?? 50,
       child: TextButton(
         onPressed: onPressed,
         style: TextButton.styleFrom(
-          backgroundColor: backgroundColor ?? ColorsManager.mainColor,
+          backgroundColor: isDisabled ? ColorsManager.lightGray : ColorsManager.mainColor,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(borderRadius ?? 16),
           ),

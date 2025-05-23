@@ -6,9 +6,9 @@ import 'package:health_assistant/core/theming/colors.dart';
 class PrivacyPolicyCheckBox extends StatelessWidget {
   const PrivacyPolicyCheckBox({
     super.key,
-    required this.isChecked,
+    required this.isChecked, this.onCheckedChanged,
   });
-
+  final VoidCallback? onCheckedChanged;
   final RxBool isChecked;
 
   @override
@@ -20,6 +20,7 @@ class PrivacyPolicyCheckBox extends StatelessWidget {
               value: isChecked.value,
               onChanged: (newValue) {
                 isChecked.value = newValue!;
+                onCheckedChanged?.call();
               },
             ),
             const Text(
