@@ -16,7 +16,9 @@ class HomeView extends StatelessWidget {
         backgroundColor: ColorsManager.mainColor,
         elevation: 0,
         leading: IconButton(
-          onPressed: (){},
+          onPressed: (){
+            
+          },
           icon: const Icon(Icons.sort, color: Colors.white,),
         ),
         title: Text(
@@ -67,7 +69,7 @@ class HomeViewBody  extends StatelessWidget {
         ),
         Expanded(
           child: ListView(
-            children: [
+            children: const [
               StartHealthCheck(),
               TalkNow()
             ],
