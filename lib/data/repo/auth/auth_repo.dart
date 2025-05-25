@@ -22,4 +22,28 @@ class AuthRepo {
   Future<void> signOut() async {
     await authService.signOut();
   }
+
+  Future<void> sendOTP({
+    required String phoneNumber,
+    required Function(String) onCodeSent,
+    required Function(String) onFailed,
+  }) async {
+    await authService.sendOTP(
+      phoneNumber: phoneNumber,
+      onCodeSent: onCodeSent,
+      onFailed: onFailed,
+    );
+  }
+
+  Future<void> verifyOTPAndResetPassword({
+    required String verificationId,
+    required String smsCode,
+    required String newPassword,
+  }) async {
+    await authService.verifyOTPAndResetPassword(
+      verificationId: verificationId,
+      smsCode: smsCode,
+      newPassword: newPassword,
+    );
+  }
 }

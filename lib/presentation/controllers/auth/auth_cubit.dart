@@ -37,4 +37,42 @@ class AuthCubit extends Cubit<AuthState> {
       emit(AuthFailure("Failure: ${e.toString()}"));
     }
   }
+
+
+  void sendOTP({
+    required String phone,
+    required Function(String verificationId) onCodeSent,
+  }) async {
+    emit(AuthLoading());
+
+    await authRepo.sendOTP(
+      phoneNumber: phone,
+      onCodeSent: (verificationId) {
+        onCodeSent(verificationId);
+        emit(AuthSuccess("OTP Sent"));
+      },
+      onFailed: (error) {
+        emit(AuthFailure(error));
+      },
+    );
+  }
+
+
+  void verifyOTPAndResetPassword({
+    required String verificationId,
+    required String otpCode,
+    required String newPassword,
+  }) async {
+    emit(AuthLoading());
+    try {
+      await authRepo.verifyOTPAndResetPassword(
+        verificationId: verificationId,
+        smsCode: otpCode,
+        newPassword: newPassword,
+      );
+      emit(AuthSuccess("Password Updated"));
+    } catch (e) {
+      emit(AuthFailure("Error: ${e.toString()}"));
+    }
+  }
 }
