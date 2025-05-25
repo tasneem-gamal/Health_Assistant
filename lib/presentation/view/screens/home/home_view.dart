@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:health_assistant/core/theming/colors.dart';
 import 'package:health_assistant/core/theming/styles.dart';
+import 'package:health_assistant/core/widgets/custom_curved_container.dart';
 
 class HomeView extends StatelessWidget {
   const HomeView({super.key});
@@ -17,7 +18,7 @@ class HomeView extends StatelessWidget {
         ),
         title: Text(
           'Health Assistant',
-            style: CustomTextStyles.font24BlackMedium(context).copyWith(
+            style: CustomTextStyles.font24WhiteMedium(context).copyWith(
               foreground: Paint()
                 ..shader = const LinearGradient(
                   colors: <Color>[
@@ -34,7 +35,7 @@ class HomeView extends StatelessWidget {
           )
         ],
       ),
-      body: HomeViewBody(),
+      body: const HomeViewBody(),
     );
   }
 }
@@ -44,6 +45,11 @@ class HomeViewBody  extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column();
+    return Column(
+      children: [
+        CustomCurvedContainer()
+      ],
+    );
   }
 }
+

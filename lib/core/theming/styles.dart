@@ -17,7 +17,7 @@ class CustomTextStyles {
         color: Colors.black,
       );
 
-  static TextStyle font24BlackMedium(BuildContext context) => TextStyle(
+  static TextStyle font24WhiteMedium(BuildContext context) => TextStyle(
         fontSize: ResponsiveValue<double>(
           context,
           defaultValue: 24.0,
@@ -27,7 +27,7 @@ class CustomTextStyles {
           ],
         ).value,
         fontWeight: FontWeightHelper.medium,
-        color: Colors.black,
+        color: Colors.white,
       );
 
   static TextStyle font16LightGrayRegular(BuildContext context) => TextStyle(
