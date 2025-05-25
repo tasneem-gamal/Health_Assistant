@@ -60,9 +60,10 @@ class _SignUpFormState extends State<SignUpForm> {
           ),
           verticalSpace(context, 20),
           CustomTextFormField(
-              validator: emailValidate,
+              validator: (value){},
               controller: emailController, 
               hintText: 'Email',
+              keyboardType: TextInputType.emailAddress,
               onChanged: (_) => updateFormValidState(),
             ),
           verticalSpace(context, 20),
@@ -70,11 +71,12 @@ class _SignUpFormState extends State<SignUpForm> {
             validator: phoneValidate,
             controller: phoneController,
             hintText: 'Phone Number',
+            keyboardType: TextInputType.phone,
             onChanged: (_) => updateFormValidState(),
           ),
           verticalSpace(context, 20),
           CustomTextFormField(
-            validator: passwordValidate,
+            validator: (value){},
             controller: passwordController,
             isObsecureText: isObsecureText,
             onChanged: (_) => updateFormValidState(),
@@ -121,27 +123,6 @@ class _SignUpFormState extends State<SignUpForm> {
         ],
       ),
     );
-  }
-
-    emailValidate(value) {
-    if (value == null || value.isEmpty) {
-      return 'Email cannot be empty';
-    }
-    if (!AppRegex.isEmailValid(value)) {
-      return 'Enter a valid email address';
-    }
-  }
-
-  passwordValidate(value) {
-    if (value == null || value.isEmpty) {
-      return 'Password cannot be empty';
-    }
-    if (!AppRegex.hasLowerCase(value) &&
-        !AppRegex.hasMinLength(value) &&
-        !AppRegex.isPasswordValid(value) &&
-        !AppRegex.hasSpecialCharacter(value)) {
-      return "Enter a valid password: at least 8 characters,\nincluding one lowercase letter and one special char.";
-    }
   }
 
       phoneValidate(value) {

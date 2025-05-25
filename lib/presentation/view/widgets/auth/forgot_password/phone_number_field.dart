@@ -3,7 +3,14 @@ import 'package:health_assistant/core/theming/colors.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 
 class PhoneNumberField extends StatefulWidget {
-  const PhoneNumberField({super.key});
+  const PhoneNumberField({
+    super.key,
+    required this.controller,
+    required this.onChanged,
+  });
+
+  final TextEditingController controller;
+  final ValueChanged<String> onChanged;
 
   @override
   State<PhoneNumberField> createState() => _PhoneNumberFieldState();
@@ -11,30 +18,33 @@ class PhoneNumberField extends StatefulWidget {
 
 class _PhoneNumberFieldState extends State<PhoneNumberField> {
   final AutovalidateMode autovalidateMode = AutovalidateMode.disabled;
-  final TextEditingController phoneController = TextEditingController();
   PhoneNumber number = PhoneNumber(isoCode: 'EG');
-  
+
   @override
-  Widget build(BuildContext context)  {
+  Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric( vertical: 4),
+      padding: const EdgeInsets.symmetric(vertical: 4),
       decoration: BoxDecoration(
         border: Border.all(color: ColorsManager.moreLightGray),
         borderRadius: BorderRadius.circular(12),
         color: Colors.white,
       ),
       child: InternationalPhoneNumberInput(
-        onInputChanged: (number) {},
+        onInputChanged: (PhoneNumber number) {
+          if (number.phoneNumber != null) {
+            widget.onChanged(number.phoneNumber!);
+          }
+        },
         selectorConfig: const SelectorConfig(
-          selectorType: PhoneInputSelectorType.DROPDOWN, 
-          showFlags: true, 
-          useEmoji: true, 
+          selectorType: PhoneInputSelectorType.DROPDOWN,
+          showFlags: true,
+          useEmoji: true,
         ),
         ignoreBlank: false,
         autoValidateMode: autovalidateMode,
         selectorTextStyle: const TextStyle(color: Colors.black),
         initialValue: number,
-        textFieldController: phoneController,
+        textFieldController: widget.controller,
         formatInput: true,
         keyboardType: TextInputType.phone,
         inputDecoration: const InputDecoration(
