@@ -98,11 +98,7 @@ class _CreateNewPasswordViewBodyState extends State<CreateNewPasswordViewBody> {
                   verticalSpace(context, 24),
                   CustomAppButton(
                       onPressed: () {
-                        context.read<AuthCubit>().verifyOTPAndResetPassword(
-                              verificationId: widget.verificationId,
-                              otpCode: widget.otpCode,
-                              newPassword: passwordController.text.trim(),
-                            );
+                        createNewPassword(context);
                       },
                       btnText: 'Confirm')
                 ],
@@ -110,5 +106,13 @@ class _CreateNewPasswordViewBodyState extends State<CreateNewPasswordViewBody> {
             )),
       ),
     );
+  }
+
+  void createNewPassword(BuildContext context) {
+    context.read<AuthCubit>().verifyOTPAndResetPassword(
+          verificationId: widget.verificationId,
+          otpCode: widget.otpCode,
+          newPassword: passwordController.text.trim(),
+        );
   }
 }

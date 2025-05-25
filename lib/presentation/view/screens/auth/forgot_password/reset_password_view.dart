@@ -61,23 +61,7 @@ class _ResetPasswordViewBodyState extends State<ResetPasswordViewBody> {
               verticalSpace(context, 24),
               CustomAppButton(
                 onPressed: () {
-                  if (fullPhoneNumber != null) {
-                    context.read<AuthCubit>().sendOTP(
-                      phone: fullPhoneNumber!,
-                      onCodeSent: (verificationId) {
-                        context.push(
-                          VerifyCodeView(
-                            verificationId: verificationId,
-                            phoneNumber: fullPhoneNumber!,
-                          ),
-                        );
-                      },
-                    );
-                  } else {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text("Please enter your phone number")),
-                    );
-                  }
+                  sendCode(context);
                 },
                 btnText: 'Send',
               ),
@@ -86,5 +70,25 @@ class _ResetPasswordViewBodyState extends State<ResetPasswordViewBody> {
         ),
       ),
     );
+  }
+
+  void sendCode(BuildContext context) {
+    if (fullPhoneNumber != null) {
+      context.read<AuthCubit>().sendOTP(
+        phone: fullPhoneNumber!,
+        onCodeSent: (verificationId) {
+          context.push(
+            VerifyCodeView(
+              verificationId: verificationId,
+              phoneNumber: fullPhoneNumber!,
+            ),
+          );
+        },
+      );
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Please enter your phone number")),
+      );
+    }
   }
 }
