@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:health_assistant/core/theming/colors.dart';
 import 'package:health_assistant/core/theming/styles.dart';
+import 'package:health_assistant/core/utils/spacing.dart';
 import 'package:health_assistant/core/widgets/custom_curved_container.dart';
+import 'package:health_assistant/presentation/view/widgets/home/start_health_check.dart';
+import 'package:health_assistant/presentation/view/widgets/home/talk_now.dart';
 
 class HomeView extends StatelessWidget {
   const HomeView({super.key});
@@ -47,9 +50,35 @@ class HomeViewBody  extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        CustomCurvedContainer()
+        const CustomCurvedContainer(),
+        verticalSpace(context, 20),
+        Text(
+          'Your wellness journey ',
+          style: CustomTextStyles.font16LightGrayRegular(context),
+        ),
+        Text(
+          'Start Here',
+          style: CustomTextStyles.font16LightGrayBold(context).copyWith(color: Colors.black),
+        ),
+        verticalSpace(context, 20),
+        const Divider(
+          thickness: 1,
+          color: ColorsManager.moreLightGray,
+        ),
+        Expanded(
+          child: ListView(
+            children: [
+              StartHealthCheck(),
+              TalkNow()
+            ],
+          )
+        )
       ],
     );
   }
 }
+
+
+
+
 
