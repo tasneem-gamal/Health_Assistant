@@ -5,18 +5,20 @@ class AuthRepo {
 
   AuthRepo(this.authService);
 
-  Future<void> signUp({
+  Future<String> signUp({
     required String email,
     required String password,
   }) async {
-    await authService.signUp(email: email, password: password);
+    final userCredential = await authService.signUp(email: email, password: password);
+    return userCredential.user!.uid;
   }
 
-  Future<void> login({
+  Future<String> login({
     required String email,
     required String password,
   }) async {
-    await authService.login(email: email, password: password);
+    final userCredential = await authService.login(email: email, password: password);
+    return userCredential.user!.uid;
   }
 
   Future<void> signOut() async {

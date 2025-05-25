@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:health_assistant/core/utils/shared_preference_helper.dart';
 import 'package:health_assistant/data/repo/auth/auth_repo.dart';
 
 part 'auth_state.dart';
@@ -17,7 +18,8 @@ class AuthCubit extends Cubit<AuthState> {
     emit(AuthLoading());
 
     try {
-      await authRepo.signUp(email: email, password: password);
+      final uid = await authRepo.signUp(email: email, password: password);
+      await SharedPreferenceHelper.saveUid(uid); 
       emit(AuthSuccess("Success"));
     } catch (e) {
       emit(AuthFailure("Failure: ${e.toString()}"));
@@ -31,7 +33,8 @@ class AuthCubit extends Cubit<AuthState> {
     emit(AuthLoading());
 
     try {
-      await authRepo.login(email: email, password: password);
+      final uid = await authRepo.login(email: email, password: password);
+      await SharedPreferenceHelper.saveUid(uid);
       emit(AuthSuccess("Success"));
     } catch (e) {
       emit(AuthFailure("Failure: ${e.toString()}"));
