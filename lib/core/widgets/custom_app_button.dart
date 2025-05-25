@@ -27,7 +27,7 @@ class CustomAppButton extends StatelessWidget {
       child: TextButton(
         onPressed: onPressed,
         style: TextButton.styleFrom(
-          backgroundColor: isDisabled ? ColorsManager.lightGray : ColorsManager.mainColor,
+          backgroundColor: isDisabled ? ColorsManager.lightGray : backgroundColor ?? ColorsManager.mainColor,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(borderRadius ?? 16),
           ),
