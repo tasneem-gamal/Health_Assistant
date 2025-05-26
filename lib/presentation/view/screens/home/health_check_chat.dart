@@ -6,6 +6,7 @@ import 'package:health_assistant/presentation/view/widgets/home/analyze_symptoms
 import 'package:health_assistant/presentation/view/widgets/home/chat_app_bar_title.dart';
 import 'package:health_assistant/presentation/view/widgets/home/custom_chat.dart';
 import 'package:health_assistant/presentation/view/widgets/home/fitness_plan_dialog.dart';
+import 'package:health_assistant/presentation/view/widgets/home/nutrition_plan_dialog.dart';
 import 'package:health_assistant/presentation/view/widgets/home/option_card.dart';
 
 class HealthCheckChat extends StatelessWidget {
@@ -101,7 +102,12 @@ Widget build(BuildContext context) {
             OptionCard(
               image: 'assets/images/nutrition.png',
               title: 'Nutrition Plan',
-              onTap: (){},
+              onTap: (){
+                showDialog(
+                      context: context, 
+                      builder: (context) => const NutritionPlanDialog()
+                    );
+              },
             ),
           ],
         ),
