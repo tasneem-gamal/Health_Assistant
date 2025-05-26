@@ -17,7 +17,7 @@ class CustomTextFormField extends StatelessWidget {
     this.maxLines,
     this.readOnly = false,
     this.onTap,
-    this.onFieldSubmitted
+    this.onFieldSubmitted, 
   });
   final Widget? suffixIcon;
   final Widget? prefixIcon;

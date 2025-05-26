@@ -3,6 +3,7 @@ import 'package:health_assistant/core/theming/colors.dart';
 import 'package:health_assistant/core/theming/styles.dart';
 import 'package:health_assistant/core/utils/spacing.dart';
 import 'package:health_assistant/core/widgets/custom_curved_container.dart';
+import 'package:health_assistant/presentation/view/widgets/home/app_drawer.dart';
 import 'package:health_assistant/presentation/view/widgets/home/start_health_check.dart';
 import 'package:health_assistant/presentation/view/widgets/home/talk_now.dart';
 
@@ -15,9 +16,13 @@ class HomeView extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: ColorsManager.mainColor,
         elevation: 0,
-        leading: IconButton(
-          onPressed: (){},
-          icon: const Icon(Icons.sort, color: Colors.white,),
+        leading: Builder(
+          builder: (context) => IconButton(
+            icon: const Icon(Icons.sort, color: Colors.white,),
+            onPressed: () {
+              Scaffold.of(context).openDrawer();
+            },
+          ),
         ),
         title: Text(
           'Health Assistant',
@@ -38,10 +43,13 @@ class HomeView extends StatelessWidget {
           )
         ],
       ),
+      drawer: const AppDrawer(),
       body: const HomeViewBody(),
     );
   }
 }
+
+
 
 class HomeViewBody  extends StatelessWidget {
   const HomeViewBody ({super.key});
@@ -67,7 +75,7 @@ class HomeViewBody  extends StatelessWidget {
         ),
         Expanded(
           child: ListView(
-            children: [
+            children: const [
               StartHealthCheck(),
               TalkNow()
             ],
