@@ -109,21 +109,21 @@ class NextStep extends StatelessWidget {
     return Expanded(
       child: Column(
         children: [
-          const Row(
+          Row(
             children: [
-              TextFieldWithTitle(title: 'Height (cm)'),
-              SizedBox(width: 12),
-              TextFieldWithTitle(title: 'Weight(kg)'),
+              const TextFieldWithTitle(title: 'Height (cm)'),
+              horizontalSpace(context, 12),
+              const TextFieldWithTitle(title: 'Weight(kg)'),
             ],
           ),
           verticalSpace(context, 12),
-          const Row(
+          Row(
             children: [
-              TextFieldWithTitle(title: 'Age'),
-              SizedBox(width: 12),
-              TextFieldWithTitle(title: 'Gender'),
-              SizedBox(width: 12),
-              TextFieldWithTitle(title: 'Activity Level'),
+              const TextFieldWithTitle(title: 'Age'),
+              horizontalSpace(context, 12),
+              const TextFieldWithTitle(title: 'Gender'),
+              horizontalSpace(context, 12),
+              const TextFieldWithTitle(title: 'Activity Level'),
             ],
           ),
           verticalSpace(context, 12),
@@ -146,19 +146,19 @@ class GenerateStep extends StatelessWidget {
     return Expanded(
       child: Column(
         children: [
-          const Row(
+          Row(
             children: [
-              TextFieldWithTitle(title: 'Current Fitness Level'),
-              SizedBox(width: 12),
-              TextFieldWithTitle(title: 'Sessions per Week'),
+              const TextFieldWithTitle(title: 'Current Fitness Level'),
+              horizontalSpace(context, 12),
+              const TextFieldWithTitle(title: 'Sessions per Week'),
             ],
           ),
           verticalSpace(context, 12),
-          const Row(
+          Row(
             children: [
-              TextFieldWithTitle(title: 'Session Duration (min)'),
-              SizedBox(width: 12),
-              TextFieldWithTitle(title: 'Fitness Goal'),
+              const TextFieldWithTitle(title: 'Session Duration (min)'),
+              horizontalSpace(context, 12),
+              const TextFieldWithTitle(title: 'Fitness Goal'),
             ],
           ),
           verticalSpace(context, 12),
