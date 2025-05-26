@@ -4,13 +4,14 @@ import 'package:health_assistant/core/theming/colors.dart';
 class OptionCard extends StatelessWidget {
   final String image;
   final String title;
+  final double? width;
   final VoidCallback onTap;
 
   const OptionCard({
     required this.image,
     required this.title,
     required this.onTap,
-    super.key
+    super.key, this.width
   });
 
   @override
@@ -18,7 +19,7 @@ class OptionCard extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        width: 140,
+        width: width ?? 140,
         height: 120,
         padding: const EdgeInsets.symmetric(vertical: 16),
         decoration: BoxDecoration(

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:health_assistant/core/theming/colors.dart';
 import 'package:health_assistant/core/utils/extensions.dart';
+import 'package:health_assistant/core/utils/spacing.dart';
 import 'package:health_assistant/core/widgets/custom_circle_item.dart';
 import 'package:health_assistant/presentation/view/widgets/home/analyze_symptoms_dialog.dart';
 import 'package:health_assistant/presentation/view/widgets/home/chat_app_bar_title.dart';
@@ -85,7 +86,7 @@ Widget build(BuildContext context) {
                     );
                   },
                 ),
-                const SizedBox(width: 12),
+                horizontalSpace(context, 20),
                 OptionCard(
                   image: 'assets/images/exercise_running.png',
                   title: 'Fitness Plan',
@@ -98,7 +99,7 @@ Widget build(BuildContext context) {
                 ),
               ],
             ),
-            const SizedBox(height: 12),
+            verticalSpace(context, 12),
             OptionCard(
               image: 'assets/images/nutrition.png',
               title: 'Nutrition Plan',
