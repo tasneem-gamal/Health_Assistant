@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:health_assistant/core/utils/extensions.dart';
 import 'package:health_assistant/core/widgets/custom_app_button.dart';
 import 'package:health_assistant/core/theming/colors.dart';
 import 'package:health_assistant/core/theming/styles.dart';
 import 'package:health_assistant/core/utils/spacing.dart';
+import 'package:health_assistant/presentation/view/screens/home/health_check_chat.dart';
 
 class StartHealthCheck extends StatelessWidget {
   const StartHealthCheck({
@@ -68,7 +70,9 @@ class StartHealthCheck extends StatelessWidget {
               Align(
                 alignment: Alignment.bottomRight,
                 child: CustomAppButton(
-                  onPressed: (){},
+                  onPressed: (){
+                    context.push(const HealthCheckChat());
+                  },
                   buttonWidth: 180,
                   btnText: 'Start Health Check'
                 ),
