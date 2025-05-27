@@ -58,7 +58,9 @@ class HomeViewBody  extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        const CustomCurvedContainer(),
+        const CustomCurvedContainer(
+          text: 'Welcome back \nMariam!',
+        ),
         verticalSpace(context, 20),
         Text(
           'Your wellness journey ',

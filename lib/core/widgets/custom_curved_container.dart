@@ -3,7 +3,10 @@ import 'package:health_assistant/core/theming/colors.dart';
 import 'package:health_assistant/core/theming/styles.dart';
 
 class CustomCurvedContainer extends StatelessWidget {
-  const CustomCurvedContainer({super.key});
+  const CustomCurvedContainer({super.key, required this.text, this.style});
+
+  final String text;
+  final TextStyle? style;
 
   @override
   Widget build(BuildContext context) {
@@ -16,8 +19,8 @@ class CustomCurvedContainer extends StatelessWidget {
             color: ColorsManager.mainColor,
             child: Center(
               child: Text(
-                'Welcome back \nMariam!',
-                style: CustomTextStyles.font24WhiteMedium(context),
+                text,
+                style: style ?? CustomTextStyles.font24WhiteMedium(context),
                 textAlign: TextAlign.center,
               ),
             ),

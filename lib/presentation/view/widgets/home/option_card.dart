@@ -1,17 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:health_assistant/core/theming/colors.dart';
+import 'package:health_assistant/core/theming/styles.dart';
+import 'package:health_assistant/core/utils/spacing.dart';
 
 class OptionCard extends StatelessWidget {
   final String image;
   final String title;
   final double? width;
   final VoidCallback onTap;
+  final bool isSelected;
 
   const OptionCard({
     required this.image,
     required this.title,
     required this.onTap,
-    super.key, this.width
+    super.key, this.width,
+    this.isSelected = false,
   });
 
   @override
@@ -23,7 +27,7 @@ class OptionCard extends StatelessWidget {
         height: 120,
         padding: const EdgeInsets.symmetric(vertical: 16),
         decoration: BoxDecoration(
-          color: ColorsManager.grayShade,
+          color: isSelected ? const Color.fromARGB(255, 200, 216, 239) : ColorsManager.grayShade,
           borderRadius: BorderRadius.circular(12),
         ),
         child: Column(
@@ -32,10 +36,10 @@ class OptionCard extends StatelessWidget {
             Image.asset(
               image,
             ),
-            const SizedBox(height: 8),
+            verticalSpace(context, 8),
             Text(
               title, 
-              style: const TextStyle(fontWeight: FontWeight.bold, color: ColorsManager.lightGray),
+              style: CustomTextStyles.font12BlackMedium(context),
               textAlign: TextAlign.center,
             ),
           ],
