@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:health_assistant/core/theming/colors.dart';
 import 'package:health_assistant/core/theming/styles.dart';
+import 'package:health_assistant/core/utils/extensions.dart';
 import 'package:health_assistant/core/utils/spacing.dart';
 import 'package:health_assistant/core/widgets/custom_app_button.dart';
+import 'package:health_assistant/presentation/view/screens/home/talk_now_chat.dart';
 
 
 class TalkNow extends StatelessWidget {
@@ -63,7 +65,9 @@ class TalkNow extends StatelessWidget {
               Align(
                 alignment: Alignment.bottomRight,
                 child: CustomAppButton(
-                    onPressed: () {}, buttonWidth: 180, btnText: 'Talk Now'),
+                    onPressed: () {
+                      context.push(const TalkNowChat());
+                    }, buttonWidth: 180, btnText: 'Talk Now'),
               )
             ],
           ),
