@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:health_assistant/core/theming/colors.dart';
 import 'package:health_assistant/core/theming/styles.dart';
+import 'package:health_assistant/core/utils/extensions.dart';
 import 'package:health_assistant/core/utils/spacing.dart';
 import 'package:health_assistant/core/widgets/custom_curved_container.dart';
+import 'package:health_assistant/presentation/view/screens/profile/settings_view.dart';
 import 'package:health_assistant/presentation/view/widgets/home/app_drawer.dart';
 import 'package:health_assistant/presentation/view/widgets/home/start_health_check.dart';
 import 'package:health_assistant/presentation/view/widgets/home/talk_now.dart';
@@ -38,7 +40,9 @@ class HomeView extends StatelessWidget {
         centerTitle: true,
         actions: [
           IconButton(
-            onPressed: (){},
+            onPressed: (){
+              context.push(const SettingsView());
+            },
             icon: const Icon(Icons.settings_outlined, color: Colors.white,),
           )
         ],

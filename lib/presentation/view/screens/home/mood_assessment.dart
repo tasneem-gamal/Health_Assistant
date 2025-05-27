@@ -15,6 +15,9 @@ class MoodAssessment extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
+        iconTheme: const IconThemeData(
+          color: Colors.white
+        ),
         backgroundColor: ColorsManager.mainColor,
       ),
       body: const MoodAssessmentBody(),

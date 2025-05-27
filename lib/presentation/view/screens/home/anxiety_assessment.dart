@@ -17,6 +17,9 @@ class AnxietyAssessment extends StatelessWidget {
       appBar: AppBar(
         elevation: 0,
         backgroundColor: ColorsManager.mainColor,
+        iconTheme: const IconThemeData(
+          color: Colors.white
+        )
       ),
       body: const AnxietyAssessmentBody() ,
     );
