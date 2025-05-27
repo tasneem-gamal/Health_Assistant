@@ -74,7 +74,7 @@ class AccountViewBody extends StatelessWidget {
           CustomTextFormField(
             validator: (validator) {},
             hintText: 'User@gmail.com',
-            prefixIcon: const Icon(Icons.person),
+            prefixIcon: const Icon(Icons.email),
             suffixIcon: const Icon(
               Icons.edit,
               color: ColorsManager.lightGray,
@@ -89,7 +89,7 @@ class AccountViewBody extends StatelessWidget {
           CustomTextFormField(
             validator: (validator) {},
             hintText: '01010101010',
-            prefixIcon: const Icon(Icons.person),
+            prefixIcon: const Icon(Icons.phone),
             suffixIcon: const Icon(
               Icons.edit,
               color: ColorsManager.lightGray,
@@ -104,7 +104,7 @@ class AccountViewBody extends StatelessWidget {
           CustomTextFormField(
             validator: (validator) {},
             hintText: '*******',
-            prefixIcon: const Icon(Icons.person),
+            prefixIcon: const Icon(Icons.password),
             suffixIcon: const Icon(
               Icons.edit,
               color: ColorsManager.lightGray,

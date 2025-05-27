@@ -5,6 +5,7 @@ import 'package:health_assistant/core/theming/styles.dart';
 import 'package:health_assistant/core/utils/extensions.dart';
 import 'package:health_assistant/core/utils/spacing.dart';
 import 'package:health_assistant/presentation/view/screens/profile/account_view.dart';
+import 'package:health_assistant/presentation/view/screens/profile/contact_us_view.dart';
 import 'package:health_assistant/presentation/view/widgets/profile/custom_list_tile_settings.dart';
 
 class SettingsView extends StatelessWidget {
@@ -58,11 +59,13 @@ class SettingsViewBody extends StatelessWidget {
           CustomListTileSettings(
             text: 'Contact Us',
             leadingIcon: Icons.chat_outlined,
-            onPressed: (){},
+            onPressed: (){
+              context.push(const ContactUsView());
+            },
           ),
           CustomListTileSettings(
             text: 'Privacy Policy',
-            leadingIcon: Icons.privacy_tip,
+            leadingIcon: Icons.security,
             onPressed: (){},
           ),
           CustomListTileSettings(
