@@ -2,7 +2,9 @@
 import 'package:flutter/material.dart';
 import 'package:health_assistant/core/theming/colors.dart';
 import 'package:health_assistant/core/theming/styles.dart';
+import 'package:health_assistant/core/utils/extensions.dart';
 import 'package:health_assistant/core/utils/spacing.dart';
+import 'package:health_assistant/presentation/view/screens/profile/account_view.dart';
 import 'package:health_assistant/presentation/view/widgets/profile/custom_list_tile_settings.dart';
 
 class SettingsView extends StatelessWidget {
@@ -49,7 +51,9 @@ class SettingsViewBody extends StatelessWidget {
           CustomListTileSettings(
             text: 'Account',
             leadingIcon: Icons.account_circle_outlined,
-            onPressed: (){},
+            onPressed: (){
+              context.push(const AccountView());
+            },
           ),
           CustomListTileSettings(
             text: 'Contact Us',
