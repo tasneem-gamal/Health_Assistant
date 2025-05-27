@@ -4,11 +4,12 @@ import 'package:health_assistant/core/theming/styles.dart';
 
 class CustomListTileSettings extends StatelessWidget {
   const CustomListTileSettings({
-    super.key, required this.text, required this.leadingIcon,
+    super.key, required this.text, required this.leadingIcon, required this.onPressed,
   });
 
   final String text;
   final IconData leadingIcon;
+  final Function() onPressed;
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +23,7 @@ class CustomListTileSettings extends StatelessWidget {
           ),
           trailing: IconButton(
             padding: EdgeInsets.zero,
-            onPressed: (){}, 
+            onPressed: onPressed, 
             icon: const Icon(Icons.arrow_forward_ios, size: 18,)
           ),
         ),

@@ -46,21 +46,25 @@ class SettingsViewBody extends StatelessWidget {
             style: CustomTextStyles.font16LightGrayRegular(context),
           ),
           verticalSpace(context, 20),
-          const CustomListTileSettings(
+          CustomListTileSettings(
             text: 'Account',
             leadingIcon: Icons.account_circle_outlined,
+            onPressed: (){},
           ),
-          const CustomListTileSettings(
+          CustomListTileSettings(
             text: 'Contact Us',
             leadingIcon: Icons.chat_outlined,
+            onPressed: (){},
           ),
-          const CustomListTileSettings(
+          CustomListTileSettings(
             text: 'Privacy Policy',
             leadingIcon: Icons.privacy_tip,
+            onPressed: (){},
           ),
-          const CustomListTileSettings(
+          CustomListTileSettings(
             text: 'Logout',
             leadingIcon: Icons.logout,
+            onPressed: (){},
           ),
         ],
       ),
