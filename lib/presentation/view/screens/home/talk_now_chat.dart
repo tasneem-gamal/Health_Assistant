@@ -3,6 +3,7 @@ import 'package:health_assistant/core/theming/colors.dart';
 import 'package:health_assistant/core/utils/extensions.dart';
 import 'package:health_assistant/core/utils/spacing.dart';
 import 'package:health_assistant/core/widgets/custom_circle_item.dart';
+import 'package:health_assistant/presentation/view/screens/home/adjustment_assessment.dart';
 import 'package:health_assistant/presentation/view/screens/home/anxiety_assessment.dart';
 import 'package:health_assistant/presentation/view/screens/home/mood_assessment.dart';
 import 'package:health_assistant/presentation/view/widgets/home/chat_app_bar_title.dart';
@@ -100,7 +101,9 @@ class _TalkNowChatBodyState extends State<TalkNowChatBody> {
                       child: OptionCard(
                         image: 'assets/images/adjustment.png', 
                         title: 'Adjustment Assessment', 
-                        onTap: (){}
+                        onTap: (){
+                          context.push(const  AdjustmentAssessment());
+                        }
                       ),
                     )
                   ],
