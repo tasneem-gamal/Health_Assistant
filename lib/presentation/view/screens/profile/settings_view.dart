@@ -1,6 +1,9 @@
 
 import 'package:flutter/material.dart';
 import 'package:health_assistant/core/theming/colors.dart';
+import 'package:health_assistant/core/theming/styles.dart';
+import 'package:health_assistant/core/utils/spacing.dart';
+import 'package:health_assistant/presentation/view/widgets/profile/custom_list_tile_settings.dart';
 
 class SettingsView extends StatelessWidget {
   const SettingsView({super.key});
@@ -24,6 +27,44 @@ class SettingsViewBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Column();
+    return Padding(
+      padding: const EdgeInsets.only(left: 24, top: 24, right: 10),
+      child: Column(
+        children: [
+          CircleAvatar(
+            radius: 60,
+            child: Image.asset('assets/images/doctor.png'),
+          ),
+          verticalSpace(context, 16),
+          Text(
+            'User',
+            style: CustomTextStyles.font16LightGrayBold(context)
+                .copyWith(color: ColorsManager.mainColor),
+          ),
+          Text(
+            'User@gmail.com',
+            style: CustomTextStyles.font16LightGrayRegular(context),
+          ),
+          verticalSpace(context, 20),
+          const CustomListTileSettings(
+            text: 'Account',
+            leadingIcon: Icons.account_circle_outlined,
+          ),
+          const CustomListTileSettings(
+            text: 'Contact Us',
+            leadingIcon: Icons.chat_outlined,
+          ),
+          const CustomListTileSettings(
+            text: 'Privacy Policy',
+            leadingIcon: Icons.privacy_tip,
+          ),
+          const CustomListTileSettings(
+            text: 'Logout',
+            leadingIcon: Icons.logout,
+          ),
+        ],
+      ),
+    );
   }
 }
+
