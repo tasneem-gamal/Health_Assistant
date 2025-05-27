@@ -3,6 +3,9 @@ import 'package:health_assistant/core/theming/colors.dart';
 import 'package:health_assistant/core/utils/extensions.dart';
 import 'package:health_assistant/core/utils/spacing.dart';
 import 'package:health_assistant/core/widgets/custom_circle_item.dart';
+import 'package:health_assistant/presentation/view/screens/home/adjustment_assessment.dart';
+import 'package:health_assistant/presentation/view/screens/home/anxiety_assessment.dart';
+import 'package:health_assistant/presentation/view/screens/home/mood_assessment.dart';
 import 'package:health_assistant/presentation/view/widgets/home/chat_app_bar_title.dart';
 import 'package:health_assistant/presentation/view/widgets/home/custom_chat.dart';
 import 'package:health_assistant/presentation/view/widgets/home/mood_progress.dart';
@@ -67,7 +70,10 @@ class _TalkNowChatBodyState extends State<TalkNowChatBody> {
             right: 24,
             child: Column(
               children: [
-                const MoodProgress(),
+                const MoodProgress(
+                  progress: 0.3,
+                  mood: 'Negative',
+                ),
                 verticalSpace(context, 30),
                 Row(
                   children: [
@@ -75,7 +81,9 @@ class _TalkNowChatBodyState extends State<TalkNowChatBody> {
                       child: OptionCard(
                         image: 'assets/images/neutral.png', 
                         title: 'Mood Assessment', 
-                        onTap: (){}
+                        onTap: (){
+                          context.push(const MoodAssessment());
+                        }
                       ),
                     ),
                     horizontalSpace(context, 12),
@@ -83,7 +91,9 @@ class _TalkNowChatBodyState extends State<TalkNowChatBody> {
                       child: OptionCard(
                         image: 'assets/images/anxiety.png', 
                         title: '   Anxiety Assessment', 
-                        onTap: (){}
+                        onTap: (){
+                          context.push(const  AnxietyAssessment());
+                        }
                       ),
                     ),
                     horizontalSpace(context, 12),
@@ -91,7 +101,9 @@ class _TalkNowChatBodyState extends State<TalkNowChatBody> {
                       child: OptionCard(
                         image: 'assets/images/adjustment.png', 
                         title: 'Adjustment Assessment', 
-                        onTap: (){}
+                        onTap: (){
+                          context.push(const  AdjustmentAssessment());
+                        }
                       ),
                     )
                   ],
