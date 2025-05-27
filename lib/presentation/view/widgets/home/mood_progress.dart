@@ -6,11 +6,25 @@ import 'package:health_assistant/core/utils/spacing.dart';
 
 class MoodProgress extends StatelessWidget {
   const MoodProgress({
-    super.key,
+    super.key, required this.progress, required this.mood,
   });
+
+  final double progress;
+  final String mood;
+
+  Color _getColorByProgress(double value) {
+    if (value < 0.4) {
+      return Colors.red;
+    } else if (value < 0.7) {
+      return Colors.orange;
+    } else {
+      return Colors.green;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
+    final progressColor = _getColorByProgress(progress);
     return Container(
       height: 220,
       decoration: BoxDecoration(
@@ -40,11 +54,11 @@ class MoodProgress extends StatelessWidget {
             ClipRRect(
               borderRadius: BorderRadius.circular(10),
               child: LinearProgressIndicator(
-                value: 0.2, 
+                value: progress, 
                 minHeight: 10,
                 backgroundColor: Colors.grey.shade300,
                 valueColor:
-                    const AlwaysStoppedAnimation<Color>(Colors.green),
+                    AlwaysStoppedAnimation<Color>(progressColor),
               ),
             ),
             verticalSpace(context, 20),
@@ -61,7 +75,7 @@ class MoodProgress extends StatelessWidget {
                       style: CustomTextStyles.font12MainColorMedium(context),
                     ),
                     Text(
-                      'Positive',
+                      mood,
                       style: CustomTextStyles.font16LightGrayBold(context).copyWith(
                         color: ColorsManager.mainColor
                       ),

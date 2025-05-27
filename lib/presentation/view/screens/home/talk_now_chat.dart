@@ -67,7 +67,10 @@ class _TalkNowChatBodyState extends State<TalkNowChatBody> {
             right: 24,
             child: Column(
               children: [
-                const MoodProgress(),
+                const MoodProgress(
+                  progress: 0.3,
+                  mood: 'Negative',
+                ),
                 verticalSpace(context, 30),
                 Row(
                   children: [
