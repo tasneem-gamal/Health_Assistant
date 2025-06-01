@@ -80,9 +80,10 @@ Widget build(BuildContext context) {
                   image: 'assets/images/symptom.png',
                   title: 'Analyze Symptoms',
                   onTap: (){
-                    showDialog(
+                    showModalBottomSheet(
                       context: context, 
-                      builder: (context) => const AnalyzeSymtomsDialog()
+                      isScrollControlled: true,
+                      builder: (context) => const AnalyzeSymptomsBottomSheet()
                     );
                   },
                 ),
