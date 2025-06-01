@@ -21,7 +21,7 @@ class _FitnessPlanBottomSheetState extends State<FitnessPlanBottomSheet> {
     return Padding(
       padding: MediaQuery.of(context).viewInsets, 
       child: SingleChildScrollView(
-        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 24),
+        padding: const EdgeInsets.all(18),
         child: SizedBox(
           height: currentStep == 1
             ? MediaQuery.of(context).size.height * 0.35

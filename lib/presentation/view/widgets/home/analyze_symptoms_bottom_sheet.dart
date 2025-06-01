@@ -14,7 +14,7 @@ class AnalyzeSymptomsBottomSheet extends StatelessWidget {
     return Padding(
       padding: MediaQuery.of(context).viewInsets,
       child: SingleChildScrollView(
-        padding: const EdgeInsets.all(24),
+        padding: const EdgeInsets.all(18),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
