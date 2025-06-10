@@ -11,17 +11,22 @@ import 'package:health_assistant/presentation/controllers/analyze_symptoms/analy
 
 
 class AnalyzeSymptomsBottomSheet extends StatefulWidget {
-  const AnalyzeSymptomsBottomSheet({super.key, required this.chatController, required this.onActionDone});
+  const AnalyzeSymptomsBottomSheet(
+      {super.key, required this.chatController, required this.onActionDone});
   final InMemoryChatController chatController;
   final VoidCallback onActionDone;
 
   @override
-  State<AnalyzeSymptomsBottomSheet> createState() => _AnalyzeSymptomsBottomSheetState();
+  State<AnalyzeSymptomsBottomSheet> createState() =>
+      _AnalyzeSymptomsBottomSheetState();
 }
 
-class _AnalyzeSymptomsBottomSheetState extends State<AnalyzeSymptomsBottomSheet> {
+class _AnalyzeSymptomsBottomSheetState
+    extends State<AnalyzeSymptomsBottomSheet> {
   final TextEditingController symptomController = TextEditingController();
   final TextEditingController painLevelController = TextEditingController();
+  final TextEditingController durationController = TextEditingController();
+  final TextEditingController startDateController = TextEditingController();
 
   final List<Map<String, dynamic>> symptomsList = [];
 
@@ -29,50 +34,63 @@ class _AnalyzeSymptomsBottomSheetState extends State<AnalyzeSymptomsBottomSheet>
   void dispose() {
     symptomController.dispose();
     painLevelController.dispose();
+    durationController.dispose();
+    startDateController.dispose();
     super.dispose();
   }
 
   void addSymptom() {
     final symptom = symptomController.text.trim();
     final pain = int.tryParse(painLevelController.text.trim());
+    final duration = durationController.text.trim();
+    final startDateText = startDateController.text.trim();
+    final startDate = DateTime.tryParse(startDateText);
 
-    if (symptom.isNotEmpty && pain != null && pain > 0) {
+    if (symptom.isNotEmpty &&
+        pain != null &&
+        pain > 0 &&
+        duration.isNotEmpty &&
+        startDate != null) {
       setState(() {
         symptomsList.add({
           'name': symptom,
           'painLevel': pain,
+          'duration': duration,
+          'startDate': startDate.toIso8601String(),
         });
         symptomController.clear();
         painLevelController.clear();
+        durationController.clear();
+        startDateController.clear();
       });
     }
   }
 
   void analyze() {
-  if (symptomsList.isEmpty) return;
+    if (symptomsList.isEmpty) return;
 
-  final model = AnalyzeSymptomsRequestModel(
-    symptoms: symptomsList.map((e) => e['name'] as String).toList(),
-    painLevel: symptomsList.last['painLevel'] as int,
-    duration: '3 days',
-    startDate: DateTime.now().toIso8601String(),
-  );
+    final model = AnalyzeSymptomsRequestModel(
+      symptoms: symptomsList.map((e) => e['name'] as String).toList(),
+      painLevel: symptomsList.last['painLevel'] as int,
+      duration: symptomsList.last['duration'] as String,
+      startDate: symptomsList.last['startDate'] as String,
+    );
 
-  final userMessage = 'Symptoms: ${model.symptoms.join(', ')}\nPain Level: ${model.painLevel}\nDuration: ${model.duration}';
-  widget.chatController.insertMessage(
-    TextMessage(
-      id: DateTime.now().millisecondsSinceEpoch.toString(),
-      authorId: 'user1',
-      createdAt: DateTime.now().toUtc(),
-      text: userMessage,
-    ),
-  );
+    final userMessage =
+        'Symptoms: ${model.symptoms.join(', ')}\nPain Level: ${model.painLevel}\nDuration: ${model.duration}\nStart Date: ${model.startDate}';
+    widget.chatController.insertMessage(
+      TextMessage(
+        id: DateTime.now().millisecondsSinceEpoch.toString(),
+        authorId: 'user1',
+        createdAt: DateTime.now().toUtc(),
+        text: userMessage,
+      ),
+    );
 
-  context.read<AnalyzeSymptomsCubit>().analyzeSymptoms(model);
-  widget.onActionDone();
-  Navigator.pop(context); 
-}
-
+    context.read<AnalyzeSymptomsCubit>().analyzeSymptoms(model);
+    widget.onActionDone();
+    Navigator.pop(context);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -110,6 +128,18 @@ class _AnalyzeSymptomsBottomSheetState extends State<AnalyzeSymptomsBottomSheet>
             CustomTextFormField(
               controller: painLevelController,
               hintText: 'Pain level (1-10)',
+              validator: (_) {},
+            ),
+            verticalSpace(context, 12),
+            CustomTextFormField(
+              controller: durationController,
+              hintText: 'Duration (e.g. 3 days)',
+              validator: (_) {},
+            ),
+            verticalSpace(context, 12),
+            CustomTextFormField(
+              controller: startDateController,
+              hintText: 'Start date (e.g. 2024-06-01)',
               validator: (_) {},
             ),
             verticalSpace(context, 12),
