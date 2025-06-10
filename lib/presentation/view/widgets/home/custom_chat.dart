@@ -7,20 +7,21 @@ import 'package:health_assistant/core/theming/colors.dart';
 import 'package:health_assistant/core/utils/spacing.dart';
 
 class CustomChat extends StatefulWidget {
-  const CustomChat({super.key, this.onFocusChanged});
+  const CustomChat({super.key, this.onFocusChanged, required this.chatController});
   final ValueChanged<bool>? onFocusChanged;
+  final InMemoryChatController chatController;
 
   @override
   State<CustomChat> createState() => _CustomChatState();
 }
 
 class _CustomChatState extends State<CustomChat> {
-  final _chatController = InMemoryChatController();
+  
   final FocusNode _focusNode = FocusNode();
 
   @override
   void dispose() {
-    _chatController.dispose();
+    _focusNode.dispose();
     super.dispose();
   }
 
@@ -36,16 +37,16 @@ class _CustomChatState extends State<CustomChat> {
   Widget build(BuildContext context) {
     return Chat(
       currentUserId: 'user1',
-      chatController: _chatController,
+      chatController: widget.chatController, 
       resolveUser: (id) async => User(id: id, name: 'Health Assistant'),
       builders: Builders(
           emptyChatListBuilder: (context) => const SizedBox.shrink(),
           composerBuilder: (context) {
             final controller = TextEditingController();
-            return SendField(controller: controller, focusNode: _focusNode, chatController: _chatController);
+            return SendField(controller: controller, focusNode: _focusNode, chatController: widget.chatController);
           }),
       onMessageSend: (text) {
-        _chatController.insertMessage(
+        widget.chatController.insertMessage(
           TextMessage(
             id: '${Random().nextInt(1000)}',
             authorId: 'user1',
@@ -54,6 +55,7 @@ class _CustomChatState extends State<CustomChat> {
           ),
         );
       },
+      
     );
   }
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_chat_core/flutter_chat_core.dart';
 import 'package:health_assistant/core/theming/colors.dart';
 import 'package:health_assistant/core/utils/extensions.dart';
 import 'package:health_assistant/core/utils/spacing.dart';
@@ -49,6 +50,7 @@ class TalkNowChatBody extends StatefulWidget {
 
 class _TalkNowChatBodyState extends State<TalkNowChatBody> {
   bool showOptions = true;
+  final _chatController = InMemoryChatController();
 
   void handleFocusChanged(bool hasFocus) {
     if (hasFocus && showOptions) {
@@ -62,7 +64,7 @@ class _TalkNowChatBodyState extends State<TalkNowChatBody> {
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        CustomChat(onFocusChanged: handleFocusChanged),
+        CustomChat(onFocusChanged: handleFocusChanged, chatController: _chatController,),
         if (showOptions)
           Positioned(
             top: MediaQuery.of(context).size.height * 0.2,
