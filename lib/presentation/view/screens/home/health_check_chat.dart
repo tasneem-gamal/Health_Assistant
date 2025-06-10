@@ -109,6 +109,11 @@ class _HealthCheckChatBodyState extends State<HealthCheckChatBody> {
                             value: context.read<AnalyzeSymptomsCubit>(),
                             child: AnalyzeSymptomsBottomSheet(
                               chatController: _chatController,
+                              onActionDone: (){
+                                setState(() {
+                                  showOptions = false;
+                                });
+                              },
                             ),
                           ),
                         );

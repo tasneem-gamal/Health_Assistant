@@ -11,8 +11,9 @@ import 'package:health_assistant/presentation/controllers/analyze_symptoms/analy
 
 
 class AnalyzeSymptomsBottomSheet extends StatefulWidget {
-  const AnalyzeSymptomsBottomSheet({super.key, required this.chatController});
+  const AnalyzeSymptomsBottomSheet({super.key, required this.chatController, required this.onActionDone});
   final InMemoryChatController chatController;
+  final VoidCallback onActionDone;
 
   @override
   State<AnalyzeSymptomsBottomSheet> createState() => _AnalyzeSymptomsBottomSheetState();
@@ -68,6 +69,7 @@ class _AnalyzeSymptomsBottomSheetState extends State<AnalyzeSymptomsBottomSheet>
   );
 
   context.read<AnalyzeSymptomsCubit>().analyzeSymptoms(model);
+  widget.onActionDone();
   Navigator.pop(context); 
 }
 
