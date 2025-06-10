@@ -92,6 +92,8 @@ class _SendFieldState extends State<SendField> {
                 controller: widget.controller,
                 focusNode: widget._focusNode,
                 decoration: InputDecoration(
+                  fillColor: Colors.white,
+                  filled: true,
                   hintText: 'Type your message...',
                   prefixIcon: IconButton(
                     onPressed: (){
