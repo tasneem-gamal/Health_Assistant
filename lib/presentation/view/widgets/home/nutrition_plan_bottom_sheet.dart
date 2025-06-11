@@ -6,29 +6,30 @@ import 'package:health_assistant/core/widgets/custom_app_button.dart';
 import 'package:health_assistant/presentation/view/widgets/home/text_field_with_title.dart';
 
 
-class NutritionPlanDialog extends StatefulWidget {
-  const NutritionPlanDialog({super.key});
+class NutritionPlanBottomSheet extends StatefulWidget {
+  const NutritionPlanBottomSheet({super.key});
 
   @override
-  State<NutritionPlanDialog> createState() => _NutritionPlanDialogState();
+  State<NutritionPlanBottomSheet> createState() => _NutritionPlanBottomSheetState();
 }
 
-class _NutritionPlanDialogState extends State<NutritionPlanDialog> {
+class _NutritionPlanBottomSheetState extends State<NutritionPlanBottomSheet> {
   int currentStep = 1;
 
   @override
   Widget build(BuildContext context) {
-    return Dialog(
-      backgroundColor: Colors.white,
-      child: SizedBox(
-        height: currentStep == 1
-            ? MediaQuery.of(context).size.height * 0.4
-            : currentStep == 2
-                ? MediaQuery.of(context).size.height * 0.3
-                : MediaQuery.of(context).size.height,
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 24),
+    return Padding(
+      padding: MediaQuery.of(context).viewInsets, 
+      child: SingleChildScrollView(
+        padding: const EdgeInsets.all(18),
+        child: SizedBox(
+          height: currentStep == 1
+              ? MediaQuery.of(context).size.height * 0.4
+              : currentStep == 2
+                  ? MediaQuery.of(context).size.height * 0.3
+                  : MediaQuery.of(context).size.height *0.9,
           child: Column(
+            mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Row(

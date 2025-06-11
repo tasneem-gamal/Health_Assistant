@@ -6,29 +6,30 @@ import 'package:health_assistant/core/widgets/custom_app_button.dart';
 import 'package:health_assistant/presentation/view/widgets/home/text_field_with_title.dart';
 
 
-class FitnessPlanDialog extends StatefulWidget {
-  const FitnessPlanDialog({super.key});
+class FitnessPlanBottomSheet extends StatefulWidget {
+  const FitnessPlanBottomSheet({super.key});
 
   @override
-  State<FitnessPlanDialog> createState() => _FitnessPlanDialogState();
+  State<FitnessPlanBottomSheet> createState() => _FitnessPlanBottomSheetState();
 }
 
-class _FitnessPlanDialogState extends State<FitnessPlanDialog> {
+class _FitnessPlanBottomSheetState extends State<FitnessPlanBottomSheet> {
   int currentStep = 1;
 
   @override
   Widget build(BuildContext context) {
-    return Dialog(
-      backgroundColor: Colors.white,
-      child: SizedBox(
-        height: currentStep == 1
-            ? MediaQuery.of(context).size.height * 0.4
+    return Padding(
+      padding: MediaQuery.of(context).viewInsets, 
+      child: SingleChildScrollView(
+        padding: const EdgeInsets.all(18),
+        child: SizedBox(
+          height: currentStep == 1
+            ? MediaQuery.of(context).size.height * 0.35
             : currentStep == 2
-                ? MediaQuery.of(context).size.height * 0.53
-                : MediaQuery.of(context).size.height,
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 24),
+                ? MediaQuery.of(context).size.height * 0.5
+                : MediaQuery.of(context).size.height * 0.9,
           child: Column(
+            mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Row(
@@ -52,20 +53,21 @@ class _FitnessPlanDialogState extends State<FitnessPlanDialog> {
               if (currentStep == 1) ...[
                 NextStep(
                   onNext: () {
-                        setState(() {
-                          currentStep = 2;
-                        });
-                      }
+                    setState(() {
+                      currentStep = 2;
+                    });
+                  },
                 ),
               ] else if (currentStep == 2) ...[
                 GenerateStep(
                   onGenerate: () {
-                        setState(() {
-                          currentStep = 3;
-                        });
-                      }),
+                    setState(() {
+                      currentStep = 3;
+                    });
+                  },
+                ),
               ] else if (currentStep == 3) ...[
-                const FinalPlan()
+                const FinalPlan(),
               ],
             ],
           ),
