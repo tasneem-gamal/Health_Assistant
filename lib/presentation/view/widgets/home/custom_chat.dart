@@ -5,6 +5,7 @@ import 'package:flutter_chat_core/flutter_chat_core.dart';
 import 'package:flutter_chat_ui/flutter_chat_ui.dart';
 import 'package:health_assistant/core/theming/colors.dart';
 import 'package:health_assistant/core/utils/spacing.dart';
+import 'package:health_assistant/presentation/view/widgets/home/simple_markdown_text_message.dart';
 
 class CustomChat extends StatefulWidget {
   const CustomChat({super.key, this.onFocusChanged, required this.chatController});
@@ -16,7 +17,6 @@ class CustomChat extends StatefulWidget {
 }
 
 class _CustomChatState extends State<CustomChat> {
-  
   final FocusNode _focusNode = FocusNode();
 
   @override
@@ -37,14 +37,43 @@ class _CustomChatState extends State<CustomChat> {
   Widget build(BuildContext context) {
     return Chat(
       currentUserId: 'user1',
-      chatController: widget.chatController, 
+      chatController: widget.chatController,
       resolveUser: (id) async => User(id: id, name: 'Health Assistant'),
       builders: Builders(
-          emptyChatListBuilder: (context) => const SizedBox.shrink(),
-          composerBuilder: (context) {
-            final controller = TextEditingController();
-            return SendField(controller: controller, focusNode: _focusNode, chatController: widget.chatController);
-          }),
+        textMessageBuilder: (context, message, index) {
+          final isBot = message.authorId == 'HealthAssistant';
+          if (message.authorId == 'HealthAssistant') {
+            return CustomMarkdownTextMessage(message: message);
+          }
+          return Container(
+            margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+            alignment: isBot ? Alignment.centerLeft : Alignment.centerRight,
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+              decoration: BoxDecoration(
+                color: isBot ? Colors.grey[200] : ColorsManager.mainColor,
+                borderRadius: BorderRadius.circular(20),
+              ),
+              child: Text(
+                message.text,
+                style: const TextStyle(
+                  fontSize: 16,
+                  color: Colors.white,
+                ),
+              ),
+            ),
+          );
+        },
+        emptyChatListBuilder: (context) => const SizedBox.shrink(),
+        composerBuilder: (context) {
+          final controller = TextEditingController();
+          return SendField(
+            controller: controller,
+            focusNode: _focusNode,
+            chatController: widget.chatController,
+          );
+        },
+      ),
       onMessageSend: (text) {
         widget.chatController.insertMessage(
           TextMessage(
@@ -55,7 +84,6 @@ class _CustomChatState extends State<CustomChat> {
           ),
         );
       },
-      
     );
   }
 }
