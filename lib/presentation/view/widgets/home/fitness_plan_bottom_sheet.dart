@@ -1,13 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_chat_core/flutter_chat_core.dart';
 import 'package:health_assistant/core/theming/colors.dart';
 import 'package:health_assistant/core/theming/styles.dart';
 import 'package:health_assistant/core/utils/spacing.dart';
 import 'package:health_assistant/core/widgets/custom_app_button.dart';
+import 'package:health_assistant/data/models/generate_fitness_plan/generate_fitness_plan_request_model.dart';
+import 'package:health_assistant/presentation/controllers/generate_fitness_plan/generate_fitness_plan_cubit.dart';
 import 'package:health_assistant/presentation/view/widgets/home/text_field_with_title.dart';
 
 
 class FitnessPlanBottomSheet extends StatefulWidget {
-  const FitnessPlanBottomSheet({super.key});
+  const FitnessPlanBottomSheet({super.key, required this.onActionDone, required this.chatController});
+  final VoidCallback onActionDone;
+  final InMemoryChatController chatController;
 
   @override
   State<FitnessPlanBottomSheet> createState() => _FitnessPlanBottomSheetState();
@@ -15,6 +21,75 @@ class FitnessPlanBottomSheet extends StatefulWidget {
 
 class _FitnessPlanBottomSheetState extends State<FitnessPlanBottomSheet> {
   int currentStep = 1;
+  final heightController = TextEditingController();
+  final weightController = TextEditingController();
+  final ageController = TextEditingController();
+  final genderController = TextEditingController();
+  final fitnessLevelController = TextEditingController();
+  final sessionsPerWeekController = TextEditingController();
+  final sessionDurationController = TextEditingController();
+  final equipmentController = TextEditingController();
+  final fitnessGoalController = TextEditingController();
+  final limitationsController = TextEditingController();
+
+  @override
+  void dispose() {
+    heightController.dispose();
+    weightController.dispose();
+    ageController.dispose();
+    genderController.dispose();
+    fitnessLevelController.dispose();
+    sessionsPerWeekController.dispose();
+    sessionDurationController.dispose();
+    equipmentController.dispose();
+    fitnessGoalController.dispose();
+    limitationsController.dispose();
+    super.dispose();
+  }
+
+  void generatePlan() {
+    final model = GenerateFitnessPlanRequestModel(
+      height: int.tryParse(heightController.text) ?? 0,
+      weight: int.tryParse(weightController.text) ?? 0,
+      age: int.tryParse(ageController.text) ?? 0,
+      gender: genderController.text,
+      fitnessLevel: fitnessLevelController.text,
+      fitnessGoal: fitnessGoalController.text,
+      sessionsPerWeek: int.tryParse(sessionsPerWeekController.text) ?? 0,
+      sessionDuration: int.tryParse(sessionDurationController.text) ?? 0,
+      limitations: limitationsController.text,
+      equipment: equipmentController.text
+          .split(',')
+          .map((e) => e.trim())
+          .toList(),
+      medicalConditions: [], 
+    );
+    final userMessage =
+        """
+        Height: ${model.height}
+        \nWeight: ${model.weight}
+        \nAge: ${model.age}
+        \nGender: ${model.gender}
+        \nfitnessLevel: ${model.fitnessLevel}
+        \nfitnessGoal: ${model.fitnessGoal}
+        \nsessionsPerWeek: ${model.sessionsPerWeek}
+        \nsessionDuration: ${model.sessionDuration}
+        \nlimitations: ${model.limitations}
+        \nequipment: ${model.equipment}
+        """;
+    widget.chatController.insertMessage(
+      TextMessage(
+        id: DateTime.now().millisecondsSinceEpoch.toString(),
+        authorId: 'user1',
+        createdAt: DateTime.now().toUtc(),
+        text: userMessage,
+      ),
+    );
+    context.read<GenerateFitnessPlanCubit>().generateFitnessPlan(model);
+    widget.onActionDone();
+    Navigator.pop(context);
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -25,9 +100,7 @@ class _FitnessPlanBottomSheetState extends State<FitnessPlanBottomSheet> {
         child: SizedBox(
           height: currentStep == 1
             ? MediaQuery.of(context).size.height * 0.35
-            : currentStep == 2
-                ? MediaQuery.of(context).size.height * 0.5
-                : MediaQuery.of(context).size.height * 0.9,
+            : MediaQuery.of(context).size.height * 0.5,
           child: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -57,18 +130,24 @@ class _FitnessPlanBottomSheetState extends State<FitnessPlanBottomSheet> {
                       currentStep = 2;
                     });
                   },
+                  heightController: heightController,
+                  weightController: weightController,
+                  ageController: ageController,
+                  genderController: genderController,
+                  fitnessLevelController: fitnessLevelController,
                 ),
               ] else if (currentStep == 2) ...[
                 GenerateStep(
                   onGenerate: () {
-                    setState(() {
-                      currentStep = 3;
-                    });
+                    generatePlan();
                   },
+                  sessionsPerWeekController: sessionsPerWeekController,
+                  sessionDurationController: sessionDurationController,
+                  equipmentController: equipmentController,
+                  fitnessGoalController: fitnessGoalController,
+                  limitationsController: limitationsController,
                 ),
-              ] else if (currentStep == 3) ...[
-                const FinalPlan(),
-              ],
+              ] 
             ],
           ),
         ),
@@ -77,35 +156,23 @@ class _FitnessPlanBottomSheetState extends State<FitnessPlanBottomSheet> {
   }
 }
 
-class FinalPlan extends StatelessWidget {
-  const FinalPlan({
-    super.key,
+class NextStep extends StatelessWidget {
+  const NextStep({
+    super.key, 
+    required this.onNext, 
+    required this.heightController, 
+    required this.weightController, 
+    required this.ageController, 
+    required this.genderController, 
+    required this.fitnessLevelController
   });
 
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Column(
-        children: [
-          const Text(
-            '🎉 Your fitness plan is ready!',
-          ),
-          verticalSpace(context, 24),
-          CustomAppButton(
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-            btnText: 'Close',
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class NextStep extends StatelessWidget {
-  const NextStep({super.key, required this.onNext});
   final Function() onNext;
+  final TextEditingController heightController;
+  final TextEditingController weightController;
+  final TextEditingController ageController;
+  final TextEditingController genderController;
+  final TextEditingController fitnessLevelController;
   @override
   Widget build(BuildContext context) {
     return Expanded(
@@ -113,19 +180,39 @@ class NextStep extends StatelessWidget {
         children: [
           Row(
             children: [
-              const TextFieldWithTitle(title: 'Height (cm)'),
+              TextFieldWithTitle(
+                title: 'Height (cm)',
+                hintText: 'e.g 175',
+                controller: heightController,
+              ),
               horizontalSpace(context, 12),
-              const TextFieldWithTitle(title: 'Weight(kg)'),
+              TextFieldWithTitle(
+                title: 'Weight(kg)',
+                hintText: 'e.g 70',
+                controller: weightController,
+              ),
             ],
           ),
           verticalSpace(context, 12),
           Row(
             children: [
-              const TextFieldWithTitle(title: 'Age'),
+              TextFieldWithTitle(
+                title: 'Age',
+                hintText: 'e.g 25',
+                controller: ageController,
+              ),
               horizontalSpace(context, 12),
-              const TextFieldWithTitle(title: 'Gender'),
+              TextFieldWithTitle(
+                title: 'Gender',
+                hintText: 'Male',
+                controller: genderController,
+              ),
               horizontalSpace(context, 12),
-              const TextFieldWithTitle(title: 'Activity Level'),
+              TextFieldWithTitle(
+                title: 'Fitness Level',
+                hintText: 'e.g beginner, intermediate..',
+                controller: fitnessLevelController,
+              ),
             ],
           ),
           verticalSpace(context, 12),
@@ -140,9 +227,23 @@ class NextStep extends StatelessWidget {
 }
 
 class GenerateStep extends StatelessWidget {
-  const GenerateStep({super.key, required this.onGenerate});
+  const GenerateStep({
+    super.key, 
+    required this.onGenerate, 
+    required this.sessionsPerWeekController, 
+    required this.sessionDurationController, 
+    required this.equipmentController, 
+    required this.fitnessGoalController, 
+    required this.limitationsController
+  });
 
   final Function() onGenerate;
+  final TextEditingController sessionsPerWeekController;
+  final TextEditingController sessionDurationController;
+  final TextEditingController equipmentController;
+  final TextEditingController fitnessGoalController;
+  final TextEditingController limitationsController;
+
   @override
   Widget build(BuildContext context) {
     return Expanded(
@@ -150,21 +251,41 @@ class GenerateStep extends StatelessWidget {
         children: [
           Row(
             children: [
-              const TextFieldWithTitle(title: 'Current Fitness Level'),
+              TextFieldWithTitle(
+                title: 'Sessions per Week',
+                hintText: 'e.g 3',
+                controller: sessionsPerWeekController,
+              ),
               horizontalSpace(context, 12),
-              const TextFieldWithTitle(title: 'Sessions per Week'),
+              TextFieldWithTitle(
+                title: 'Session Duration (min)',
+                hintText: 'e.g 20min',
+                controller: sessionDurationController,
+              ),
             ],
           ),
           verticalSpace(context, 12),
           Row(
             children: [
-              const TextFieldWithTitle(title: 'Session Duration (min)'),
+              TextFieldWithTitle(
+                title: 'Equipments',
+                hintText: 'e.g resistance bands, bodyweight ...',
+                controller: equipmentController,
+              ),
               horizontalSpace(context, 12),
-              const TextFieldWithTitle(title: 'Fitness Goal'),
+              TextFieldWithTitle(
+                title: 'Fitness Goal',
+                hintText: 'e.g weight loss',
+                controller: fitnessGoalController,
+              ),
             ],
           ),
           verticalSpace(context, 12),
-          const TextFieldWithTitle(title: 'Physical Limitations/Injuries'),
+          TextFieldWithTitle(
+            title: 'Physical Limitations/Injuries',
+            hintText: '',
+            controller: limitationsController,
+          ),
           verticalSpace(context, 12),
           CustomAppButton(
             onPressed: onGenerate,

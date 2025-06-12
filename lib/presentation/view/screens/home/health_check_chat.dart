@@ -7,11 +7,13 @@ import 'package:health_assistant/core/utils/extensions.dart';
 import 'package:health_assistant/core/utils/spacing.dart';
 import 'package:health_assistant/core/widgets/custom_circle_item.dart';
 import 'package:health_assistant/presentation/controllers/analyze_symptoms/analyze_symptoms_cubit.dart';
+import 'package:health_assistant/presentation/controllers/generate_fitness_plan/generate_fitness_plan_cubit.dart';
 import 'package:health_assistant/presentation/view/widgets/home/analyze_symptoms_bloc_listner.dart';
 import 'package:health_assistant/presentation/view/widgets/home/analyze_symptoms_bottom_sheet.dart';
 import 'package:health_assistant/presentation/view/widgets/home/chat_app_bar_title.dart';
 import 'package:health_assistant/presentation/view/widgets/home/custom_chat.dart';
 import 'package:health_assistant/presentation/view/widgets/home/fitness_plan_bottom_sheet.dart';
+import 'package:health_assistant/presentation/view/widgets/home/generate_fitness_plan_bloc_listner.dart';
 import 'package:health_assistant/presentation/view/widgets/home/nutrition_plan_bottom_sheet.dart';
 import 'package:health_assistant/presentation/view/widgets/home/option_card.dart';
 
@@ -20,8 +22,15 @@ class HealthCheckChat extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => getIt<AnalyzeSymptomsCubit>(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) => getIt<AnalyzeSymptomsCubit>(),
+        ),
+        BlocProvider(
+          create: (context) => getIt<GenerateFitnessPlanCubit>(),
+        ),
+      ],
       child: Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.transparent,
@@ -88,6 +97,7 @@ class _HealthCheckChatBodyState extends State<HealthCheckChatBody> {
         AnalyzeSymptomsBlocListner(
           chatController: _chatController,
         ),
+        GenerateFitnessPlanBlocListner(chatController: _chatController),
         if (showOptions)
           Positioned(
             top: MediaQuery.of(context).size.height * 0.3,
@@ -109,7 +119,7 @@ class _HealthCheckChatBodyState extends State<HealthCheckChatBody> {
                             value: context.read<AnalyzeSymptomsCubit>(),
                             child: AnalyzeSymptomsBottomSheet(
                               chatController: _chatController,
-                              onActionDone: (){
+                              onActionDone: () {
                                 setState(() {
                                   showOptions = false;
                                 });
@@ -127,8 +137,17 @@ class _HealthCheckChatBodyState extends State<HealthCheckChatBody> {
                           showModalBottomSheet(
                               context: context,
                               isScrollControlled: true,
-                              builder: (context) =>
-                                  const FitnessPlanBottomSheet());
+                              builder: (_) => BlocProvider.value(
+                                    value: context.read<GenerateFitnessPlanCubit>(),
+                                    child: FitnessPlanBottomSheet(
+                                      chatController: _chatController,
+                                      onActionDone: () {
+                                        setState(() {
+                                          showOptions = false;
+                                        });
+                                      },
+                                    ),
+                                  ));
                         }),
                   ],
                 ),

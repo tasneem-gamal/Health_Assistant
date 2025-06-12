@@ -5,11 +5,13 @@ import 'package:health_assistant/core/widgets/custom_text_form_field.dart';
 
 class TextFieldWithTitle extends StatelessWidget {
   const TextFieldWithTitle({
-    super.key, required this.title, this.validator,
+    super.key, required this.title, this.validator, required this.hintText, required this.controller,
   });
 
   final String title;
+  final String hintText;
   final Function(String?)? validator;
+  final TextEditingController controller;
   @override
   Widget build(BuildContext context) {
     return Expanded(
@@ -23,7 +25,8 @@ class TextFieldWithTitle extends StatelessWidget {
           verticalSpace(context, 10),
           CustomTextFormField(
             validator: (value){},
-            hintText: '',
+            hintText: hintText,
+            controller: controller,
           )
         ],
       ),

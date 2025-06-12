@@ -1,9 +1,9 @@
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:health_assistant/core/networking/api_error_handler.dart';
-import 'package:health_assistant/data/data_source/analyze_symptoms/analyze_symptoms_service.dart';
-import 'package:health_assistant/data/models/analyze_symptoms.dart/analyze_symptoms_request_model.dart';
-import 'package:health_assistant/data/models/analyze_symptoms.dart/analyze_symptoms_response_model.dart';
+import 'package:health_assistant/data/data_source/analyze_symptoms_service.dart';
+import 'package:health_assistant/data/models/analyze_symptoms/analyze_symptoms_request_model.dart';
+import 'package:health_assistant/data/models/analyze_symptoms/analyze_symptoms_response_model.dart';
 
 class AnalyzeSymptomsRepo {
   final AnalyzeSymptomsService analyzeSymptomsService;

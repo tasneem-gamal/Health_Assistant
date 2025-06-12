@@ -110,15 +110,27 @@ class NextStep extends StatelessWidget {
     return Expanded(
       child: Column(
         children: [
-          const Row(
+          Row(
             children: [
-              TextFieldWithTitle(title: 'Height (cm)'),
-              SizedBox(width: 12),
-              TextFieldWithTitle(title: 'Weight(kg)'),
+              TextFieldWithTitle(
+                title: 'Height (cm)',
+                hintText: 'e.g 175',
+                controller: TextEditingController(),
+              ),
+              horizontalSpace(context, 12),
+              TextFieldWithTitle(
+                title: 'Weight(kg)',
+                hintText: 'e.g 70',
+                controller: TextEditingController(),
+              ),
             ],
           ),
           verticalSpace(context, 12),
-          const TextFieldWithTitle(title: 'Fitness Goal'),
+          TextFieldWithTitle(
+            title: 'Fitness Goal',
+            hintText: 'e.g weight loss',
+            controller: TextEditingController(),
+          ),
           verticalSpace(context, 12),
           CustomAppButton(
             onPressed: onNext,
@@ -141,11 +153,23 @@ class GenerateStep extends StatelessWidget {
         children: [
           Row(
             children: [
-              const TextFieldWithTitle(title: 'Age'),
+              TextFieldWithTitle(
+                title: 'Age',
+                hintText: 'e.g 25',
+                controller: TextEditingController(),
+              ),
               horizontalSpace(context, 12),
-              const TextFieldWithTitle(title: 'Gender'),
+              TextFieldWithTitle(
+                title: 'Gender',
+                hintText: 'Male',
+                controller: TextEditingController(),
+              ),
               horizontalSpace(context, 12),
-              const TextFieldWithTitle(title: 'Activity level'),
+              TextFieldWithTitle(
+                title: 'Activity level',
+                hintText: 'e.g beginner, intermediate..',
+                controller: TextEditingController(),
+              ),
             ],
           ),
           verticalSpace(context, 12),
