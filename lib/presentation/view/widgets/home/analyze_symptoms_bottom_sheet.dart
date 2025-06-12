@@ -6,7 +6,7 @@ import 'package:health_assistant/core/theming/styles.dart';
 import 'package:health_assistant/core/utils/spacing.dart';
 import 'package:health_assistant/core/widgets/custom_app_button.dart';
 import 'package:health_assistant/core/widgets/custom_text_form_field.dart';
-import 'package:health_assistant/data/models/analyze_symptoms.dart/analyze_symptoms_request_model.dart';
+import 'package:health_assistant/data/models/analyze_symptoms/analyze_symptoms_request_model.dart';
 import 'package:health_assistant/presentation/controllers/analyze_symptoms/analyze_symptoms_cubit.dart';
 
 
