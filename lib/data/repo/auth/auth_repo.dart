@@ -1,4 +1,4 @@
-import 'package:health_assistant/data/data_source/auth/auth_service.dart';
+import 'package:health_assistant/data/data_source/auth_service.dart';
 
 class AuthRepo {
   final AuthService authService;
