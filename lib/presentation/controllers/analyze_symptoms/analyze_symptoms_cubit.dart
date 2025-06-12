@@ -1,7 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:health_assistant/data/models/analyze_symptoms/analyze_symptoms_request_model.dart';
 import 'package:health_assistant/data/models/analyze_symptoms/analyze_symptoms_response_model.dart';
-import 'package:health_assistant/data/repo/analyze_symptoms/analyze_symptoms_repo.dart';
+import 'package:health_assistant/data/repo/analyze_symptoms_repo.dart';
 
 part 'analyze_symptoms_state.dart';
 

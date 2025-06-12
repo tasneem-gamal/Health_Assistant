@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:health_assistant/core/utils/shared_preference_helper.dart';
-import 'package:health_assistant/data/repo/auth/auth_repo.dart';
+import 'package:health_assistant/data/repo/auth_repo.dart';
 
 part 'auth_state.dart';
 

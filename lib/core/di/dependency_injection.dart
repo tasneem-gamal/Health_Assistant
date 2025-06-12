@@ -1,8 +1,8 @@
 import 'package:get_it/get_it.dart';
 import 'package:health_assistant/data/data_source/analyze_symptoms_service.dart';
 import 'package:health_assistant/data/data_source/auth_service.dart';
-import 'package:health_assistant/data/repo/analyze_symptoms/analyze_symptoms_repo.dart';
-import 'package:health_assistant/data/repo/auth/auth_repo.dart';
+import 'package:health_assistant/data/repo/analyze_symptoms_repo.dart';
+import 'package:health_assistant/data/repo/auth_repo.dart';
 import 'package:health_assistant/presentation/controllers/analyze_symptoms/analyze_symptoms_cubit.dart';
 import 'package:health_assistant/presentation/controllers/auth/auth_cubit.dart';
 
