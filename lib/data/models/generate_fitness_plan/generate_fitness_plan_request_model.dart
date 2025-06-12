@@ -8,7 +8,7 @@ class GenerateFitnessPlanRequestModel {
   final int sessionsPerWeek;
   final int sessionDuration;
   final String limitations;
-  final List<String> equipment;
+  final List<String>? equipment; 
   final List<String>? medicalConditions;
 
   GenerateFitnessPlanRequestModel({
@@ -21,8 +21,8 @@ class GenerateFitnessPlanRequestModel {
     required this.sessionsPerWeek,
     required this.sessionDuration,
     required this.limitations,
-    required this.equipment,
-    this.medicalConditions, 
+    this.equipment, 
+    this.medicalConditions,
   });
 
   factory GenerateFitnessPlanRequestModel.fromJson(Map<String, dynamic> json) {
@@ -36,7 +36,9 @@ class GenerateFitnessPlanRequestModel {
       sessionsPerWeek: json['sessionsPerWeek'],
       sessionDuration: json['sessionDuration'],
       limitations: json['limitations'],
-      equipment: List<String>.from(json['equipment']),
+      equipment: json['equipment'] != null
+          ? List<String>.from(json['equipment'])
+          : null, 
       medicalConditions: json['medical_conditions'] != null
           ? List<String>.from(json['medical_conditions'])
           : null,
@@ -54,7 +56,7 @@ class GenerateFitnessPlanRequestModel {
       'sessionsPerWeek': sessionsPerWeek,
       'sessionDuration': sessionDuration,
       'limitations': limitations,
-      'equipment': equipment,
+      if (equipment != null) 'equipment': equipment, 
       if (medicalConditions != null)
         'medical_conditions': medicalConditions,
     };
