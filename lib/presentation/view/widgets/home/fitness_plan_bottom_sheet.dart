@@ -25,9 +25,7 @@ class _FitnessPlanBottomSheetState extends State<FitnessPlanBottomSheet> {
         child: SizedBox(
           height: currentStep == 1
             ? MediaQuery.of(context).size.height * 0.35
-            : currentStep == 2
-                ? MediaQuery.of(context).size.height * 0.5
-                : MediaQuery.of(context).size.height * 0.9,
+            : MediaQuery.of(context).size.height * 0.5,
           child: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -66,38 +64,10 @@ class _FitnessPlanBottomSheetState extends State<FitnessPlanBottomSheet> {
                     });
                   },
                 ),
-              ] else if (currentStep == 3) ...[
-                const FinalPlan(),
-              ],
+              ] 
             ],
           ),
         ),
-      ),
-    );
-  }
-}
-
-class FinalPlan extends StatelessWidget {
-  const FinalPlan({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Column(
-        children: [
-          const Text(
-            '🎉 Your fitness plan is ready!',
-          ),
-          verticalSpace(context, 24),
-          CustomAppButton(
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-            btnText: 'Close',
-          ),
-        ],
       ),
     );
   }
@@ -113,19 +83,34 @@ class NextStep extends StatelessWidget {
         children: [
           Row(
             children: [
-              const TextFieldWithTitle(title: 'Height (cm)'),
+              const TextFieldWithTitle(
+                title: 'Height (cm)',
+                hintText: 'e.g 175',
+              ),
               horizontalSpace(context, 12),
-              const TextFieldWithTitle(title: 'Weight(kg)'),
+              const TextFieldWithTitle(
+                title: 'Weight(kg)',
+                hintText: 'e.g 70',
+              ),
             ],
           ),
           verticalSpace(context, 12),
           Row(
             children: [
-              const TextFieldWithTitle(title: 'Age'),
+              const TextFieldWithTitle(
+                title: 'Age',
+                hintText: 'e.g 25',
+              ),
               horizontalSpace(context, 12),
-              const TextFieldWithTitle(title: 'Gender'),
+              const TextFieldWithTitle(
+                title: 'Gender',
+                hintText: 'Male',
+              ),
               horizontalSpace(context, 12),
-              const TextFieldWithTitle(title: 'Activity Level'),
+              const TextFieldWithTitle(
+                title: 'Fitness Level',
+                hintText: 'e.g beginner, intermediate..',
+              ),
             ],
           ),
           verticalSpace(context, 12),
@@ -150,21 +135,36 @@ class GenerateStep extends StatelessWidget {
         children: [
           Row(
             children: [
-              const TextFieldWithTitle(title: 'Current Fitness Level'),
+              const TextFieldWithTitle(
+                title: 'Sessions per Week',
+                hintText: 'e.g 3',
+              ),
               horizontalSpace(context, 12),
-              const TextFieldWithTitle(title: 'Sessions per Week'),
+              const TextFieldWithTitle(
+                title: 'Session Duration (min)',
+                hintText: 'e.g 20min',
+              ),
             ],
           ),
           verticalSpace(context, 12),
           Row(
             children: [
-              const TextFieldWithTitle(title: 'Session Duration (min)'),
+              const TextFieldWithTitle(
+                title: 'Equipments',
+                hintText: 'e.g resistance bands, bodyweight ...',
+              ),
               horizontalSpace(context, 12),
-              const TextFieldWithTitle(title: 'Fitness Goal'),
+              const TextFieldWithTitle(
+                title: 'Fitness Goal',
+                hintText: 'e.g weight loss',
+              ),
             ],
           ),
           verticalSpace(context, 12),
-          const TextFieldWithTitle(title: 'Physical Limitations/Injuries'),
+          const TextFieldWithTitle(
+            title: 'Physical Limitations/Injuries',
+            hintText: '',
+          ),
           verticalSpace(context, 12),
           CustomAppButton(
             onPressed: onGenerate,

@@ -112,13 +112,22 @@ class NextStep extends StatelessWidget {
         children: [
           const Row(
             children: [
-              TextFieldWithTitle(title: 'Height (cm)'),
+              TextFieldWithTitle(
+                title: 'Height (cm)',
+                hintText: 'e.g 175',
+              ),
               SizedBox(width: 12),
-              TextFieldWithTitle(title: 'Weight(kg)'),
+              TextFieldWithTitle(
+                title: 'Weight(kg)',
+                hintText: 'e.g 70',
+              ),
             ],
           ),
           verticalSpace(context, 12),
-          const TextFieldWithTitle(title: 'Fitness Goal'),
+          const TextFieldWithTitle(
+            title: 'Fitness Goal',
+            hintText: 'e.g weight loss',
+          ),
           verticalSpace(context, 12),
           CustomAppButton(
             onPressed: onNext,
@@ -141,11 +150,20 @@ class GenerateStep extends StatelessWidget {
         children: [
           Row(
             children: [
-              const TextFieldWithTitle(title: 'Age'),
+              const TextFieldWithTitle(
+                title: 'Age',
+                hintText: 'e.g 25',
+              ),
               horizontalSpace(context, 12),
-              const TextFieldWithTitle(title: 'Gender'),
+              const TextFieldWithTitle(
+                title: 'Gender',
+                hintText: 'Male',
+              ),
               horizontalSpace(context, 12),
-              const TextFieldWithTitle(title: 'Activity level'),
+              const TextFieldWithTitle(
+                title: 'Activity level',
+                hintText: 'e.g beginner, intermediate..'
+              ),
             ],
           ),
           verticalSpace(context, 12),
