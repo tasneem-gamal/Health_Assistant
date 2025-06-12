@@ -2,12 +2,15 @@ import 'package:get_it/get_it.dart';
 import 'package:health_assistant/data/data_source/analyze_symptoms_service.dart';
 import 'package:health_assistant/data/data_source/auth_service.dart';
 import 'package:health_assistant/data/data_source/generate_fitness_plan_service.dart';
+import 'package:health_assistant/data/data_source/generate_nutrition_plan_service.dart';
 import 'package:health_assistant/data/repo/analyze_symptoms_repo.dart';
 import 'package:health_assistant/data/repo/auth_repo.dart';
 import 'package:health_assistant/data/repo/generate_fitness_plan_repo.dart';
+import 'package:health_assistant/data/repo/generate_nutrition_plan_repo.dart';
 import 'package:health_assistant/presentation/controllers/analyze_symptoms/analyze_symptoms_cubit.dart';
 import 'package:health_assistant/presentation/controllers/auth/auth_cubit.dart';
 import 'package:health_assistant/presentation/controllers/generate_fitness_plan/generate_fitness_plan_cubit.dart';
+import 'package:health_assistant/presentation/controllers/generate_nutrition_plan/generate_nutrition_plan_cubit.dart';
 
 final getIt = GetIt.instance;
 void setUpGetIt(){
@@ -25,4 +28,9 @@ void setUpGetIt(){
   getIt.registerSingleton<GenerateFitnessPlanService>(GenerateFitnessPlanService());
   getIt.registerSingleton<GenerateFitnessPlanRepo>(GenerateFitnessPlanRepo(getIt.get<GenerateFitnessPlanService>()));
   getIt.registerFactory<GenerateFitnessPlanCubit>(() => GenerateFitnessPlanCubit(getIt()));
+
+  //generate nutrition plan plan
+  getIt.registerSingleton<GenerateNutritionPlanService>(GenerateNutritionPlanService());
+  getIt.registerSingleton<GenerateNutritionPlanRepo>(GenerateNutritionPlanRepo(getIt.get<GenerateNutritionPlanService>()));
+  getIt.registerFactory<GenerateNutritionPlanCubit>(() => GenerateNutritionPlanCubit(getIt()));
 }

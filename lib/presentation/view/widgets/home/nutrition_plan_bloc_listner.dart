@@ -1,19 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_chat_core/flutter_chat_core.dart';
-import 'package:health_assistant/presentation/controllers/generate_fitness_plan/generate_fitness_plan_cubit.dart';
+import 'package:health_assistant/presentation/controllers/generate_nutrition_plan/generate_nutrition_plan_cubit.dart';
 
-class GenerateFitnessPlanBlocListner extends StatelessWidget {
-  const GenerateFitnessPlanBlocListner({super.key, required this.chatController});
+class NutritionPlanBlocListner extends StatelessWidget {
+  const NutritionPlanBlocListner({super.key, required this.chatController});
 
   final InMemoryChatController chatController;
-  
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<GenerateFitnessPlanCubit, GenerateFitnessPlanState>(
+    return BlocListener<GenerateNutritionPlanCubit, GenerateNutritionPlanState>(
       listener: (context, state) {
-        if (state is GenerateFitnessPlanLoading) {
+        if (state is GenerateNutritionPlanLoading) {
           final thinkingMessage = TextMessage(
             id: 'thinking_message',
             authorId: 'HealthAssistant',
@@ -24,8 +23,8 @@ class GenerateFitnessPlanBlocListner extends StatelessWidget {
         } else {
           chatController.removeMessageById('thinking_message');
         }
-        if (state is GenerateFitnessPlanSuccess) {
-          final response = state.generateFitnessPlanResponseModel.response;
+        if (state is GenerateNutritionPlanSuccess) {
+          final response = state.generateNutritionPlanResponseModel.response;
           final now = DateTime.now().toUtc();
           final botTextMessage = TextMessage(
             id: now.millisecondsSinceEpoch.toString(),
@@ -35,7 +34,7 @@ class GenerateFitnessPlanBlocListner extends StatelessWidget {
           );
           chatController.insertMessage(botTextMessage);
         }
-        if (state is GenerateFitnessPlanFailure) {
+        if (state is GenerateNutritionPlanFailure) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text('Error: ${state.errMessage}')),
           );
