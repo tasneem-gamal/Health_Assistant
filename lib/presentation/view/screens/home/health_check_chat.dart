@@ -7,6 +7,7 @@ import 'package:health_assistant/core/utils/extensions.dart';
 import 'package:health_assistant/core/utils/spacing.dart';
 import 'package:health_assistant/core/widgets/custom_circle_item.dart';
 import 'package:health_assistant/presentation/controllers/analyze_symptoms/analyze_symptoms_cubit.dart';
+import 'package:health_assistant/presentation/controllers/general_chat/general_chat_cubit.dart';
 import 'package:health_assistant/presentation/controllers/generate_fitness_plan/generate_fitness_plan_cubit.dart';
 import 'package:health_assistant/presentation/controllers/generate_nutrition_plan/generate_nutrition_plan_cubit.dart';
 import 'package:health_assistant/presentation/view/widgets/home/analyze_symptoms_bloc_listner.dart';
@@ -14,6 +15,7 @@ import 'package:health_assistant/presentation/view/widgets/home/analyze_symptoms
 import 'package:health_assistant/presentation/view/widgets/home/chat_app_bar_title.dart';
 import 'package:health_assistant/presentation/view/widgets/home/custom_chat.dart';
 import 'package:health_assistant/presentation/view/widgets/home/fitness_plan_bottom_sheet.dart';
+import 'package:health_assistant/presentation/view/widgets/home/general_chat_bloc_listner.dart';
 import 'package:health_assistant/presentation/view/widgets/home/generate_fitness_plan_bloc_listner.dart';
 import 'package:health_assistant/presentation/view/widgets/home/nutrition_plan_bloc_listner.dart';
 import 'package:health_assistant/presentation/view/widgets/home/nutrition_plan_bottom_sheet.dart';
@@ -34,6 +36,9 @@ class HealthCheckChat extends StatelessWidget {
         ),
         BlocProvider(
           create: (context) => getIt<GenerateNutritionPlanCubit>(),
+        ),
+        BlocProvider(
+          create: (context) => getIt<GeneralChatCubit>(),
         ),
       ],
       child: Scaffold(
@@ -104,6 +109,7 @@ class _HealthCheckChatBodyState extends State<HealthCheckChatBody> {
         ),
         GenerateFitnessPlanBlocListner(chatController: _chatController),
         NutritionPlanBlocListner(chatController: _chatController,),
+        GeneralChatBlocListner(chatController: _chatController),
         if (showOptions)
           Positioned(
             top: MediaQuery.of(context).size.height * 0.3,
