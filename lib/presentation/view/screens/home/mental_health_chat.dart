@@ -1,0 +1,144 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_chat_core/flutter_chat_core.dart';
+import 'package:health_assistant/core/di/dependency_injection.dart';
+import 'package:health_assistant/core/theming/colors.dart';
+import 'package:health_assistant/core/utils/extensions.dart';
+import 'package:health_assistant/core/utils/spacing.dart';
+import 'package:health_assistant/core/widgets/custom_circle_item.dart';
+import 'package:health_assistant/data/models/mental_health_chat/mental_health_request_model.dart';
+import 'package:health_assistant/presentation/controllers/mental_health_chat/mental_health_chat_cubit.dart';
+import 'package:health_assistant/presentation/view/screens/home/adjustment_assessment.dart';
+import 'package:health_assistant/presentation/view/screens/home/anxiety_assessment.dart';
+import 'package:health_assistant/presentation/view/screens/home/mood_assessment.dart';
+import 'package:health_assistant/presentation/view/widgets/home/chat_app_bar_title.dart';
+import 'package:health_assistant/presentation/view/widgets/home/custom_chat.dart';
+import 'package:health_assistant/presentation/view/widgets/home/mental_health_chat_bloc_listner.dart';
+import 'package:health_assistant/presentation/view/widgets/home/mood_progress.dart';
+import 'package:health_assistant/presentation/view/widgets/home/option_card.dart';
+
+class MentalHealthChat extends StatelessWidget {
+  const MentalHealthChat({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (context) => getIt<MentalHealthChatCubit>(),
+      child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: Colors.transparent,
+          leading: CustomCircleItem(
+            onTap: () {
+              context.pop();
+            },
+            icon: const Icon(
+              Icons.arrow_back,
+              color: ColorsManager.lightGray,
+            ),
+          ),
+          centerTitle: true,
+          titleSpacing: 40.0,
+          title: const ChatAppBarTitle(),
+          actions: [
+            CustomCircleItem(
+                icon: const Icon(
+                  Icons.more_horiz,
+                  color: ColorsManager.lightGray,
+                ),
+                onTap: () {})
+          ],
+        ),
+        body: const SafeArea(child: MentalHealthChatBody()),
+      ),
+    );
+  }
+}
+
+class MentalHealthChatBody extends StatefulWidget {
+  const MentalHealthChatBody({super.key});
+
+  @override
+  State<MentalHealthChatBody> createState() => _MentalHealthChatBodyState();
+}
+
+class _MentalHealthChatBodyState extends State<MentalHealthChatBody> {
+  bool showOptions = true;
+  final _chatController = InMemoryChatController();
+
+  void handleFocusChanged(bool hasFocus) {
+    if (hasFocus && showOptions) {
+      setState(() {
+        showOptions = false;
+      });
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      children: [
+        CustomChat(
+          onFocusChanged: handleFocusChanged,
+          chatController: _chatController,
+          onSend: (text, rawHistory) {
+            final history = (rawHistory as List<TextMessage>)
+                .map((msg) =>
+                    {msg.authorId == 'user1' ? 'user' : 'assistant': msg.text})
+                .toList();
+
+            final requestModel = MentalHealthRequestModel(
+                message: text, sessionId: 'sessionId', history: history);
+            
+            context.read<MentalHealthChatCubit>().mentalHealthChat(requestModel);
+          },
+        ),
+        MentalHealthChatBlocListner(chatController: _chatController),
+        if (showOptions)
+          Positioned(
+            top: MediaQuery.of(context).size.height * 0.2,
+            left: 24,
+            right: 24,
+            child: Column(
+              children: [
+                const MoodProgress(
+                  progress: 0.3,
+                  mood: 'Negative',
+                ),
+                verticalSpace(context, 30),
+                Row(
+                  children: [
+                    Expanded(
+                      child: OptionCard(
+                          image: 'assets/images/neutral.png',
+                          title: 'Mood Assessment',
+                          onTap: () {
+                            context.push(const MoodAssessment());
+                          }),
+                    ),
+                    horizontalSpace(context, 12),
+                    Expanded(
+                      child: OptionCard(
+                          image: 'assets/images/anxiety.png',
+                          title: '   Anxiety Assessment',
+                          onTap: () {
+                            context.push(const AnxietyAssessment());
+                          }),
+                    ),
+                    horizontalSpace(context, 12),
+                    Expanded(
+                      child: OptionCard(
+                          image: 'assets/images/adjustment.png',
+                          title: 'Adjustment Assessment',
+                          onTap: () {
+                            context.push(const AdjustmentAssessment());
+                          }),
+                    )
+                  ],
+                )
+              ],
+            ),
+          )
+      ],
+    );
+  }
+}

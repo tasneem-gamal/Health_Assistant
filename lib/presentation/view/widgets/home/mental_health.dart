@@ -4,11 +4,11 @@ import 'package:health_assistant/core/theming/styles.dart';
 import 'package:health_assistant/core/utils/extensions.dart';
 import 'package:health_assistant/core/utils/spacing.dart';
 import 'package:health_assistant/core/widgets/custom_app_button.dart';
-import 'package:health_assistant/presentation/view/screens/home/talk_now_chat.dart';
+import 'package:health_assistant/presentation/view/screens/home/mental_health_chat.dart';
 
 
-class TalkNow extends StatelessWidget {
-  const TalkNow({
+class MentalHealth extends StatelessWidget {
+  const MentalHealth({
     super.key,
   });
 
@@ -66,7 +66,7 @@ class TalkNow extends StatelessWidget {
                 alignment: Alignment.bottomRight,
                 child: CustomAppButton(
                     onPressed: () {
-                      context.push(const TalkNowChat());
+                      context.push(const MentalHealthChat());
                     }, buttonWidth: 180, btnText: 'Talk Now'),
               )
             ],
