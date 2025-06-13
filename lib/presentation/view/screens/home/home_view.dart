@@ -7,7 +7,7 @@ import 'package:health_assistant/core/widgets/custom_curved_container.dart';
 import 'package:health_assistant/presentation/view/screens/profile/settings_view.dart';
 import 'package:health_assistant/presentation/view/widgets/home/app_drawer.dart';
 import 'package:health_assistant/presentation/view/widgets/home/start_health_check.dart';
-import 'package:health_assistant/presentation/view/widgets/home/talk_now.dart';
+import 'package:health_assistant/presentation/view/widgets/home/mental_health.dart';
 
 class HomeView extends StatelessWidget {
   const HomeView({super.key});
@@ -83,7 +83,7 @@ class HomeViewBody  extends StatelessWidget {
           child: ListView(
             children: const [
               StartHealthCheck(),
-              TalkNow()
+              MentalHealth()
             ],
           )
         )

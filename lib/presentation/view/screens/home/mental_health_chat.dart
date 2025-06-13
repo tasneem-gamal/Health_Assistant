@@ -12,8 +12,8 @@ import 'package:health_assistant/presentation/view/widgets/home/custom_chat.dart
 import 'package:health_assistant/presentation/view/widgets/home/mood_progress.dart';
 import 'package:health_assistant/presentation/view/widgets/home/option_card.dart';
 
-class TalkNowChat extends StatelessWidget {
-  const TalkNowChat({super.key});
+class MentalHealthChat extends StatelessWidget {
+  const MentalHealthChat({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -41,19 +41,19 @@ class TalkNowChat extends StatelessWidget {
               onTap: () {})
         ],
       ),
-      body: const SafeArea(child: TalkNowChatBody()),
+      body: const SafeArea(child: MentalHealthChatBody()),
     );
   }
 }
 
-class TalkNowChatBody extends StatefulWidget {
-  const TalkNowChatBody({super.key});
+class MentalHealthChatBody extends StatefulWidget {
+  const MentalHealthChatBody({super.key});
 
   @override
-  State<TalkNowChatBody> createState() => _TalkNowChatBodyState();
+  State<MentalHealthChatBody> createState() => _MentalHealthChatBodyState();
 }
 
-class _TalkNowChatBodyState extends State<TalkNowChatBody> {
+class _MentalHealthChatBodyState extends State<MentalHealthChatBody> {
   bool showOptions = true;
   final _chatController = InMemoryChatController();
 
