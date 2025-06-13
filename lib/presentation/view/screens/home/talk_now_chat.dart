@@ -21,19 +21,24 @@ class TalkNowChat extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         leading: CustomCircleItem(
-          onTap:() {
+          onTap: () {
             context.pop();
           },
-          icon: const Icon(Icons.arrow_back, color: ColorsManager.lightGray,),
+          icon: const Icon(
+            Icons.arrow_back,
+            color: ColorsManager.lightGray,
+          ),
         ),
         centerTitle: true,
         titleSpacing: 40.0,
         title: const ChatAppBarTitle(),
         actions: [
           CustomCircleItem(
-            icon: const Icon(Icons.more_horiz, color: ColorsManager.lightGray,), 
-            onTap: (){}
-          )
+              icon: const Icon(
+                Icons.more_horiz,
+                color: ColorsManager.lightGray,
+              ),
+              onTap: () {})
         ],
       ),
       body: const SafeArea(child: TalkNowChatBody()),
@@ -64,7 +69,11 @@ class _TalkNowChatBodyState extends State<TalkNowChatBody> {
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        CustomChat(onFocusChanged: handleFocusChanged, chatController: _chatController,),
+        CustomChat(
+          onFocusChanged: handleFocusChanged,
+          chatController: _chatController,
+          onSend: (text, history){},
+        ),
         if (showOptions)
           Positioned(
             top: MediaQuery.of(context).size.height * 0.2,
@@ -81,32 +90,29 @@ class _TalkNowChatBodyState extends State<TalkNowChatBody> {
                   children: [
                     Expanded(
                       child: OptionCard(
-                        image: 'assets/images/neutral.png', 
-                        title: 'Mood Assessment', 
-                        onTap: (){
-                          context.push(const MoodAssessment());
-                        }
-                      ),
+                          image: 'assets/images/neutral.png',
+                          title: 'Mood Assessment',
+                          onTap: () {
+                            context.push(const MoodAssessment());
+                          }),
                     ),
                     horizontalSpace(context, 12),
                     Expanded(
                       child: OptionCard(
-                        image: 'assets/images/anxiety.png', 
-                        title: '   Anxiety Assessment', 
-                        onTap: (){
-                          context.push(const  AnxietyAssessment());
-                        }
-                      ),
+                          image: 'assets/images/anxiety.png',
+                          title: '   Anxiety Assessment',
+                          onTap: () {
+                            context.push(const AnxietyAssessment());
+                          }),
                     ),
                     horizontalSpace(context, 12),
                     Expanded(
                       child: OptionCard(
-                        image: 'assets/images/adjustment.png', 
-                        title: 'Adjustment Assessment', 
-                        onTap: (){
-                          context.push(const  AdjustmentAssessment());
-                        }
-                      ),
+                          image: 'assets/images/adjustment.png',
+                          title: 'Adjustment Assessment',
+                          onTap: () {
+                            context.push(const AdjustmentAssessment());
+                          }),
                     )
                   ],
                 )
@@ -117,5 +123,3 @@ class _TalkNowChatBodyState extends State<TalkNowChatBody> {
     );
   }
 }
-
-

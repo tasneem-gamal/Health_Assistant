@@ -1,24 +1,22 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_chat_core/flutter_chat_core.dart';
 import 'package:flutter_chat_ui/flutter_chat_ui.dart';
 import 'package:health_assistant/core/theming/colors.dart';
 import 'package:health_assistant/core/utils/spacing.dart';
-import 'package:health_assistant/data/models/general_chat/general_chat_request_model.dart';
-import 'package:health_assistant/presentation/controllers/general_chat/general_chat_cubit.dart';
 import 'package:health_assistant/presentation/view/widgets/home/simple_markdown_text_message.dart';
 
 class CustomChat extends StatefulWidget {
   const CustomChat({
     super.key,
     this.onFocusChanged,
-    required this.chatController,
+    required this.chatController, required this.onSend,
   });
 
   final ValueChanged<bool>? onFocusChanged;
   final InMemoryChatController chatController;
+  final void Function(String message, List<List<String>> history) onSend;
 
   @override
   State<CustomChat> createState() => _CustomChatState();
@@ -27,7 +25,6 @@ class CustomChat extends StatefulWidget {
 class _CustomChatState extends State<CustomChat> {
   final FocusNode _focusNode = FocusNode();
   final TextEditingController _controller = TextEditingController();
-  late GeneralChatCubit chatCubit;
 
   @override
   void initState() {
@@ -35,7 +32,6 @@ class _CustomChatState extends State<CustomChat> {
     _focusNode.addListener(() {
       widget.onFocusChanged?.call(_focusNode.hasFocus);
     });
-    chatCubit = context.read<GeneralChatCubit>();
   }
 
   @override
@@ -70,12 +66,7 @@ class _CustomChatState extends State<CustomChat> {
       ];
     }).toList();
 
-    final requestModel = GeneralChatRequestModel(
-      message: text,
-      history: history,
-    );
-
-    chatCubit.generalChat(requestModel);
+    widget.onSend(text, history);
   }
 
   @override

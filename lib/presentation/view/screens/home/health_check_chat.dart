@@ -6,6 +6,7 @@ import 'package:health_assistant/core/theming/colors.dart';
 import 'package:health_assistant/core/utils/extensions.dart';
 import 'package:health_assistant/core/utils/spacing.dart';
 import 'package:health_assistant/core/widgets/custom_circle_item.dart';
+import 'package:health_assistant/data/models/general_chat/general_chat_request_model.dart';
 import 'package:health_assistant/presentation/controllers/analyze_symptoms/analyze_symptoms_cubit.dart';
 import 'package:health_assistant/presentation/controllers/general_chat/general_chat_cubit.dart';
 import 'package:health_assistant/presentation/controllers/generate_fitness_plan/generate_fitness_plan_cubit.dart';
@@ -103,6 +104,13 @@ class _HealthCheckChatBodyState extends State<HealthCheckChatBody> {
         CustomChat(
           onFocusChanged: handleFocusChanged,
           chatController: _chatController,
+          onSend: (text, history){
+            final requestModel = GeneralChatRequestModel(
+              message: text, 
+              history: history
+            );
+            context.read<GeneralChatCubit>().generalChat(requestModel);
+          }
         ),
         AnalyzeSymptomsBlocListner(
           chatController: _chatController,
