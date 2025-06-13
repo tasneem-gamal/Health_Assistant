@@ -16,7 +16,7 @@ class CustomChat extends StatefulWidget {
 
   final ValueChanged<bool>? onFocusChanged;
   final InMemoryChatController chatController;
-  final void Function(String message, List<List<String>> history) onSend;
+  final void Function(String message, List<dynamic> history) onSend;
 
   @override
   State<CustomChat> createState() => _CustomChatState();
@@ -41,33 +41,29 @@ class _CustomChatState extends State<CustomChat> {
     super.dispose();
   }
 
-  void _sendMessage() {
-    final text = _controller.text.trim();
-    if (text.isEmpty) return;
+void _sendMessage() {
+  final text = _controller.text.trim();
+  if (text.isEmpty) return;
 
-    final userMessage = TextMessage(
+  widget.chatController.insertMessage(
+    TextMessage(
       id: '${Random().nextInt(1000)}',
       authorId: 'user1',
       createdAt: DateTime.now().toUtc(),
       text: text,
-    );
-    widget.chatController.insertMessage(userMessage);
-    _controller.clear();
+    ),
+  );
+  _controller.clear();
 
-    final history = widget.chatController.messages
-        .where((msg) =>
-            msg is TextMessage &&
-            (msg.authorId == 'user1' || msg.authorId == 'HealthAssistant'))
-        .map((msg) {
-      final textMsg = msg as TextMessage;
-      return [
-        textMsg.authorId == 'user1' ? 'user' : 'assistant',
-        textMsg.text,
-      ];
-    }).toList();
+  final history = widget.chatController.messages
+      .where((msg) =>
+          msg is TextMessage &&
+          (msg.authorId == 'user1' || msg.authorId == 'HealthAssistant'))
+      .map((msg) => msg as TextMessage)
+      .toList();
 
-    widget.onSend(text, history);
-  }
+  widget.onSend(text, history);
+}
 
   @override
   Widget build(BuildContext context) {

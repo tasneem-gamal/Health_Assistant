@@ -102,16 +102,19 @@ class _HealthCheckChatBodyState extends State<HealthCheckChatBody> {
     return Stack(
       children: [
         CustomChat(
-          onFocusChanged: handleFocusChanged,
-          chatController: _chatController,
-          onSend: (text, history){
-            final requestModel = GeneralChatRequestModel(
-              message: text, 
-              history: history
-            );
-            context.read<GeneralChatCubit>().generalChat(requestModel);
-          }
-        ),
+            onFocusChanged: handleFocusChanged,
+            chatController: _chatController,
+            onSend: (text, rawHistory) {
+              final history = (rawHistory as List<TextMessage>)
+                  .map((msg) => [
+                        msg.authorId == 'user1' ? 'user' : 'assistant',
+                        msg.text
+                      ])
+                  .toList();
+              final requestModel =
+                  GeneralChatRequestModel(message: text, history: history);
+              context.read<GeneralChatCubit>().generalChat(requestModel);
+            }),
         AnalyzeSymptomsBlocListner(
           chatController: _chatController,
         ),
