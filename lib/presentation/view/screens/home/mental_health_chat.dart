@@ -122,31 +122,52 @@ class _MentalHealthChatState extends State<MentalHealthChat> {
 }
 
 class MentalHealthChatBody extends StatefulWidget {
-  const MentalHealthChatBody({super.key, 
-  required this.onMoodAssessment, 
-  required this.onAnxietyAssessment, 
-  required this.onadjustmentAssessment, 
-  required this.hideOptions, required this.chatController});
+  const MentalHealthChatBody(
+      {super.key,
+      required this.onMoodAssessment,
+      required this.onAnxietyAssessment,
+      required this.onadjustmentAssessment,
+      required this.hideOptions,
+      required this.chatController});
   final VoidCallback onMoodAssessment;
   final VoidCallback onAnxietyAssessment;
   final VoidCallback onadjustmentAssessment;
   final VoidCallback hideOptions;
   final InMemoryChatController chatController;
-  
+
   @override
   State<MentalHealthChatBody> createState() => _MentalHealthChatBodyState();
 }
 
 class _MentalHealthChatBodyState extends State<MentalHealthChatBody> {
   bool showOptions = true;
-  
+  bool showMoodProgress = false;
+  double moodProgressValue = 0.0;
+  String moodLabel = '';
+
+  void updateMoodProgress(double sentiment, String mood) {
+    setState(() {
+      showOptions = false;
+      showMoodProgress = true;
+      moodProgressValue = sentiment;
+      moodLabel = mood;
+    });
+  }
 
   void handleFocusChanged(bool hasFocus) {
-    if (hasFocus && showOptions) {
+    if (hasFocus && (showOptions || showMoodProgress)) {
       setState(() {
         showOptions = false;
+        showMoodProgress = false;
       });
     }
+  }
+
+  void hideOverlaysImmediately() {
+    setState(() {
+      showOptions = false;
+      showMoodProgress = false;
+    });
   }
 
   @override
@@ -157,6 +178,7 @@ class _MentalHealthChatBodyState extends State<MentalHealthChatBody> {
           onFocusChanged: handleFocusChanged,
           chatController: widget.chatController,
           onSend: (text, rawHistory) {
+            hideOverlaysImmediately();
             final history = (rawHistory as List<TextMessage>)
                 .map((msg) =>
                     {msg.authorId == 'user1' ? 'user' : 'assistant': msg.text})
@@ -164,51 +186,70 @@ class _MentalHealthChatBodyState extends State<MentalHealthChatBody> {
 
             final requestModel = MentalHealthRequestModel(
                 message: text, sessionId: 'sessionId', history: history);
-            
-            context.read<MentalHealthChatCubit>().mentalHealthChat(requestModel);
+
+            context
+                .read<MentalHealthChatCubit>()
+                .mentalHealthChat(requestModel);
           },
         ),
-        MentalHealthChatBlocListner(chatController: widget.chatController),
-        if (showOptions)
-          Positioned(
-            top: MediaQuery.of(context).size.height * 0.2,
-            left: 24,
-            right: 24,
-            child: Column(
-              children: [
-                const MoodProgress(
-                  progress: 0.3,
-                  mood: 'Negative',
-                ),
-                verticalSpace(context, 30),
-                Row(
-                  children: [
-                    Expanded(
-                      child: OptionCard(
-                          image: 'assets/images/neutral.png',
-                          title: 'Mood Assessment',
-                          onTap: widget.onMoodAssessment
+        MentalHealthChatBlocListner(
+          chatController: widget.chatController,
+          onMoodAnalyzed: (sentiment, mood) {
+            updateMoodProgress(sentiment, mood);
+          },
+        ),
+        if (showOptions || showMoodProgress)
+          Align(
+            alignment: Alignment.topCenter,
+            child: Padding(
+              padding: const EdgeInsets.only(top: 40.0, left: 24, right: 24),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  if (showMoodProgress)
+                    MoodProgress(
+                      progress: moodProgressValue,
+                      mood: moodLabel,
+                      onCancel: () {
+                        setState(() {
+                          showMoodProgress = false;
+                        });
+                      },
+                    ),
+                  if (showOptions) ...[
+                    verticalSpace(context, 30),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: OptionCard(
+                            image: 'assets/images/neutral.png',
+                            title: 'Mood Assessment',
+                            onTap: widget.onMoodAssessment,
+                          ),
                         ),
+                        horizontalSpace(context, 12),
+                        Expanded(
+                          child: OptionCard(
+                            image: 'assets/images/anxiety.png',
+                            title: 'Anxiety Assessment',
+                            onTap: widget.onAnxietyAssessment,
+                          ),
+                        ),
+                        horizontalSpace(context, 12),
+                        Expanded(
+                          child: OptionCard(
+                            image: 'assets/images/adjustment.png',
+                            title: 'Adjustment Assessment',
+                            onTap: widget.onadjustmentAssessment,
+                          ),
+                        ),
+                      ],
                     ),
-                    horizontalSpace(context, 12),
-                    Expanded(
-                      child: OptionCard(
-                          image: 'assets/images/anxiety.png',
-                          title: '   Anxiety Assessment',
-                          onTap: widget.onAnxietyAssessment),
-                    ),
-                    horizontalSpace(context, 12),
-                    Expanded(
-                      child: OptionCard(
-                          image: 'assets/images/adjustment.png',
-                          title: 'Adjustment Assessment',
-                          onTap: widget.onadjustmentAssessment),
-                    )
                   ],
-                )
-              ],
+                ],
+              ),
             ),
-          )
+          ),
       ],
     );
   }

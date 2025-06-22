@@ -4,9 +4,15 @@ import 'package:flutter_chat_core/flutter_chat_core.dart';
 import 'package:health_assistant/presentation/controllers/mental_health_chat/mental_health_chat_cubit.dart';
 
 class MentalHealthChatBlocListner extends StatelessWidget {
-  const MentalHealthChatBlocListner({super.key, required this.chatController});
-  
+  const MentalHealthChatBlocListner({
+    super.key,
+    required this.chatController,
+    required this.onMoodAnalyzed,
+  });
+
   final InMemoryChatController chatController;
+  final void Function(double sentiment, String mood) onMoodAnalyzed;
+
   @override
   Widget build(BuildContext context) {
     return BlocListener<MentalHealthChatCubit, MentalHealthChatState>(
@@ -22,8 +28,17 @@ class MentalHealthChatBlocListner extends StatelessWidget {
         } else {
           chatController.removeMessageById('thinking_message');
         }
+
         if (state is MentalHealthChatSuccess) {
           final response = state.mentalHealthResponseModel.response;
+
+          final emotionData = state.mentalHealthResponseModel.emotionData;
+          final sentiment = emotionData.sentiment;
+          final mood = emotionData.urgency;
+
+
+          onMoodAnalyzed(sentiment, mood); 
+
           final now = DateTime.now().toUtc();
           final botTextMessage = TextMessage(
             id: now.millisecondsSinceEpoch.toString(),
@@ -31,8 +46,10 @@ class MentalHealthChatBlocListner extends StatelessWidget {
             createdAt: now,
             text: response,
           );
+
           chatController.insertMessage(botTextMessage);
         }
+
         if (state is MentalHealthChatFailure) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text('Error: ${state.errMessage}')),
