@@ -78,4 +78,9 @@ class AuthCubit extends Cubit<AuthState> {
       emit(AuthFailure("Error: ${e.toString()}"));
     }
   }
+  Future<void> emitSignOut() async {
+  await authRepo.signOut();
+  await SharedPreferenceHelper.clearUid();
+  emit(AuthInitial()); 
+}
 }

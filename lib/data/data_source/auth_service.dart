@@ -1,7 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class AuthService {
   final FirebaseAuth auth = FirebaseAuth.instance;
+  final FirebaseFirestore firestore = FirebaseFirestore.instance;
 
   Future<UserCredential> signUp({
     required String email,
@@ -58,4 +60,41 @@ class AuthService {
     final userCredential = await auth.signInWithCredential(credential);
     await userCredential.user?.updatePassword(newPassword);
   }
+
+  Future<void> updateUserProfile({
+    String? name,
+    String? email,
+    String? phone,
+    String? password,
+  }) async {
+    final user = auth.currentUser;
+    if (user == null) throw Exception("User not logged in");
+
+    if (email != null && email != user.email) {
+      await user.verifyBeforeUpdateEmail(email);
+    }
+
+    if (password != null && password.isNotEmpty) {
+      await user.updatePassword(password);
+    }
+
+    if (name != null && name.isNotEmpty) {
+      await user.updateDisplayName(name);
+    }
+
+    await firestore.collection("users").doc(user.uid).update({
+      if (name != null) 'name': name,
+      if (email != null) 'email': email,
+      if (phone != null) 'phone': phone,
+    });
+  }
+
+  Future<void> reAuthenticateUser(String email, String password) async {
+  final user = FirebaseAuth.instance.currentUser;
+  if (user != null) {
+    final credential = EmailAuthProvider.credential(email: email, password: password);
+    await user.reauthenticateWithCredential(credential);
+  }
+}
+
 }

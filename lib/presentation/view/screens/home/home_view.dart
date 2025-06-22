@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:health_assistant/core/theming/colors.dart';
 import 'package:health_assistant/core/theming/styles.dart';
@@ -62,8 +63,8 @@ class HomeViewBody  extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        const CustomCurvedContainer(
-          text: 'Welcome back \nMariam!',
+        CustomCurvedContainer(
+          text: 'Welcome back \n${FirebaseAuth.instance.currentUser?.displayName ?? "Name"}!',
         ),
         verticalSpace(context, 20),
         Text(
