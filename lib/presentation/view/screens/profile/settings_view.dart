@@ -1,4 +1,5 @@
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:health_assistant/core/theming/colors.dart';
 import 'package:health_assistant/core/theming/styles.dart';
@@ -40,12 +41,12 @@ class SettingsViewBody extends StatelessWidget {
           ),
           verticalSpace(context, 16),
           Text(
-            'User',
+            FirebaseAuth.instance.currentUser?.displayName ?? "No Name",
             style: CustomTextStyles.font16LightGrayBold(context)
                 .copyWith(color: ColorsManager.mainColor),
           ),
           Text(
-            'User@gmail.com',
+            FirebaseAuth.instance.currentUser?.email ?? "No Email",
             style: CustomTextStyles.font16LightGrayRegular(context),
           ),
           verticalSpace(context, 20),
