@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:health_assistant/core/di/dependency_injection.dart';
 import 'package:health_assistant/core/utils/constants.dart';
 import 'package:health_assistant/core/utils/shared_preference_helper.dart';
+import 'package:health_assistant/firebase_database.dart';
 import 'package:health_assistant/firebase_options.dart';
 import 'package:health_assistant/health_assistant.dart';
 
@@ -11,6 +12,7 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  await initSecondaryFirebaseApp();
   setUpGetIt();
   bool isLoggedIn = await checkIfLoggedInUser();
   runApp(HealthAssistant(isLoggedIn: isLoggedIn,));
