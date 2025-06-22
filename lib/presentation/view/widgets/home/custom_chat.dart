@@ -75,7 +75,10 @@ void _sendMessage() {
         textMessageBuilder: (context, message, index) {
           final isBot = message.authorId == 'HealthAssistant';
           if (isBot) {
-            return CustomMarkdownTextMessage(message: message);
+            return Padding(
+              padding: const EdgeInsets.only(bottom: 40, top: 20),
+              child: CustomMarkdownTextMessage(message: message),
+            );
           }
           return Container(
             margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
@@ -130,7 +133,7 @@ class _SendFieldState extends State<SendField> {
     return Align(
       alignment: Alignment.bottomCenter,
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16),
+        padding: const EdgeInsets.only(left: 16, right: 16, top: 24),
         child: Row(
           children: [
             Expanded(
