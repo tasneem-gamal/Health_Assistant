@@ -12,15 +12,20 @@ class AssessmentModel {
   });
 
   factory AssessmentModel.fromMap(Map<String, dynamic> map) {
-    return AssessmentModel(
-      assessmentTitle: map['assessmentTitle'] ?? '',
-      instructions: map['instructions'] ?? '',
-      questions: List<QuestionModel>.from(
-        (map['questions'] as List).map((q) => QuestionModel.fromMap(q)),
-      ),
-      scoring: ScoringModel.fromMap(map['scoring']),
-    );
-  }
+  return AssessmentModel(
+    assessmentTitle: map['assessmentTitle'] ?? '',
+    instructions: map['instructions'] ?? '',
+    questions: map['questions'] != null
+        ? List<QuestionModel>.from(
+            (map['questions'] as List).map(
+              (q) => QuestionModel.fromMap(Map<String, dynamic>.from(q)),
+            ),
+          )
+        : [],
+    scoring: ScoringModel.fromMap(Map<String, dynamic>.from(map['scoring'] ?? {})),
+  );
+}
+
 }
 
 class QuestionModel {
