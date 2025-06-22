@@ -48,4 +48,23 @@ class AuthRepo {
       newPassword: newPassword,
     );
   }
+
+  Future<void> updateUserProfile({
+    String? name,
+    String? email,
+    String? phone,
+    String? password,
+  }) async {
+    await authService.updateUserProfile(
+      name: name,
+      email: email,
+      phone: phone,
+      password: password,
+    );
+  }
+
+  Future<void> reAuthenticateUser(String email, String password) async {
+  await authService.reAuthenticateUser(email, password);
+}
+
 }

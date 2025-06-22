@@ -41,7 +41,7 @@ class SettingsViewBody extends StatelessWidget {
           ),
           verticalSpace(context, 16),
           Text(
-            FirebaseAuth.instance.currentUser?.displayName ?? "No Name",
+            FirebaseAuth.instance.currentUser?.displayName ?? "Name",
             style: CustomTextStyles.font16LightGrayBold(context)
                 .copyWith(color: ColorsManager.mainColor),
           ),

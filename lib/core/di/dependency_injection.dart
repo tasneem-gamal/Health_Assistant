@@ -13,6 +13,7 @@ import 'package:health_assistant/data/repo/generate_nutrition_plan_repo.dart';
 import 'package:health_assistant/data/repo/mental_health_chat_repo.dart';
 import 'package:health_assistant/presentation/controllers/analyze_symptoms/analyze_symptoms_cubit.dart';
 import 'package:health_assistant/presentation/controllers/auth/auth_cubit.dart';
+import 'package:health_assistant/presentation/controllers/auth/update_user_info_cubit.dart';
 import 'package:health_assistant/presentation/controllers/general_chat/general_chat_cubit.dart';
 import 'package:health_assistant/presentation/controllers/generate_fitness_plan/generate_fitness_plan_cubit.dart';
 import 'package:health_assistant/presentation/controllers/generate_nutrition_plan/generate_nutrition_plan_cubit.dart';
@@ -23,6 +24,8 @@ void setUpGetIt(){
   getIt.registerSingleton<AuthService>(AuthService());
   getIt.registerSingleton<AuthRepo>(AuthRepo(getIt.get<AuthService>()));
   getIt.registerFactory<AuthCubit>(() => AuthCubit(getIt()));
+  getIt.registerFactory<UpdateUserInfoCubit>(() => UpdateUserInfoCubit(getIt()));
+
 
 
   //analyze symptoms
