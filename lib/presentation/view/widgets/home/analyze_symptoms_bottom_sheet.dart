@@ -140,6 +140,22 @@ class _AnalyzeSymptomsBottomSheetState
             CustomTextFormField(
               controller: startDateController,
               hintText: 'Start date (e.g. 2024-06-01)',
+              readOnly: true,
+              onTap: () async {
+                final pickedDate = await showDatePicker(
+                  context: context,
+                  initialDate: DateTime.now(),
+                  firstDate: DateTime(2000),
+                  lastDate: DateTime.now(),
+                );
+
+                if (pickedDate != null) {
+                  setState(() {
+                    startDateController.text =
+                        pickedDate.toIso8601String().split('T').first;
+                  });
+                }
+              },
               validator: (_) {},
             ),
             verticalSpace(context, 12),

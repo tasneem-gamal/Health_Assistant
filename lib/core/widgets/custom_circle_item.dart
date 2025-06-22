@@ -3,11 +3,11 @@ import 'package:health_assistant/core/theming/colors.dart';
 
 class CustomCircleItem extends StatelessWidget {
   const CustomCircleItem({
-    super.key, required this.icon, required this.onTap,
+    super.key, required this.icon, this.onTap,
   });
 
   final Widget icon;
-  final Function() onTap;
+  final Function()? onTap;
 
   @override
   Widget build(BuildContext context) {

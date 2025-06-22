@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_chat_core/flutter_chat_core.dart';
 import 'package:health_assistant/core/di/dependency_injection.dart';
 import 'package:health_assistant/core/theming/colors.dart';
-import 'package:health_assistant/core/utils/extensions.dart';
 import 'package:health_assistant/core/utils/spacing.dart';
 import 'package:health_assistant/core/widgets/custom_circle_item.dart';
 import 'package:health_assistant/data/models/general_chat/general_chat_request_model.dart';
@@ -14,6 +13,7 @@ import 'package:health_assistant/presentation/controllers/generate_nutrition_pla
 import 'package:health_assistant/presentation/view/widgets/home/analyze_symptoms_bloc_listner.dart';
 import 'package:health_assistant/presentation/view/widgets/home/analyze_symptoms_bottom_sheet.dart';
 import 'package:health_assistant/presentation/view/widgets/home/chat_app_bar_title.dart';
+import 'package:health_assistant/presentation/view/widgets/home/chat_options_menu.dart';
 import 'package:health_assistant/presentation/view/widgets/home/custom_chat.dart';
 import 'package:health_assistant/presentation/view/widgets/home/fitness_plan_bottom_sheet.dart';
 import 'package:health_assistant/presentation/view/widgets/home/general_chat_bloc_listner.dart';
@@ -22,79 +22,149 @@ import 'package:health_assistant/presentation/view/widgets/home/nutrition_plan_b
 import 'package:health_assistant/presentation/view/widgets/home/nutrition_plan_bottom_sheet.dart';
 import 'package:health_assistant/presentation/view/widgets/home/option_card.dart';
 
-class HealthCheckChat extends StatelessWidget {
+class HealthCheckChat extends StatefulWidget {
   const HealthCheckChat({super.key});
+
+  @override
+  State<HealthCheckChat> createState() => _HealthCheckChatState();
+}
+
+class _HealthCheckChatState extends State<HealthCheckChat> {
+  final _chatController = InMemoryChatController();
+  bool showOptions = true;
 
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider(
-          create: (context) => getIt<AnalyzeSymptomsCubit>(),
-        ),
-        BlocProvider(
-          create: (context) => getIt<GenerateFitnessPlanCubit>(),
-        ),
-        BlocProvider(
-          create: (context) => getIt<GenerateNutritionPlanCubit>(),
-        ),
-        BlocProvider(
-          create: (context) => getIt<GeneralChatCubit>(),
-        ),
+        BlocProvider(create: (_) => getIt<AnalyzeSymptomsCubit>()),
+        BlocProvider(create: (_) => getIt<GenerateFitnessPlanCubit>()),
+        BlocProvider(create: (_) => getIt<GenerateNutritionPlanCubit>()),
+        BlocProvider(create: (_) => getIt<GeneralChatCubit>()),
       ],
-      child: Scaffold(
-        appBar: AppBar(
-          backgroundColor: Colors.transparent,
-          leading: CustomCircleItem(
-            onTap: () {
-              context.pop();
-            },
-            icon: const Icon(
-              Icons.arrow_back,
-              color: ColorsManager.lightGray,
-            ),
-          ),
-          centerTitle: true,
-          titleSpacing: 40.0,
-          title: const ChatAppBarTitle(),
-          actions: [
-            CustomCircleItem(
-                icon: const Icon(
-                  Icons.more_horiz,
-                  color: ColorsManager.lightGray,
+      child: Builder(
+        builder: (context) {
+          void openAnalyzeBottomSheet() {
+            showModalBottomSheet(
+              context: context,
+              isScrollControlled: true,
+              builder: (_) => BlocProvider.value(
+                value: context.read<AnalyzeSymptomsCubit>(),
+                child: AnalyzeSymptomsBottomSheet(
+                  chatController: _chatController,
+                  onActionDone: () {
+                    setState(() {
+                      showOptions = false;
+                    });
+                  },
                 ),
-                onTap: () {})
-          ],
-        ),
-        body: const SafeArea(child: HealthCheckChatBody()),
+              ),
+            );
+          }
+
+          void openFitnessBottomSheet() {
+            showModalBottomSheet(
+              context: context,
+              isScrollControlled: true,
+              builder: (_) => BlocProvider.value(
+                value: context.read<GenerateFitnessPlanCubit>(),
+                child: FitnessPlanBottomSheet(
+                  chatController: _chatController,
+                  onActionDone: () {
+                    setState(() {
+                      showOptions = false;
+                    });
+                  },
+                ),
+              ),
+            );
+          }
+
+          void openNutritionBottomSheet() {
+            showModalBottomSheet(
+              context: context,
+              isScrollControlled: true,
+              builder: (_) => BlocProvider.value(
+                value: context.read<GenerateNutritionPlanCubit>(),
+                child: NutritionPlanBottomSheet(
+                  chatController: _chatController,
+                  onActionDone: () {
+                    setState(() {
+                      showOptions = false;
+                    });
+                  },
+                ),
+              ),
+            );
+          }
+
+          return Scaffold(
+            appBar: AppBar(
+              backgroundColor: Colors.transparent,
+              leading: CustomCircleItem(
+                onTap: () => Navigator.pop(context),
+                icon: const Icon(Icons.arrow_back, color: ColorsManager.lightGray),
+              ),
+              centerTitle: true,
+              titleSpacing: 40.0,
+              title: const ChatAppBarTitle(),
+              actions: [
+                ChatOptionsMenu(
+                  onAnalyze: openAnalyzeBottomSheet,
+                  onFitnessPlan: openFitnessBottomSheet,
+                  onNutritionPlan: openNutritionBottomSheet,
+                )
+              ],
+            ),
+            body: SafeArea(
+              child: HealthCheckChatBody(
+                chatController: _chatController,
+                showOptions: showOptions,
+                onAnalyze: openAnalyzeBottomSheet,
+                onFitnessPlan: openFitnessBottomSheet,
+                onNutritionPlan: openNutritionBottomSheet,
+                hideOptions: () {
+                  setState(() {
+                    showOptions = false;
+                  });
+                },
+              ),
+            ),
+          );
+        },
       ),
     );
   }
 }
 
+
 class HealthCheckChatBody extends StatefulWidget {
-  const HealthCheckChatBody({super.key});
+  const HealthCheckChatBody({
+    super.key,
+    required this.chatController,
+    required this.showOptions,
+    required this.onAnalyze,
+    required this.onFitnessPlan,
+    required this.onNutritionPlan,
+    required this.hideOptions,
+  });
+
+  final InMemoryChatController chatController;
+  final bool showOptions;
+  final VoidCallback onAnalyze;
+  final VoidCallback onFitnessPlan;
+  final VoidCallback onNutritionPlan;
+  final VoidCallback hideOptions;
 
   @override
   State<HealthCheckChatBody> createState() => _HealthCheckChatBodyState();
 }
 
 class _HealthCheckChatBodyState extends State<HealthCheckChatBody> {
-  bool showOptions = true;
-  final _chatController = InMemoryChatController();
-
   void handleFocusChanged(bool hasFocus) {
-    if (hasFocus && showOptions) {
-      setState(() {
-        showOptions = false;
-      });
+    if (hasFocus && widget.showOptions) {
+      widget.hideOptions();
     }
-  }
-
-  @override
-  void dispose() {
-    _chatController.dispose();
-    super.dispose();
   }
 
   @override
@@ -102,26 +172,21 @@ class _HealthCheckChatBodyState extends State<HealthCheckChatBody> {
     return Stack(
       children: [
         CustomChat(
-            onFocusChanged: handleFocusChanged,
-            chatController: _chatController,
-            onSend: (text, rawHistory) {
-              final history = (rawHistory as List<TextMessage>)
-                  .map((msg) => [
-                        msg.authorId == 'user1' ? 'user' : 'assistant',
-                        msg.text
-                      ])
-                  .toList();
-              final requestModel =
-                  GeneralChatRequestModel(message: text, history: history);
-              context.read<GeneralChatCubit>().generalChat(requestModel);
-            }),
-        AnalyzeSymptomsBlocListner(
-          chatController: _chatController,
+          onFocusChanged: handleFocusChanged,
+          chatController: widget.chatController,
+          onSend: (text, rawHistory) {
+            final history = (rawHistory as List<TextMessage>)
+                .map((msg) => [msg.authorId == 'user1' ? 'user' : 'assistant', msg.text])
+                .toList();
+            final requestModel = GeneralChatRequestModel(message: text, history: history);
+            context.read<GeneralChatCubit>().generalChat(requestModel);
+          },
         ),
-        GenerateFitnessPlanBlocListner(chatController: _chatController),
-        NutritionPlanBlocListner(chatController: _chatController,),
-        GeneralChatBlocListner(chatController: _chatController),
-        if (showOptions)
+        AnalyzeSymptomsBlocListner(chatController: widget.chatController),
+        GenerateFitnessPlanBlocListner(chatController: widget.chatController),
+        NutritionPlanBlocListner(chatController: widget.chatController),
+        GeneralChatBlocListner(chatController: widget.chatController),
+        if (widget.showOptions)
           Positioned(
             top: MediaQuery.of(context).size.height * 0.3,
             left: 0,
@@ -134,67 +199,21 @@ class _HealthCheckChatBodyState extends State<HealthCheckChatBody> {
                     OptionCard(
                       image: 'assets/images/symptom.png',
                       title: 'Analyze Symptoms',
-                      onTap: () {
-                        showModalBottomSheet(
-                          context: context,
-                          isScrollControlled: true,
-                          builder: (_) => BlocProvider.value(
-                            value: context.read<AnalyzeSymptomsCubit>(),
-                            child: AnalyzeSymptomsBottomSheet(
-                              chatController: _chatController,
-                              onActionDone: () {
-                                setState(() {
-                                  showOptions = false;
-                                });
-                              },
-                            ),
-                          ),
-                        );
-                      },
+                      onTap: widget.onAnalyze,
                     ),
                     horizontalSpace(context, 20),
                     OptionCard(
-                        image: 'assets/images/exercise_running.png',
-                        title: 'Fitness Plan',
-                        onTap: () {
-                          showModalBottomSheet(
-                              context: context,
-                              isScrollControlled: true,
-                              builder: (_) => BlocProvider.value(
-                                    value: context
-                                        .read<GenerateFitnessPlanCubit>(),
-                                    child: FitnessPlanBottomSheet(
-                                      chatController: _chatController,
-                                      onActionDone: () {
-                                        setState(() {
-                                          showOptions = false;
-                                        });
-                                      },
-                                    ),
-                                  ));
-                        }),
+                      image: 'assets/images/exercise_running.png',
+                      title: 'Fitness Plan',
+                      onTap: widget.onFitnessPlan,
+                    ),
                   ],
                 ),
                 verticalSpace(context, 12),
                 OptionCard(
                   image: 'assets/images/nutrition.png',
                   title: 'Nutrition Plan',
-                  onTap: () {
-                    showModalBottomSheet(
-                        context: context,
-                        isScrollControlled: true,
-                        builder: (_) => BlocProvider.value(
-                              value: context.read<GenerateNutritionPlanCubit>(),
-                              child: NutritionPlanBottomSheet(
-                                chatController: _chatController,
-                                onActionDone: () {
-                                  setState(() {
-                                    showOptions = false;
-                                  });
-                                },
-                              ),
-                            ));
-                  },
+                  onTap: widget.onNutritionPlan,
                 ),
               ],
             ),
