@@ -129,7 +129,15 @@ class _MentalHealthChatBodyState extends State<MentalHealthChatBody> {
                           image: 'assets/images/anxiety.png',
                           title: '   Anxiety Assessment',
                           onTap: () {
-                            context.push(const AnxietyAssessment());
+                            context.push(AnxietyAssessment(
+                              chatController: _chatController,
+                              mentalHealthChatCubit: context.read<MentalHealthChatCubit>(),
+                              onFinish: (){
+                                setState(() {
+                                  showOptions = false;
+                                });
+                              },
+                            ));
                           }),
                     ),
                     horizontalSpace(context, 12),

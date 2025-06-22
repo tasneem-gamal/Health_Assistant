@@ -1,6 +1,5 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
-import 'package:flutter/rendering.dart';
 import 'package:health_assistant/data/models/assessments/assessment_model.dart';
 
 class AssessmentService {
@@ -31,46 +30,40 @@ class AssessmentService {
 }
 
 Future<List<AssessmentModel>> fetchAssessments() async {
-  try {
-    final db = FirebaseDatabase.instanceFor(
-      app: secondaryApp,
-      databaseURL: 'https://health-agent-ffe26-default-rtdb.firebaseio.com',
-    );
-    final ref = db.ref('assessments');
-    final snapshot = await ref.get();
+    try {
+      final db = FirebaseDatabase.instanceFor(
+        app: secondaryApp,
+        databaseURL: 'https://health-agent-ffe26-default-rtdb.firebaseio.com',
+      );
+      final ref = db.ref('assessments');
+      final snapshot = await ref.get();
 
-    if (!snapshot.exists) return [];
+      if (!snapshot.exists) return [];
 
-    final value = snapshot.value;
+      final value = snapshot.value;
 
-    if (value is List) {
-      return value
-          .where((item) => item != null)
-          .map((item) {
-            final rawMap = item as Map;
-            final map = convertToMapStringDynamic(rawMap);
-            return AssessmentModel.fromMap(map);
-          })
-          .toList();
+      if (value is List) {
+        return value.where((item) => item != null).map((item) {
+          final rawMap = item as Map;
+          final map = convertToMapStringDynamic(rawMap);
+          return AssessmentModel.fromMap(map);
+        }).toList();
+      }
+
+      if (value is Map) {
+        return value.values.where((item) => item != null).map((item) {
+          final rawMap = item as Map;
+          final map = convertToMapStringDynamic(rawMap);
+          return AssessmentModel.fromMap(map);
+        }).toList();
+      }
+
+      throw Exception("Unsupported data format: ${value.runtimeType}");
+    } catch (e) {
+      
+      rethrow;
     }
-
-    if (value is Map) {
-      return value.values
-          .where((item) => item != null)
-          .map((item) {
-            final rawMap = item as Map;
-            final map = convertToMapStringDynamic(rawMap);
-            return AssessmentModel.fromMap(map);
-          })
-          .toList();
-    }
-
-    throw Exception("Unsupported data format: ${value.runtimeType}");
-  } catch (e) {
-    debugPrint("❌ Error fetching assessments: $e");
-    rethrow;
   }
-}
 
 
 }
