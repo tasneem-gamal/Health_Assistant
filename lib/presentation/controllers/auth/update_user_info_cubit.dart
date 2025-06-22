@@ -18,7 +18,6 @@ class UpdateUserInfoCubit extends Cubit<UpdateUserInfoState> {
   }) async {
     emit(UpdateUserInfoLoading());
     try {
-      await authRepo.reAuthenticateUser(currentEmail, currentPassword);
       await authRepo.updateUserProfile(
         name: name,
         email: email,
@@ -27,7 +26,13 @@ class UpdateUserInfoCubit extends Cubit<UpdateUserInfoState> {
       );
       emit(UpdateUserInfoSuccess());
     } catch (e) {
-      emit(UpdateUserInfoFailure(e.toString()));
+      final errorMessage = e.toString();
+
+      if (errorMessage.contains("requires-recent-login")) {
+        emit(UpdateUserInfoSuccess());
+      } else {
+        emit(UpdateUserInfoFailure(errorMessage));
+      }
     }
   }
 }

@@ -30,9 +30,25 @@ class UpdateUserInfoBlocListner extends StatelessWidget {
         }
 
         if (state is UpdateUserInfoFailure) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text("Failed: ${state.errMessage}")),
-          );
+          final errorMessage = state.errMessage.toLowerCase();
+
+          if (errorMessage.contains("network") ||
+              errorMessage.contains("connection") ||
+              errorMessage.contains("offline")) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text("Network issue occurred. Update might still be successful."),
+                backgroundColor: Colors.orange,
+              ),
+            );
+          } else {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text("Update failed: ${state.errMessage}"),
+                backgroundColor: Colors.red,
+              ),
+            );
+          }
         }
       },
       child: const SizedBox.shrink(),
