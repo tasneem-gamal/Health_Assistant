@@ -110,9 +110,15 @@ class _HealthCheckChatState extends State<HealthCheckChat> {
               title: const ChatAppBarTitle(),
               actions: [
                 ChatOptionsMenu(
-                  onAnalyze: openAnalyzeBottomSheet,
-                  onFitnessPlan: openFitnessBottomSheet,
-                  onNutritionPlan: openNutritionBottomSheet,
+                  optionOne: openAnalyzeBottomSheet,
+                  optionTwo: openFitnessBottomSheet,
+                  optionThree: openNutritionBottomSheet,
+                  optionOneImage: 'assets/images/symptom.png',
+                  optionOneTitle: 'Analyze symptoms',
+                  optionTwoImage: 'assets/images/exercise_running.png',
+                  optionTwoTitle: 'Fitness Plan',
+                  optionThreeImage: 'assets/images/nutrition.png',
+                  optionThreeTitle: 'Fitness Plan',
                 )
               ],
             ),

@@ -2,17 +2,24 @@ import 'package:flutter/material.dart';
 import 'package:health_assistant/core/widgets/custom_circle_item.dart';
 
 class ChatOptionsMenu extends StatelessWidget {
-  final VoidCallback onAnalyze;
-  final VoidCallback onFitnessPlan;
-  final VoidCallback onNutritionPlan;
+  final VoidCallback optionOne;
+  final VoidCallback optionTwo;
+  final VoidCallback optionThree;
+  final String optionOneImage, optionOneTitle, optionTwoImage, optionTwoTitle, optionThreeImage, optionThreeTitle;
 
   const ChatOptionsMenu({
     super.key, 
-    required this.onAnalyze, 
-    required this.onFitnessPlan, 
-    required this.onNutritionPlan,
+    required this.optionOne, 
+    required this.optionTwo, 
+    required this.optionThree, 
+    required this.optionOneImage, 
+    required this.optionOneTitle, 
+    required this.optionTwoImage, 
+    required this.optionTwoTitle, 
+    required this.optionThreeImage, 
+    required this.optionThreeTitle,
   });
-
+  
   @override
   Widget build(BuildContext context) {
     return PopupMenuButton<String>(
@@ -22,41 +29,41 @@ class ChatOptionsMenu extends StatelessWidget {
       ),
       elevation: 2,
       onSelected: (value) {
-        if (value == 'analyze') {
-          onAnalyze();
-        } else if (value == 'fitness') {
-          onFitnessPlan();
+        if (value == 'option_one') {
+          optionOne();
+        } else if (value == 'option_two') {
+          optionTwo();
         } else{
-          onNutritionPlan();
+          optionThree();
         }
       },
       itemBuilder: (context) => [
         PopupMenuItem<String>(
-          value: 'analyze',
+          value: 'option_one',
           child: ListTile(
             dense: true,
-            leading: Image.asset('assets/images/symptom.png'),
-            title: const Text('Analyze symptoms'),
+            leading: Image.asset(optionOneImage),
+            title: Text(optionOneTitle),
             contentPadding: EdgeInsets.zero,
           ),
         ),
         const PopupMenuDivider(),
         PopupMenuItem<String>(
-          value: 'fitness',
+          value: 'option_two',
           child: ListTile(
             dense: true,
-            leading: Image.asset('assets/images/exercise_running.png'),
-            title: const Text('Fitness Plan'),
+            leading: Image.asset(optionTwoImage),
+            title: Text(optionTwoTitle),
             contentPadding: EdgeInsets.zero,
           ),
         ),
         const PopupMenuDivider(),
         PopupMenuItem<String>(
-          value: 'nutrition',
+          value: 'option_three',
           child: ListTile(
             dense: true,
-            leading: Image.asset('assets/images/nutrition.png'),
-            title: const Text('Fitness Plan'),
+            leading: Image.asset(optionThreeImage),
+            title: Text(optionThreeTitle),
             contentPadding: EdgeInsets.zero,
           ),
         ),
