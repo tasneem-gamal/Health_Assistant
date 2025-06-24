@@ -27,7 +27,6 @@ class MentalHealthChat extends StatefulWidget {
 
 class _MentalHealthChatState extends State<MentalHealthChat> {
   final _chatController = InMemoryChatController();
-  bool showOptions = true;
 
   @override
   Widget build(BuildContext context) {
@@ -41,9 +40,7 @@ class _MentalHealthChatState extends State<MentalHealthChat> {
               chatController: _chatController,
               mentalHealthChatCubit: context.read<MentalHealthChatCubit>(),
               onFinish: () {
-                setState(() {
-                  showOptions = false;
-                });
+                
               },
             ));
           }
@@ -53,10 +50,8 @@ class _MentalHealthChatState extends State<MentalHealthChat> {
               chatController: _chatController,
               mentalHealthChatCubit: context.read<MentalHealthChatCubit>(),
               onFinish: () {
-                setState(() {
-                  showOptions = false;
-                });
-              },
+                
+              }
             ));
           }
 
@@ -65,9 +60,7 @@ class _MentalHealthChatState extends State<MentalHealthChat> {
               chatController: _chatController,
               mentalHealthChatCubit: context.read<MentalHealthChatCubit>(),
               onFinish: () {
-                setState(() {
-                  showOptions = false;
-                });
+                
               },
             ));
           }
@@ -108,9 +101,7 @@ class _MentalHealthChatState extends State<MentalHealthChat> {
                 onadjustmentAssessment: openAdjustmentAssessment,
                 chatController: _chatController,
                 hideOptions: (){
-                  setState(() {
-                    showOptions = false;
-                  });
+                  
                 },
               )
             ),
@@ -145,6 +136,7 @@ class _MentalHealthChatBodyState extends State<MentalHealthChatBody> {
   double moodProgressValue = 0.0;
   String moodLabel = '';
 
+
   void updateMoodProgress(double sentiment, String mood) {
     setState(() {
       showOptions = false;
@@ -170,6 +162,7 @@ class _MentalHealthChatBodyState extends State<MentalHealthChatBody> {
     });
   }
 
+
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -193,6 +186,7 @@ class _MentalHealthChatBodyState extends State<MentalHealthChatBody> {
           },
         ),
         MentalHealthChatBlocListner(
+          hideOverlays: hideOverlaysImmediately,
           chatController: widget.chatController,
           onMoodAnalyzed: (sentiment, mood) {
             updateMoodProgress(sentiment, mood);
