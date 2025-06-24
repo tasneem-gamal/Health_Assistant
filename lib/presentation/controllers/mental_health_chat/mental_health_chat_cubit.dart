@@ -20,7 +20,7 @@ class MentalHealthChatCubit extends Cubit<MentalHealthChatState> {
         emit(MentalHealthChatFailure(failure.errMessage));
       },
       (chatSuccess) {
-        emit(MentalHealthChatSuccess(chatSuccess));
+        emit(MentalHealthChatSuccess(chatSuccess, fromAssessment: mentalHealthRequestModel.fromAssessment));
       },
     );
   }

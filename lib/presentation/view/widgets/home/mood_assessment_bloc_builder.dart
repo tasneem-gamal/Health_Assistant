@@ -155,6 +155,7 @@ class _MoodAssessmentBlocBuilderState extends State<MoodAssessmentBlocBuilder> {
       message: message.text,
       sessionId: 'sessionId',
       history: history,
+      fromAssessment: true,
     );
 
     widget.mentalHealthChatCubit.mentalHealthChat(request);

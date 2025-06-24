@@ -156,6 +156,7 @@ class _AdjustmentAssessmentBlocBuilderState extends State<AdjustmentAssessmentBl
       message: message.text,
       sessionId: 'sessionId',
       history: history,
+      fromAssessment: true,
     );
 
     widget.mentalHealthChatCubit.mentalHealthChat(request);

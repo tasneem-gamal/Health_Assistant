@@ -39,7 +39,9 @@ class MentalHealthChatBlocListner extends StatelessWidget {
           final mood = emotionData.urgency;
 
 
-          onMoodAnalyzed(sentiment, mood); 
+          if (state.fromAssessment) {
+            onMoodAnalyzed(sentiment, mood); 
+          }
 
           final now = DateTime.now().toUtc();
           final botTextMessage = TextMessage(
