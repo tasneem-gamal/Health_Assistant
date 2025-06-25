@@ -1,79 +1,71 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_chat_core/flutter_chat_core.dart';
+import 'package:health_assistant/core/di/dependency_injection.dart';
 import 'package:health_assistant/core/theming/styles.dart';
 import 'package:health_assistant/core/utils/spacing.dart';
 import 'package:health_assistant/core/widgets/custom_app_button.dart';
+import 'package:health_assistant/presentation/controllers/chat_history/chat_history_cubit.dart';
 
 class AppDrawer extends StatelessWidget {
-  const AppDrawer({
-    super.key,
-  });
+  final String userId;
+  const AppDrawer({super.key, required this.userId});
 
   @override
   Widget build(BuildContext context) {
     return Drawer(
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 60),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'History',
-                  style: CustomTextStyles.font32BlackBold(context),
+      child: BlocProvider(
+        create: (context) =>
+            getIt<ChatHistoryCubit>()..fetchChatHistory(userId),
+        child: BlocBuilder<ChatHistoryCubit, ChatHistoryState>(
+          builder: (context, state) {
+            if (state is ChatHistoryLoading) {
+              return const Center(child: CircularProgressIndicator());
+            } else if (state is ChatHistoryLoaded) {
+              return Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 60),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text('Chat List', style: CustomTextStyles.font16LightGrayBold(context)),
+                    verticalSpace(context, 24),
+                    Expanded(
+                      child: ListView.builder(
+                        itemCount: state.chatList.length,
+                        itemBuilder: (context, index) {
+                          final chat = state.chatList[index];
+                          return ListTile(
+                            title: Text(
+                              chat.message,
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: CustomTextStyles.font12BlackMedium(context),
+                            ),
+                            subtitle: Text(
+                              DateFormat('dd MMM').format(chat.timestamp),
+                              style: CustomTextStyles.font12MainColorMedium(context),
+                            ),
+                            trailing: const Icon(Icons.delete),
+                          );
+                        },
+                      ),
+                    ),
+                    CustomAppButton(
+                      onPressed: () {},
+                      backgroundColor: Colors.red,
+                      btnText: 'Clear all',
+                    ),
+                  ],
                 ),
-                verticalSpace(context, 24),
-                CustomAppButton(onPressed: () {}, btnText: '+  New Chat'),
-                verticalSpace(context, 24),
-                Text(
-                  'Chat List',
-                  style: CustomTextStyles.font16LightGrayBold(context),
-                ),
-                verticalSpace(context, 24),
-                const CustomListTile()
-              ],
-            ),
-            CustomAppButton(
-              onPressed: () {},
-              backgroundColor: Colors.red,
-              btnText: 'Clear all',
-            ),
-          ],
+              );
+            } else if (state is ChatHistoryError) {
+              return Center(child: Text('Error: ${state.message}'));
+            } else {
+              return const SizedBox();
+            }
+          },
         ),
       ),
-    );
-
-  }
-}
-
-class CustomListTile extends StatelessWidget {
-  const CustomListTile({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return ListTile(
-      leading: const Icon(Icons.keyboard_arrow_down),
-      title: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            'i feel that i am sick today',
-            overflow: TextOverflow.ellipsis,
-            softWrap: true,
-            maxLines: 1,
-            style: CustomTextStyles.font12BlackMedium(context),
-          ),
-          Text(
-            '08 Apr',
-            style: CustomTextStyles.font12MainColorMedium(context),
-          )
-        ],
-      ),
-      trailing: const Icon(Icons.delete)
     );
   }
 }

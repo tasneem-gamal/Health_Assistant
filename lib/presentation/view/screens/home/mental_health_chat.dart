@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_chat_core/flutter_chat_core.dart';
@@ -178,7 +179,7 @@ class _MentalHealthChatBodyState extends State<MentalHealthChatBody> {
                 .toList();
 
             final requestModel = MentalHealthRequestModel(
-                message: text, sessionId: 'sessionId', history: history);
+                message: text, sessionId: 'sessionId', history: history, userId: FirebaseAuth.instance.currentUser!.uid,);
 
             context
                 .read<MentalHealthChatCubit>()

@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_chat_core/flutter_chat_core.dart';
@@ -184,7 +185,7 @@ class _HealthCheckChatBodyState extends State<HealthCheckChatBody> {
             final history = (rawHistory as List<TextMessage>)
                 .map((msg) => [msg.authorId == 'user1' ? 'user' : 'assistant', msg.text])
                 .toList();
-            final requestModel = GeneralChatRequestModel(message: text, history: history);
+            final requestModel = GeneralChatRequestModel(message: text, history: history, userId: FirebaseAuth.instance.currentUser!.uid);
             context.read<GeneralChatCubit>().generalChat(requestModel);
           },
         ),
