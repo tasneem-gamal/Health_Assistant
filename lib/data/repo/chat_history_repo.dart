@@ -9,4 +9,12 @@ class ChatHistoryRepo {
   Future<List<ChatHsitoryModel>> getChatHistory(String userId) {
     return service.getUserChatHistory(userId);
   }
+
+  Future<void> deleteChat(String docId) {
+    return service.deleteChatById(docId);
+  }
+
+  Future<void> clearAllChats(String userId) {
+    return service.clearAllChatsForUser(userId);
+  }
 }

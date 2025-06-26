@@ -155,7 +155,7 @@ class _AdjustmentAssessmentBlocBuilderState extends State<AdjustmentAssessmentBl
 
     final request = MentalHealthRequestModel(
       message: message.text,
-      sessionId: 'sessionId',
+      sessionId: 'session_id',
       history: history,
       fromAssessment: true,
       userId: FirebaseAuth.instance.currentUser!.uid,

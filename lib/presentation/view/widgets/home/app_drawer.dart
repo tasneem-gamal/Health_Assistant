@@ -3,9 +3,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_chat_core/flutter_chat_core.dart';
 import 'package:health_assistant/core/di/dependency_injection.dart';
 import 'package:health_assistant/core/theming/styles.dart';
+import 'package:health_assistant/core/utils/extensions.dart';
 import 'package:health_assistant/core/utils/spacing.dart';
 import 'package:health_assistant/core/widgets/custom_app_button.dart';
 import 'package:health_assistant/presentation/controllers/chat_history/chat_history_cubit.dart';
+import 'package:health_assistant/presentation/view/screens/home/mental_health_chat.dart';
 
 class AppDrawer extends StatelessWidget {
   final String userId;
@@ -35,6 +37,9 @@ class AppDrawer extends StatelessWidget {
                         itemBuilder: (context, index) {
                           final chat = state.chatList[index];
                           return ListTile(
+                            onTap: (){
+                              //context.push(MentalHealthChat(historyId: chat.id));
+                            },
                             title: Text(
                               chat.message,
                               maxLines: 1,

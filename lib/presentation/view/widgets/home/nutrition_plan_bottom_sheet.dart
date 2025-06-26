@@ -31,6 +31,9 @@ class _NutritionPlanBottomSheetState extends State<NutritionPlanBottomSheet> {
   final mealPreferencesController = TextEditingController();
   final fitnessGoalController = TextEditingController();
   final supplementsController = TextEditingController();
+
+  final _step1FormKey = GlobalKey<FormState>();
+  final _step2FormKey = GlobalKey<FormState>();
   
   @override
   void dispose() {
@@ -103,8 +106,8 @@ class _NutritionPlanBottomSheetState extends State<NutritionPlanBottomSheet> {
         padding: const EdgeInsets.all(18),
         child: SizedBox(
           height: currentStep == 1
-              ? MediaQuery.of(context).size.height * 0.35
-              : MediaQuery.of(context).size.height * 0.5,
+              ? MediaQuery.of(context).size.height * 0.38
+              : MediaQuery.of(context).size.height * 0.52,
           child: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -129,11 +132,15 @@ class _NutritionPlanBottomSheetState extends State<NutritionPlanBottomSheet> {
               verticalSpace(context, 8),
               if (currentStep == 1) ...[
                 NextStep(
+                  formKey: _step1FormKey,
                   onNext: () {
-                        setState(() {
-                          currentStep = 2;
-                        });
-                      },
+                    if (_step1FormKey.currentState!.validate()){
+                      setState(() {
+                      currentStep = 2;
+                    });
+                    }
+                    
+                  },
                   heightController: heightController,
                   weightController: weightController,
                   goalController: fitnessGoalController,
@@ -142,9 +149,13 @@ class _NutritionPlanBottomSheetState extends State<NutritionPlanBottomSheet> {
                 ),
               ] else if (currentStep == 2) ...[
                 GenerateStep(
+                  formKey: _step2FormKey,
                   onGenerate: () {
-                    generatePlan();
-                      }, 
+                    if(_step2FormKey.currentState!.validate()){
+                      generatePlan();
+                    }
+                    
+                  }, 
                       activityLevelController: activityLevelController,
                       allergiesController: allergiesController,
                       mealPreferencesController: mealPreferencesController,
@@ -170,7 +181,7 @@ class NextStep extends StatelessWidget {
     required this.weightController, 
     required this.goalController, 
     required this.ageController, 
-    required this.genderController, 
+    required this.genderController, required this.formKey, 
   });
 
   final Function() onNext;
@@ -179,55 +190,90 @@ class NextStep extends StatelessWidget {
   final TextEditingController goalController;
   final TextEditingController ageController;
   final TextEditingController genderController;
+  final GlobalKey<FormState> formKey;
+
 
   @override
   Widget build(BuildContext context) {
     return Expanded(
-      child: Column(
-        children: [
-          Row(
-            children: [
-              TextFieldWithTitle(
-                title: 'Height (cm)',
-                hintText: 'e.g 175',
-                controller: heightController,
-              ),
-              horizontalSpace(context, 12),
-              TextFieldWithTitle(
-                title: 'Weight(kg)',
-                hintText: 'e.g 70',
-                controller: weightController,
-              ),
-            ],
-          ),
-          verticalSpace(context, 12),
-          Row(
-            children: [
-              TextFieldWithTitle(
-                title: 'Age',
-                hintText: 'e.g 25',
-                controller: ageController,
-              ),
-              horizontalSpace(context, 12),
-              TextFieldWithTitle(
-                title: 'Gender',
-                hintText: 'Male',
-                controller: genderController,
-              ),
-              horizontalSpace(context, 12),
-              TextFieldWithTitle(
-                title: 'Goal',
-                hintText: 'weight loss',
-                controller: goalController,
-              ),
-            ],
-          ),
-          verticalSpace(context, 12),
-          CustomAppButton(
-            onPressed: onNext,
-            btnText: 'Next',
-          ),
-        ],
+      child: Form(
+        key: formKey,
+        child: Column(
+          children: [
+            Row(
+              children: [
+                TextFieldWithTitle(
+                  title: 'Height (cm)',
+                  hintText: 'e.g 175',
+                  controller: heightController,
+                  validator: (value){
+                    if(value == null || value.trim().isEmpty){
+                      return 'This field is required';
+                    }
+                    return null;
+                  },
+                ),
+                horizontalSpace(context, 12),
+                TextFieldWithTitle(
+                  title: 'Weight(kg)',
+                  hintText: 'e.g 70',
+                  controller: weightController,
+                  validator: (value){
+                    if(value == null || value.trim().isEmpty){
+                      return 'This field is required';
+                    }
+                    return null;
+                  },
+                ),
+              ],
+            ),
+            verticalSpace(context, 12),
+            Row(
+              children: [
+                TextFieldWithTitle(
+                  title: 'Age',
+                  hintText: 'e.g 25',
+                  controller: ageController,
+                  validator: (value){
+                    if(value == null || value.trim().isEmpty){
+                      return 'This field is required';
+                    }
+                    return null;
+                  },
+                ),
+                horizontalSpace(context, 12),
+                TextFieldWithTitle(
+                  title: 'Gender',
+                  hintText: 'Male',
+                  controller: genderController,
+                  validator: (value){
+                    if(value == null || value.trim().isEmpty){
+                      return 'This field is required';
+                    }
+                    return null;
+                  },
+                ),
+                horizontalSpace(context, 12),
+                TextFieldWithTitle(
+                  title: 'Goal',
+                  hintText: 'weight loss',
+                  controller: goalController,
+                  validator: (value){
+                    if(value == null || value.trim().isEmpty){
+                      return 'This field is required';
+                    }
+                    return null;
+                  },
+                ),
+              ],
+            ),
+            verticalSpace(context, 12),
+            CustomAppButton(
+              onPressed: onNext,
+              btnText: 'Next',
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -241,7 +287,7 @@ class GenerateStep extends StatelessWidget {
     required this.dietaryRestrictionsController, 
     required this.allergiesController, 
     required this.mealPreferencesController,
-    required this.supplementsController});
+    required this.supplementsController, required this.formKey});
 
   final Function() onGenerate;
   final TextEditingController activityLevelController;
@@ -249,55 +295,90 @@ class GenerateStep extends StatelessWidget {
   final TextEditingController allergiesController;
   final TextEditingController mealPreferencesController;
   final TextEditingController supplementsController;
+  final GlobalKey<FormState> formKey;
+
 
   @override
   Widget build(BuildContext context) {
     return Expanded(
-      child: Column(
-        children: [
-          Row(
-            children: [
-              TextFieldWithTitle(
-                title: 'Activity Level',
-                hintText: 'e.g moderate',
-                controller: activityLevelController,
-              ),
-              horizontalSpace(context, 12),
-              TextFieldWithTitle(
-                title: 'Dietary Restrictions',
-                hintText: 'e.g vegetarian',
-                controller: dietaryRestrictionsController,
-              ),
-            ],
-          ),
-          verticalSpace(context, 12),
-          Row(
-            children: [
-              TextFieldWithTitle(
-                title: 'Allergies',
-                hintText: 'e.g nuts',
-                controller: allergiesController,
-              ),
-              horizontalSpace(context, 12),
-              TextFieldWithTitle(
-                title: 'Meal Preferences',
-                hintText: 'e.g Quick Meals, High Protein',
-                controller: mealPreferencesController,
-              ),
-            ],
-          ),
-          verticalSpace(context, 12),
-          TextFieldWithTitle(
-            title: 'supplements',
-            hintText: 'e.g Vitamin D',
-            controller: supplementsController,
-          ),
-          verticalSpace(context, 12),
-          CustomAppButton(
-            onPressed: onGenerate,
-            btnText: 'Generate Plan',
-          ),
-        ],
+      child: Form(
+        key: formKey,
+        child: Column(
+          children: [
+            Row(
+              children: [
+                TextFieldWithTitle(
+                  title: 'Activity Level',
+                  hintText: 'e.g moderate',
+                  controller: activityLevelController,
+                  validator: (value){
+                    if(value == null || value.trim().isEmpty){
+                      return 'This field is required';
+                    }
+                    return null;
+                  },
+                ),
+                horizontalSpace(context, 12),
+                TextFieldWithTitle(
+                  title: 'Dietary Restrictions',
+                  hintText: 'e.g vegetarian',
+                  controller: dietaryRestrictionsController,
+                  validator: (value){
+                    if(value == null || value.trim().isEmpty){
+                      return 'This field is required';
+                    }
+                    return null;
+                  },
+                ),
+              ],
+            ),
+            verticalSpace(context, 12),
+            Row(
+              children: [
+                TextFieldWithTitle(
+                  title: 'Allergies',
+                  hintText: 'e.g nuts',
+                  controller: allergiesController,
+                  validator: (value){
+                    if(value == null || value.trim().isEmpty){
+                      return 'This field is required';
+                    }
+                    return null;
+                  },
+                ),
+                horizontalSpace(context, 12),
+                TextFieldWithTitle(
+                  title: 'Meal Preferences',
+                  hintText: 'e.g Quick Meals, High Protein',
+                  controller: mealPreferencesController,
+                  validator: (value){
+                    if(value == null || value.trim().isEmpty){
+                      return 'This field is required';
+                    }
+                    return null;
+                  },
+                ),
+              ],
+            ),
+            verticalSpace(context, 12),
+            TextFieldWithTitle(
+              title: 'supplements',
+              hintText: 'e.g Vitamin D',
+              controller: supplementsController,
+              validator: (value){
+                    if(value == null || value.trim().isEmpty){
+                      return 'This field is required';
+                    }
+                    return null;
+                  },
+            ),
+            verticalSpace(context, 12),
+            CustomAppButton(
+              onPressed: onGenerate,
+              btnText: 'Generate Plan',
+            ),
+          ],
+        ),
       ),
     );
   }

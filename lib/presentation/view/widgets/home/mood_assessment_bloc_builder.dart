@@ -155,7 +155,7 @@ class _MoodAssessmentBlocBuilderState extends State<MoodAssessmentBlocBuilder> {
     final request = MentalHealthRequestModel(
       message: message.text,
       userId: FirebaseAuth.instance.currentUser!.uid,
-      sessionId: 'sessionId',
+      sessionId: 'session_id',
       history: history,
       fromAssessment: true,
     );

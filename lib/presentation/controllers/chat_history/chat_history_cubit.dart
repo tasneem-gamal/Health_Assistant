@@ -18,4 +18,14 @@ class ChatHistoryCubit extends Cubit<ChatHistoryState> {
       emit(ChatHistoryError(e.toString()));
     }
   }
+
+  Future<void> deleteChat(String docId, String userId) async {
+    await repository.deleteChat(docId);
+    fetchChatHistory(userId); 
+  }
+
+  Future<void> clearAllChats(String userId) async {
+    await repository.clearAllChats(userId);
+    fetchChatHistory(userId);
+  }
 }

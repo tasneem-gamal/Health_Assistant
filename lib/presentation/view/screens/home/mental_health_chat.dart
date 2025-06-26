@@ -20,7 +20,8 @@ import 'package:health_assistant/presentation/view/widgets/home/mood_progress.da
 import 'package:health_assistant/presentation/view/widgets/home/option_card.dart';
 
 class MentalHealthChat extends StatefulWidget {
-  const MentalHealthChat({super.key});
+  const MentalHealthChat({super.key, this.historyId});
+  final String? historyId;
 
   @override
   State<MentalHealthChat> createState() => _MentalHealthChatState();
@@ -28,6 +29,7 @@ class MentalHealthChat extends StatefulWidget {
 
 class _MentalHealthChatState extends State<MentalHealthChat> {
   final _chatController = InMemoryChatController();
+
 
   @override
   Widget build(BuildContext context) {

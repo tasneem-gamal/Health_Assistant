@@ -14,6 +14,25 @@ class ChatHistoryService {
         .orderBy('timestamp', descending: true)
         .get();
 
-    return snapshot.docs.map((doc) => ChatHsitoryModel.fromMap(doc.data())).toList();
+    return snapshot.docs.map((doc) {
+      final model = ChatHsitoryModel.fromMap(doc.data());
+      model.id = doc.id;
+      return model;
+    }).toList();
+  }
+
+  Future<void> deleteChatById(String docId) async {
+    await firestore.collection('chat_history').doc(docId).delete();
+  }
+
+  Future<void> clearAllChatsForUser(String userId) async {
+    final snapshot = await firestore
+        .collection('chat_history')
+        .where('user_id', isEqualTo: userId)
+        .get();
+
+    for (final doc in snapshot.docs) {
+      await doc.reference.delete();
+    }
   }
 }
