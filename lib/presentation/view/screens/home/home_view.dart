@@ -10,49 +10,75 @@ import 'package:health_assistant/presentation/view/widgets/home/app_drawer.dart'
 import 'package:health_assistant/presentation/view/widgets/home/start_health_check.dart';
 import 'package:health_assistant/presentation/view/widgets/home/mental_health.dart';
 
-class HomeView extends StatelessWidget {
+class HomeView extends StatefulWidget {
   const HomeView({super.key});
 
   @override
+  State<HomeView> createState() => _HomeViewState();
+}
+
+class _HomeViewState extends State<HomeView> {
+  String? userId;
+
+  @override
+void initState() {
+  super.initState();
+  loadUserId();
+}
+
+Future<void> loadUserId() async {
+  final uid = FirebaseAuth.instance.currentUser?.uid;
+  if (uid != null) {
+    setState(() {
+      userId = uid;
+    });
+  }
+}
+
+
+  @override
   Widget build(BuildContext context) {
+    if (userId == null) {
+      return const Scaffold(
+        body: Center(child: CircularProgressIndicator()),
+      );
+    }
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: ColorsManager.mainColor,
         elevation: 0,
         leading: Builder(
           builder: (context) => IconButton(
-            icon: const Icon(Icons.sort, color: Colors.white,),
-            onPressed: () {
-              Scaffold.of(context).openDrawer();
-            },
+            icon: const Icon(Icons.sort, color: Colors.white),
+            onPressed: () => Scaffold.of(context).openDrawer(),
           ),
         ),
         title: Text(
           'Health Assistant',
-            style: CustomTextStyles.font24WhiteMedium(context).copyWith(
-              foreground: Paint()
-                ..shader = const LinearGradient(
-                  colors: <Color>[
-                    Colors.white,
-                    ColorsManager.mainColorLight
-                  ],
-                ).createShader(const Rect.fromLTWH(200.0, 0.0, 50.0, 0.0)),
-            )),
+          style: CustomTextStyles.font24WhiteMedium(context).copyWith(
+            foreground: Paint()
+              ..shader = const LinearGradient(
+                colors: [Colors.white, ColorsManager.mainColorLight],
+              ).createShader(const Rect.fromLTWH(200.0, 0.0, 50.0, 0.0)),
+          ),
+        ),
         centerTitle: true,
         actions: [
           IconButton(
-            onPressed: (){
+            onPressed: () {
               context.push(const SettingsView());
             },
-            icon: const Icon(Icons.settings_outlined, color: Colors.white,),
-          )
+            icon: const Icon(Icons.settings_outlined, color: Colors.white),
+          ),
         ],
       ),
-      drawer: const AppDrawer(),
+      drawer: AppDrawer(userId: userId!), 
       body: const HomeViewBody(),
     );
   }
 }
+
 
 
 

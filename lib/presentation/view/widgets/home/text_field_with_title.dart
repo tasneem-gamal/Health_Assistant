@@ -24,7 +24,7 @@ class TextFieldWithTitle extends StatelessWidget {
           ),
           verticalSpace(context, 10),
           CustomTextFormField(
-            validator: (value){},
+            validator: validator,
             hintText: hintText,
             controller: controller,
           )

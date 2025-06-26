@@ -1,8 +1,10 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:get_it/get_it.dart';
 import 'package:health_assistant/data/data_source/analyze_symptoms_service.dart';
 import 'package:health_assistant/data/data_source/assessment_service.dart';
 import 'package:health_assistant/data/data_source/auth_service.dart';
+import 'package:health_assistant/data/data_source/chat_history_service.dart';
 import 'package:health_assistant/data/data_source/general_chat_service.dart';
 import 'package:health_assistant/data/data_source/generate_fitness_plan_service.dart';
 import 'package:health_assistant/data/data_source/generate_nutrition_plan_service.dart';
@@ -10,6 +12,7 @@ import 'package:health_assistant/data/data_source/mental_health_chat_service.dar
 import 'package:health_assistant/data/repo/analyze_symptoms_repo.dart';
 import 'package:health_assistant/data/repo/assessment_repo.dart';
 import 'package:health_assistant/data/repo/auth_repo.dart';
+import 'package:health_assistant/data/repo/chat_history_repo.dart';
 import 'package:health_assistant/data/repo/general_chat_repo.dart';
 import 'package:health_assistant/data/repo/generate_fitness_plan_repo.dart';
 import 'package:health_assistant/data/repo/generate_nutrition_plan_repo.dart';
@@ -18,6 +21,7 @@ import 'package:health_assistant/presentation/controllers/analyze_symptoms/analy
 import 'package:health_assistant/presentation/controllers/assessment/assessment_cubit.dart';
 import 'package:health_assistant/presentation/controllers/auth/auth_cubit.dart';
 import 'package:health_assistant/presentation/controllers/auth/update_user_info_cubit.dart';
+import 'package:health_assistant/presentation/controllers/chat_history/chat_history_cubit.dart';
 import 'package:health_assistant/presentation/controllers/general_chat/general_chat_cubit.dart';
 import 'package:health_assistant/presentation/controllers/generate_fitness_plan/generate_fitness_plan_cubit.dart';
 import 'package:health_assistant/presentation/controllers/generate_nutrition_plan/generate_nutrition_plan_cubit.dart';
@@ -56,9 +60,13 @@ void setUpGetIt(){
   getIt.registerSingleton<MentalHealthChatService>(MentalHealthChatService());
   getIt.registerSingleton<MentalHealthChatRepo>(MentalHealthChatRepo(getIt.get<MentalHealthChatService>()));
   getIt.registerFactory<MentalHealthChatCubit>(() => MentalHealthChatCubit(getIt()));
+
+  
   
   //assessments
   final secondaryApp = Firebase.app('secondaryApp');
+
+
 
   getIt.registerSingleton<AssessmentService>(
     AssessmentService(secondaryApp: secondaryApp),
@@ -69,4 +77,11 @@ void setUpGetIt(){
   getIt.registerFactory<AssessmentCubit>(
     () => AssessmentCubit(assessmentRepo: getIt<AssessmentRepo>()),
   );
+
+  //chat history
+  final secondaryFirestore = FirebaseFirestore.instanceFor(app: Firebase.app('secondaryApp'));
+
+  getIt.registerSingleton<ChatHistoryService>(ChatHistoryService(firestore: secondaryFirestore));
+  getIt.registerSingleton<ChatHistoryRepo>(ChatHistoryRepo(getIt.get<ChatHistoryService>()));
+  getIt.registerFactory<ChatHistoryCubit>(() => ChatHistoryCubit(getIt()));
 }

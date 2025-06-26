@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_chat_core/flutter_chat_core.dart';
@@ -154,8 +155,10 @@ class _AdjustmentAssessmentBlocBuilderState extends State<AdjustmentAssessmentBl
 
     final request = MentalHealthRequestModel(
       message: message.text,
-      sessionId: 'sessionId',
+      sessionId: 'session_id',
       history: history,
+      fromAssessment: true,
+      userId: FirebaseAuth.instance.currentUser!.uid,
     );
 
     widget.mentalHealthChatCubit.mentalHealthChat(request);

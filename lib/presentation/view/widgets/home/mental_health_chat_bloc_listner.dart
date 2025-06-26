@@ -7,10 +7,11 @@ class MentalHealthChatBlocListner extends StatelessWidget {
   const MentalHealthChatBlocListner({
     super.key,
     required this.chatController,
-    required this.onMoodAnalyzed,
+    required this.onMoodAnalyzed, required this.hideOverlays,
   });
 
   final InMemoryChatController chatController;
+  final VoidCallback hideOverlays;
   final void Function(double sentiment, String mood) onMoodAnalyzed;
 
   @override
@@ -18,6 +19,7 @@ class MentalHealthChatBlocListner extends StatelessWidget {
     return BlocListener<MentalHealthChatCubit, MentalHealthChatState>(
       listener: (context, state) {
         if (state is MentalHealthChatLoading) {
+          hideOverlays();
           final thinkingMessage = TextMessage(
             id: 'thinking_message',
             authorId: 'HealthAssistant',
@@ -37,7 +39,9 @@ class MentalHealthChatBlocListner extends StatelessWidget {
           final mood = emotionData.urgency;
 
 
-          onMoodAnalyzed(sentiment, mood); 
+          if (state.fromAssessment) {
+            onMoodAnalyzed(sentiment, mood); 
+          }
 
           final now = DateTime.now().toUtc();
           final botTextMessage = TextMessage(

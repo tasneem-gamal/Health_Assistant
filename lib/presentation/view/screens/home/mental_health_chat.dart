@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_chat_core/flutter_chat_core.dart';
@@ -19,7 +20,8 @@ import 'package:health_assistant/presentation/view/widgets/home/mood_progress.da
 import 'package:health_assistant/presentation/view/widgets/home/option_card.dart';
 
 class MentalHealthChat extends StatefulWidget {
-  const MentalHealthChat({super.key});
+  const MentalHealthChat({super.key, this.historyId});
+  final String? historyId;
 
   @override
   State<MentalHealthChat> createState() => _MentalHealthChatState();
@@ -27,7 +29,7 @@ class MentalHealthChat extends StatefulWidget {
 
 class _MentalHealthChatState extends State<MentalHealthChat> {
   final _chatController = InMemoryChatController();
-  bool showOptions = true;
+
 
   @override
   Widget build(BuildContext context) {
@@ -41,9 +43,7 @@ class _MentalHealthChatState extends State<MentalHealthChat> {
               chatController: _chatController,
               mentalHealthChatCubit: context.read<MentalHealthChatCubit>(),
               onFinish: () {
-                setState(() {
-                  showOptions = false;
-                });
+                
               },
             ));
           }
@@ -53,10 +53,8 @@ class _MentalHealthChatState extends State<MentalHealthChat> {
               chatController: _chatController,
               mentalHealthChatCubit: context.read<MentalHealthChatCubit>(),
               onFinish: () {
-                setState(() {
-                  showOptions = false;
-                });
-              },
+                
+              }
             ));
           }
 
@@ -65,9 +63,7 @@ class _MentalHealthChatState extends State<MentalHealthChat> {
               chatController: _chatController,
               mentalHealthChatCubit: context.read<MentalHealthChatCubit>(),
               onFinish: () {
-                setState(() {
-                  showOptions = false;
-                });
+                
               },
             ));
           }
@@ -108,9 +104,7 @@ class _MentalHealthChatState extends State<MentalHealthChat> {
                 onadjustmentAssessment: openAdjustmentAssessment,
                 chatController: _chatController,
                 hideOptions: (){
-                  setState(() {
-                    showOptions = false;
-                  });
+                  
                 },
               )
             ),
@@ -145,6 +139,7 @@ class _MentalHealthChatBodyState extends State<MentalHealthChatBody> {
   double moodProgressValue = 0.0;
   String moodLabel = '';
 
+
   void updateMoodProgress(double sentiment, String mood) {
     setState(() {
       showOptions = false;
@@ -170,6 +165,7 @@ class _MentalHealthChatBodyState extends State<MentalHealthChatBody> {
     });
   }
 
+
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -185,7 +181,7 @@ class _MentalHealthChatBodyState extends State<MentalHealthChatBody> {
                 .toList();
 
             final requestModel = MentalHealthRequestModel(
-                message: text, sessionId: 'sessionId', history: history);
+                message: text, sessionId: 'sessionId', history: history, userId: FirebaseAuth.instance.currentUser!.uid,);
 
             context
                 .read<MentalHealthChatCubit>()
@@ -193,6 +189,7 @@ class _MentalHealthChatBodyState extends State<MentalHealthChatBody> {
           },
         ),
         MentalHealthChatBlocListner(
+          hideOverlays: hideOverlaysImmediately,
           chatController: widget.chatController,
           onMoodAnalyzed: (sentiment, mood) {
             updateMoodProgress(sentiment, mood);

@@ -32,6 +32,10 @@ class _FitnessPlanBottomSheetState extends State<FitnessPlanBottomSheet> {
   final fitnessGoalController = TextEditingController();
   final limitationsController = TextEditingController();
 
+  final _step1FormKey = GlobalKey<FormState>();
+  final _step2FormKey = GlobalKey<FormState>();
+
+
   @override
   void dispose() {
     heightController.dispose();
@@ -67,15 +71,15 @@ class _FitnessPlanBottomSheetState extends State<FitnessPlanBottomSheet> {
     final userMessage =
         """
         Height: ${model.height}
-        \nWeight: ${model.weight}
-        \nAge: ${model.age}
-        \nGender: ${model.gender}
-        \nfitnessLevel: ${model.fitnessLevel}
-        \nfitnessGoal: ${model.fitnessGoal}
-        \nsessionsPerWeek: ${model.sessionsPerWeek}
-        \nsessionDuration: ${model.sessionDuration}
-        \nlimitations: ${model.limitations}
-        \nequipment: ${model.equipment}
+        Weight: ${model.weight}
+        Age: ${model.age}
+        Gender: ${model.gender}
+        fitnessLevel: ${model.fitnessLevel}
+        fitnessGoal: ${model.fitnessGoal}
+        sessionsPerWeek: ${model.sessionsPerWeek}
+        sessionDuration: ${model.sessionDuration}
+        limitations: ${model.limitations}
+        equipment: ${model.equipment}
         """;
     widget.chatController.insertMessage(
       TextMessage(
@@ -99,8 +103,8 @@ class _FitnessPlanBottomSheetState extends State<FitnessPlanBottomSheet> {
         padding: const EdgeInsets.all(18),
         child: SizedBox(
           height: currentStep == 1
-            ? MediaQuery.of(context).size.height * 0.35
-            : MediaQuery.of(context).size.height * 0.5,
+            ? MediaQuery.of(context).size.height * 0.38
+            : MediaQuery.of(context).size.height * 0.52,
           child: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -125,10 +129,14 @@ class _FitnessPlanBottomSheetState extends State<FitnessPlanBottomSheet> {
               verticalSpace(context, 8),
               if (currentStep == 1) ...[
                 NextStep(
+                  formKey: _step1FormKey,
                   onNext: () {
-                    setState(() {
+                    if (_step1FormKey.currentState!.validate()){
+                      setState(() {
                       currentStep = 2;
                     });
+                    }
+                    
                   },
                   heightController: heightController,
                   weightController: weightController,
@@ -138,8 +146,12 @@ class _FitnessPlanBottomSheetState extends State<FitnessPlanBottomSheet> {
                 ),
               ] else if (currentStep == 2) ...[
                 GenerateStep(
+                  formKey: _step2FormKey,
                   onGenerate: () {
-                    generatePlan();
+                    if(_step2FormKey.currentState!.validate()){
+                      generatePlan();
+                    }
+                    
                   },
                   sessionsPerWeekController: sessionsPerWeekController,
                   sessionDurationController: sessionDurationController,
@@ -164,7 +176,7 @@ class NextStep extends StatelessWidget {
     required this.weightController, 
     required this.ageController, 
     required this.genderController, 
-    required this.fitnessLevelController
+    required this.fitnessLevelController, required this.formKey
   });
 
   final Function() onNext;
@@ -173,54 +185,89 @@ class NextStep extends StatelessWidget {
   final TextEditingController ageController;
   final TextEditingController genderController;
   final TextEditingController fitnessLevelController;
+  final GlobalKey<FormState> formKey;
+
   @override
   Widget build(BuildContext context) {
     return Expanded(
-      child: Column(
-        children: [
-          Row(
-            children: [
-              TextFieldWithTitle(
-                title: 'Height (cm)',
-                hintText: 'e.g 175',
-                controller: heightController,
-              ),
-              horizontalSpace(context, 12),
-              TextFieldWithTitle(
-                title: 'Weight(kg)',
-                hintText: 'e.g 70',
-                controller: weightController,
-              ),
-            ],
-          ),
-          verticalSpace(context, 12),
-          Row(
-            children: [
-              TextFieldWithTitle(
-                title: 'Age',
-                hintText: 'e.g 25',
-                controller: ageController,
-              ),
-              horizontalSpace(context, 12),
-              TextFieldWithTitle(
-                title: 'Gender',
-                hintText: 'Male',
-                controller: genderController,
-              ),
-              horizontalSpace(context, 12),
-              TextFieldWithTitle(
-                title: 'Fitness Level',
-                hintText: 'e.g beginner, intermediate..',
-                controller: fitnessLevelController,
-              ),
-            ],
-          ),
-          verticalSpace(context, 12),
-          CustomAppButton(
-            onPressed: onNext,
-            btnText: 'Next',
-          ),
-        ],
+      child: Form(
+        key: formKey,
+        child: Column(
+          children: [
+            Row(
+              children: [
+                TextFieldWithTitle(
+                  title: 'Height (cm)',
+                  hintText: 'e.g 175',
+                  controller: heightController,
+                  validator: (value){
+                    if(value == null || value.trim().isEmpty){
+                      return 'This field is required';
+                    }
+                    return null;
+                  },
+                ),
+                horizontalSpace(context, 12),
+                TextFieldWithTitle(
+                  title: 'Weight(kg)',
+                  hintText: 'e.g 70',
+                  controller: weightController,
+                  validator: (value){
+                    if(value == null || value.trim().isEmpty){
+                      return 'This field is required';
+                    }
+                    return null;
+                  },
+                ),
+              ],
+            ),
+            verticalSpace(context, 12),
+            Row(
+              children: [
+                TextFieldWithTitle(
+                  title: 'Age',
+                  hintText: 'e.g 25',
+                  controller: ageController,
+                  validator: (value){
+                    if(value == null || value.trim().isEmpty){
+                      return 'This field is required';
+                    }
+                    return null;
+                  },
+                ),
+                horizontalSpace(context, 12),
+                TextFieldWithTitle(
+                  title: 'Gender',
+                  hintText: 'Male',
+                  controller: genderController,
+                  validator: (value){
+                    if(value == null || value.trim().isEmpty){
+                      return 'This field is required';
+                    }
+                    return null;
+                  },
+                ),
+                horizontalSpace(context, 12),
+                TextFieldWithTitle(
+                  title: 'Fitness Level',
+                  hintText: 'e.g beginner, intermediate..',
+                  controller: fitnessLevelController,
+                  validator: (value){
+                    if(value == null || value.trim().isEmpty){
+                      return 'This field is required';
+                    }
+                    return null;
+                  },
+                ),
+              ],
+            ),
+            verticalSpace(context, 12),
+            CustomAppButton(
+              onPressed: onNext,
+              btnText: 'Next',
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -234,7 +281,7 @@ class GenerateStep extends StatelessWidget {
     required this.sessionDurationController, 
     required this.equipmentController, 
     required this.fitnessGoalController, 
-    required this.limitationsController
+    required this.limitationsController, required this.formKey
   });
 
   final Function() onGenerate;
@@ -243,55 +290,90 @@ class GenerateStep extends StatelessWidget {
   final TextEditingController equipmentController;
   final TextEditingController fitnessGoalController;
   final TextEditingController limitationsController;
+  final GlobalKey<FormState> formKey;
+
 
   @override
   Widget build(BuildContext context) {
     return Expanded(
-      child: Column(
-        children: [
-          Row(
-            children: [
-              TextFieldWithTitle(
-                title: 'Sessions per Week',
-                hintText: 'e.g 3',
-                controller: sessionsPerWeekController,
-              ),
-              horizontalSpace(context, 12),
-              TextFieldWithTitle(
-                title: 'Session Duration (min)',
-                hintText: 'e.g 20min',
-                controller: sessionDurationController,
-              ),
-            ],
-          ),
-          verticalSpace(context, 12),
-          Row(
-            children: [
-              TextFieldWithTitle(
-                title: 'Equipments',
-                hintText: 'e.g resistance bands, bodyweight ...',
-                controller: equipmentController,
-              ),
-              horizontalSpace(context, 12),
-              TextFieldWithTitle(
-                title: 'Fitness Goal',
-                hintText: 'e.g weight loss',
-                controller: fitnessGoalController,
-              ),
-            ],
-          ),
-          verticalSpace(context, 12),
-          TextFieldWithTitle(
-            title: 'Physical Limitations/Injuries',
-            hintText: '',
-            controller: limitationsController,
-          ),
-          verticalSpace(context, 12),
-          CustomAppButton(
-            onPressed: onGenerate,
-            btnText: 'Generate Plan',
-          ),
-        ],
+      child: Form(
+        key: formKey,
+        child: Column(
+          children: [
+            Row(
+              children: [
+                TextFieldWithTitle(
+                  title: 'Sessions per Week',
+                  hintText: 'e.g 3',
+                  controller: sessionsPerWeekController,
+                  validator: (value){
+                    if(value == null || value.trim().isEmpty){
+                      return 'This field is required';
+                    }
+                    return null;
+                  },
+                ),
+                horizontalSpace(context, 12),
+                TextFieldWithTitle(
+                  title: 'Session Duration (min)',
+                  hintText: 'e.g 20min',
+                  controller: sessionDurationController,
+                  validator: (value){
+                    if(value == null || value.trim().isEmpty){
+                      return 'This field is required';
+                    }
+                    return null;
+                  },
+                ),
+              ],
+            ),
+            verticalSpace(context, 12),
+            Row(
+              children: [
+                TextFieldWithTitle(
+                  title: 'Equipments',
+                  hintText: 'e.g resistance bands, bodyweight ...',
+                  controller: equipmentController,
+                  validator: (value){
+                    if(value == null || value.trim().isEmpty){
+                      return 'This field is required';
+                    }
+                    return null;
+                  },
+                ),
+                horizontalSpace(context, 12),
+                TextFieldWithTitle(
+                  title: 'Fitness Goal',
+                  hintText: 'e.g weight loss',
+                  controller: fitnessGoalController,
+                  validator: (value){
+                    if(value == null || value.trim().isEmpty){
+                      return 'This field is required';
+                    }
+                    return null;
+                  },
+                ),
+              ],
+            ),
+            verticalSpace(context, 12),
+            TextFieldWithTitle(
+              title: 'Physical Limitations/Injuries',
+              hintText: '',
+              controller: limitationsController,
+              validator: (value){
+                    if(value == null || value.trim().isEmpty){
+                      return 'This field is required';
+                    }
+                    return null;
+                  },
+            ),
+            verticalSpace(context, 12),
+            CustomAppButton(
+              onPressed: onGenerate,
+              btnText: 'Generate Plan',
+            ),
+          ],
+        ),
       ),
     );
   }
