@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_chat_core/flutter_chat_core.dart';
+import 'package:health_assistant/data/models/mental_health_chat/mental_health_response_model.dart';
 import 'package:health_assistant/presentation/controllers/mental_health_chat/mental_health_chat_cubit.dart';
 
 class MentalHealthChatBlocListner extends StatelessWidget {
@@ -12,7 +13,8 @@ class MentalHealthChatBlocListner extends StatelessWidget {
 
   final InMemoryChatController chatController;
   final VoidCallback hideOverlays;
-  final void Function(double sentiment, String mood) onMoodAnalyzed;
+  final void Function(MentalHealthResponseModel info) onMoodAnalyzed;
+
 
   @override
   Widget build(BuildContext context) {
@@ -34,13 +36,8 @@ class MentalHealthChatBlocListner extends StatelessWidget {
         if (state is MentalHealthChatSuccess) {
           final response = state.mentalHealthResponseModel.response;
 
-          final emotionData = state.mentalHealthResponseModel.emotionData;
-          final sentiment = emotionData.sentiment;
-          final mood = emotionData.urgency;
-
-
           if (state.fromAssessment) {
-            onMoodAnalyzed(sentiment, mood); 
+            onMoodAnalyzed(state.mentalHealthResponseModel);
           }
 
           final now = DateTime.now().toUtc();

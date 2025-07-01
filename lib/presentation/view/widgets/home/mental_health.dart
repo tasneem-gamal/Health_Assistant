@@ -66,7 +66,7 @@ class MentalHealth extends StatelessWidget {
                 alignment: Alignment.bottomRight,
                 child: CustomAppButton(
                     onPressed: () {
-                      context.push(const MentalHealthChat());
+                      context.push(const MentalHealthChat(hideOptionsAtStart: false));
                     }, buttonWidth: 180, btnText: 'Talk Now'),
               )
             ],

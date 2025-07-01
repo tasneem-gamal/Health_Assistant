@@ -7,7 +7,7 @@ class ChatHistoryService {
 
   ChatHistoryService({required this.firestore});
 
-  Future<List<ChatHsitoryModel>> getUserChatHistory(String userId) async {
+  Future<List<ChatHistoryModel>> getUserChatHistory(String userId) async {
     final snapshot = await firestore
         .collection('chat_history')
         .where('user_id', isEqualTo: userId)
@@ -15,7 +15,7 @@ class ChatHistoryService {
         .get();
 
     return snapshot.docs.map((doc) {
-      final model = ChatHsitoryModel.fromMap(doc.data());
+      final model = ChatHistoryModel.fromMap(doc.data());
       model.id = doc.id;
       return model;
     }).toList();

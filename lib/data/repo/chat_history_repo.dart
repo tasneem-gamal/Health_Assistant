@@ -6,7 +6,7 @@ class ChatHistoryRepo {
 
   ChatHistoryRepo(this.service);
 
-  Future<List<ChatHsitoryModel>> getChatHistory(String userId) {
+  Future<List<ChatHistoryModel>> getChatHistory(String userId) {
     return service.getUserChatHistory(userId);
   }
 
