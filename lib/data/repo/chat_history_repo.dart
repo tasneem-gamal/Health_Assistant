@@ -1,5 +1,6 @@
 import 'package:health_assistant/data/data_source/chat_history_service.dart';
-import 'package:health_assistant/data/models/home/chat_hsitory_model.dart';
+import 'package:health_assistant/data/models/home/chat_history_model.dart';
+
 
 class ChatHistoryRepo {
   final ChatHistoryService service;
@@ -17,4 +18,5 @@ class ChatHistoryRepo {
   Future<void> clearAllChats(String userId) {
     return service.clearAllChatsForUser(userId);
   }
+
 }

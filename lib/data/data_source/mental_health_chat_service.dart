@@ -31,6 +31,7 @@ class MentalHealthChatService {
         'message': mentalHealthRequestModel.message,
         'response': reply.response,
         'timestamp': FieldValue.serverTimestamp(),
+        'emotion_data': reply.emotionData.toMap(),
         'history': [
           ...mentalHealthRequestModel.history,
           {'assistant': reply.response},

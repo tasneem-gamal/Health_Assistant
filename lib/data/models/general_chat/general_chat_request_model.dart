@@ -2,8 +2,10 @@ class GeneralChatRequestModel {
   final String userId; 
   final String message;
   final List<List<String>> history;
+  final String? historyId;
 
   GeneralChatRequestModel({
+    this.historyId, 
     required this.userId, 
     required this.message,
     required this.history,

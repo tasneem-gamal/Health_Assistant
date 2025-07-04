@@ -43,7 +43,7 @@ class ChatHistoryModel {
       'message_type': messageType,
       'user_id': userId,
       'timestamp': timestamp,
-      'emotion_data': emotionData?.toMap(),
+      'emotion_data': emotionData,
     };
   }
 }

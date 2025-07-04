@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:health_assistant/data/models/home/chat_hsitory_model.dart';
+import 'package:health_assistant/data/models/home/chat_history_model.dart';
+
 
 
 class ChatHistoryService {
@@ -35,4 +36,6 @@ class ChatHistoryService {
       await doc.reference.delete();
     }
   }
+
+  
 }

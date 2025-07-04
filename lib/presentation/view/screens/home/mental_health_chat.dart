@@ -281,6 +281,7 @@ class _MentalHealthChatBodyState extends State<MentalHealthChatBody> {
           hideOverlays: hideOverlaysImmediately,
           chatController: widget.chatController,
           onMoodAnalyzed: (info) {
+            print("INFO: ${info.emotionData}");
             updateMoodProgress(info);
           },
         ),
@@ -292,7 +293,7 @@ class _MentalHealthChatBodyState extends State<MentalHealthChatBody> {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  if (showMoodProgress)
+                  if (showMoodProgress && moodInfo != null)
                     MoodProgress(
                       info: moodInfo!,
                       onCancel: () {

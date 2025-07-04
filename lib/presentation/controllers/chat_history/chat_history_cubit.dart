@@ -1,5 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:health_assistant/data/models/home/chat_hsitory_model.dart';
+import 'package:health_assistant/data/models/home/chat_history_model.dart';
 import 'package:health_assistant/data/repo/chat_history_repo.dart';
 
 part 'chat_history_state.dart';

@@ -12,13 +12,16 @@ class MentalHealthResponseModel {
   });
 
   factory MentalHealthResponseModel.fromJson(Map<String, dynamic> json) {
-    return MentalHealthResponseModel(
-      contextSummary: json['contextSummary'],
-      emotionData: EmotionData.fromMap(json['emotionData']),
-      response: json['response'],
-      status: json['status'],
-    );
-  }
+  final emotionDataMap = json['emotionData'] ?? json['emotion_data'];
+
+  return MentalHealthResponseModel(
+    contextSummary: json['contextSummary'] ?? '',
+    emotionData: EmotionData.fromMap(emotionDataMap ?? {}),
+    response: json['response'] ?? '',
+    status: json['status'] ?? '',
+  );
+}
+
 }
 
 class EmotionData {
@@ -38,8 +41,8 @@ class EmotionData {
     return EmotionData(
       joy: map['emotions']['joy']?.toDouble() ?? 0.0,
       sadness: map['emotions']['sadness']?.toDouble() ?? 0.0,
-      sentiment: map['emotions']['sentiment']?.toDouble() ?? 0.0,
-      urgency: map['emotions']['urgency'] ?? '',
+      sentiment: map['sentiment']?.toDouble() ?? 0.0,
+      urgency: map['urgency'] ?? '',
     );
   }
 
@@ -48,9 +51,9 @@ class EmotionData {
       'emotions': {
         'joy': joy,
         'sadness': sadness,
-        'sentiment': sentiment,
-        'urgency': urgency,
       },
+      'sentiment': sentiment,
+      'urgency': urgency,
     };
   }
 }

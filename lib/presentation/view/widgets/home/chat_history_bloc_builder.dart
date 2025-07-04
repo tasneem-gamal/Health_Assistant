@@ -7,7 +7,7 @@ import 'package:health_assistant/core/utils/extensions.dart';
 import 'package:health_assistant/core/utils/spacing.dart';
 import 'package:health_assistant/core/widgets/chat_history_shimmer.dart';
 import 'package:health_assistant/core/widgets/custom_app_button.dart';
-import 'package:health_assistant/data/models/home/chat_hsitory_model.dart';
+import 'package:health_assistant/data/models/home/chat_history_model.dart';
 import 'package:health_assistant/presentation/controllers/chat_history/chat_history_cubit.dart';
 import 'package:health_assistant/presentation/view/screens/home/health_check_chat.dart';
 import 'package:health_assistant/presentation/view/screens/home/mental_health_chat.dart';
