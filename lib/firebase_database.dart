@@ -1,7 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
 
 late FirebaseApp secondaryApp;
+late FirebaseFirestore secondaryFirestore;
 late FirebaseDatabase secondaryDatabase;
 
 Future<void> initSecondaryFirebaseApp() async {
@@ -16,5 +18,6 @@ Future<void> initSecondaryFirebaseApp() async {
     ),
   );
 
+  secondaryFirestore = FirebaseFirestore.instanceFor(app: secondaryApp);
   secondaryDatabase = FirebaseDatabase.instanceFor(app: secondaryApp);
 }

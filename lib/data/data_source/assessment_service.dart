@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:health_assistant/data/models/assessments/assessment_model.dart';
@@ -64,6 +65,45 @@ Future<List<AssessmentModel>> fetchAssessments() async {
       rethrow;
     }
   }
+
+  Future<void> saveAssessmentToChat({
+    required String userId,
+    required String sessionId,
+    required String message,
+    required String response,
+    required Map<String, dynamic> assessmentData,
+    String? historyId,
+  }) async {
+    final chatCollection = FirebaseFirestore.instanceFor(app: secondaryApp)
+        .collection('chat_history');
+
+    if (historyId != null) {
+      await chatCollection.doc(historyId).update({
+        'message': message,
+        'response': response,
+        'timestamp': FieldValue.serverTimestamp(),
+        'assessment_data': assessmentData,
+        'history': FieldValue.arrayUnion([
+          {'assistant': response},
+        ]),
+      });
+    } else {
+      await chatCollection.add({
+        'user_id': userId,
+        'session_id': sessionId,
+        'message': message,
+        'response': response,
+        'message_type': 'assessment',
+        'assessment_data': assessmentData,
+        'timestamp': FieldValue.serverTimestamp(),
+        'history': [
+          {'user': message},
+          {'assistant': response},
+        ],
+      });
+    }
+  }
+
 
 
 }

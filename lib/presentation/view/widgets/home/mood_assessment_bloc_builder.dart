@@ -20,8 +20,9 @@ class MoodAssessmentBlocBuilder extends StatefulWidget {
   final InMemoryChatController chatController;
   final VoidCallback onFinish;
   final MentalHealthChatCubit mentalHealthChatCubit;
+  final String? sessionId;
 
-  const MoodAssessmentBlocBuilder({super.key, required this.chatController, required this.onFinish, required this.mentalHealthChatCubit});
+  const MoodAssessmentBlocBuilder({super.key, required this.chatController, required this.onFinish, required this.mentalHealthChatCubit, this.sessionId});
 
   @override
   State<MoodAssessmentBlocBuilder> createState() => _MoodAssessmentBlocBuilderState();
@@ -155,7 +156,7 @@ class _MoodAssessmentBlocBuilderState extends State<MoodAssessmentBlocBuilder> {
     final request = MentalHealthRequestModel(
       message: message.text,
       userId: FirebaseAuth.instance.currentUser!.uid,
-      sessionId: 'session_id',
+      sessionId: widget.sessionId ?? '',
       history: history,
       fromAssessment: true,
     );

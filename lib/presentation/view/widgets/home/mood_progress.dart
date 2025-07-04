@@ -2,19 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:health_assistant/core/theming/colors.dart';
 import 'package:health_assistant/core/theming/styles.dart';
 import 'package:health_assistant/core/utils/spacing.dart';
+import 'package:health_assistant/data/models/mental_health_chat/mental_health_response_model.dart';
 
 
 class MoodProgress extends StatelessWidget {
   const MoodProgress({
     super.key,
-    required this.progress,
-    required this.mood,
-    required this.onCancel,
+    required this.onCancel, required this.info,
   });
 
-  final double progress;
-  final String mood;
   final VoidCallback onCancel; 
+
+  final MentalHealthResponseModel info;
 
   Color _getColorByProgress(double value) {
   if (value < 0.2) return const Color(0xffd32f2f);
@@ -27,7 +26,7 @@ class MoodProgress extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final progressColor = _getColorByProgress(progress);
+    final progressColor = _getColorByProgress(info.emotionData.sentiment);
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
       padding: const EdgeInsets.all(16),
@@ -63,7 +62,7 @@ class MoodProgress extends StatelessWidget {
           ClipRRect(
             borderRadius: BorderRadius.circular(10),
             child: LinearProgressIndicator(
-              value: progress,
+              value: info.emotionData.sentiment,
               minHeight: 10,
               backgroundColor: Colors.grey.shade300,
               valueColor: AlwaysStoppedAnimation<Color>(progressColor),
@@ -83,7 +82,7 @@ class MoodProgress extends StatelessWidget {
                     style: CustomTextStyles.font12MainColorMedium(context),
                   ),
                   Text(
-                    mood,
+                    info.emotionData.urgency,
                     style: CustomTextStyles.font16LightGrayBold(context)
                         .copyWith(color: ColorsManager.mainColor),
                   ),
@@ -97,7 +96,7 @@ class MoodProgress extends StatelessWidget {
                     style: CustomTextStyles.font12MainColorMedium(context),
                   ),
                   Text(
-                    '${(progress * 100).toStringAsFixed(1)}%',
+                    '${(info.emotionData.sentiment * 100).toStringAsFixed(1)}%',
                     style: CustomTextStyles.font16LightGrayBold(context)
                         .copyWith(color: ColorsManager.mainColor),
                   ),

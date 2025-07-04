@@ -7,6 +7,7 @@ import 'package:health_assistant/core/utils/spacing.dart';
 import 'package:health_assistant/core/widgets/custom_app_button.dart';
 import 'package:health_assistant/data/models/generate_nutrition_plan/generate_nutrition_plan_request_model.dart';
 import 'package:health_assistant/presentation/controllers/generate_nutrition_plan/generate_nutrition_plan_cubit.dart';
+import 'package:health_assistant/presentation/view/widgets/home/custom_drop_down_with_title.dart';
 import 'package:health_assistant/presentation/view/widgets/home/text_field_with_title.dart';
 
 
@@ -173,7 +174,7 @@ class _NutritionPlanBottomSheetState extends State<NutritionPlanBottomSheet> {
 }
 
 
-class NextStep extends StatelessWidget {
+class NextStep extends StatefulWidget {
   const NextStep({
     super.key, 
     required this.onNext, 
@@ -192,12 +193,21 @@ class NextStep extends StatelessWidget {
   final TextEditingController genderController;
   final GlobalKey<FormState> formKey;
 
+  @override
+  State<NextStep> createState() => _NextStepState();
+}
+
+class _NextStepState extends State<NextStep> {
+
+  String? selectedGender;
+
+  final List<String> genderOptions = ['Male', 'Female'];
 
   @override
   Widget build(BuildContext context) {
     return Expanded(
       child: Form(
-        key: formKey,
+        key: widget.formKey,
         child: Column(
           children: [
             Row(
@@ -205,7 +215,8 @@ class NextStep extends StatelessWidget {
                 TextFieldWithTitle(
                   title: 'Height (cm)',
                   hintText: 'e.g 175',
-                  controller: heightController,
+                  controller: widget.heightController,
+                  keyboardType: TextInputType.number,
                   validator: (value){
                     if(value == null || value.trim().isEmpty){
                       return 'This field is required';
@@ -217,7 +228,8 @@ class NextStep extends StatelessWidget {
                 TextFieldWithTitle(
                   title: 'Weight(kg)',
                   hintText: 'e.g 70',
-                  controller: weightController,
+                  controller: widget.weightController,
+                  keyboardType: TextInputType.number,
                   validator: (value){
                     if(value == null || value.trim().isEmpty){
                       return 'This field is required';
@@ -233,7 +245,8 @@ class NextStep extends StatelessWidget {
                 TextFieldWithTitle(
                   title: 'Age',
                   hintText: 'e.g 25',
-                  controller: ageController,
+                  controller: widget.ageController,
+                  keyboardType: TextInputType.number,
                   validator: (value){
                     if(value == null || value.trim().isEmpty){
                       return 'This field is required';
@@ -242,22 +255,30 @@ class NextStep extends StatelessWidget {
                   },
                 ),
                 horizontalSpace(context, 12),
-                TextFieldWithTitle(
-                  title: 'Gender',
-                  hintText: 'Male',
-                  controller: genderController,
-                  validator: (value){
-                    if(value == null || value.trim().isEmpty){
-                      return 'This field is required';
-                    }
-                    return null;
-                  },
+                Expanded(
+                  child: CustomDropdownWithTitle(
+                    title: 'Gender',
+                    items: genderOptions,
+                    value: selectedGender,
+                    onChanged: (value) {
+                      setState(() {
+                        selectedGender = value;
+                        widget.genderController.text = value ?? '';
+                      });
+                    },
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'This field is required';
+                      }
+                      return null;
+                    },
+                  ),
                 ),
                 horizontalSpace(context, 12),
                 TextFieldWithTitle(
                   title: 'Goal',
                   hintText: 'weight loss',
-                  controller: goalController,
+                  controller: widget.goalController,
                   validator: (value){
                     if(value == null || value.trim().isEmpty){
                       return 'This field is required';
@@ -269,7 +290,7 @@ class NextStep extends StatelessWidget {
             ),
             verticalSpace(context, 12),
             CustomAppButton(
-              onPressed: onNext,
+              onPressed: widget.onNext,
               btnText: 'Next',
             ),
           ],
@@ -279,7 +300,7 @@ class NextStep extends StatelessWidget {
   }
 }
 
-class GenerateStep extends StatelessWidget {
+class GenerateStep extends StatefulWidget {
   const GenerateStep({
     super.key, 
     required this.onGenerate, 
@@ -297,32 +318,50 @@ class GenerateStep extends StatelessWidget {
   final TextEditingController supplementsController;
   final GlobalKey<FormState> formKey;
 
+  @override
+  State<GenerateStep> createState() => _GenerateStepState();
+}
+
+class _GenerateStepState extends State<GenerateStep> {
+
+  String? selectedActivityLevel;
+
+  final List<String> genderOptions = ['Male', 'Female'];
+  final List<String> activityLevelOptions = ['Beginner', 'Intermediate', 'Advanced'];
 
   @override
   Widget build(BuildContext context) {
     return Expanded(
       child: Form(
-        key: formKey,
+        key: widget.formKey,
         child: Column(
           children: [
             Row(
               children: [
-                TextFieldWithTitle(
-                  title: 'Activity Level',
-                  hintText: 'e.g moderate',
-                  controller: activityLevelController,
-                  validator: (value){
-                    if(value == null || value.trim().isEmpty){
-                      return 'This field is required';
-                    }
-                    return null;
-                  },
+                Expanded(
+                  child: CustomDropdownWithTitle(
+                    title: 'Fitness Level',
+                    items: activityLevelOptions,
+                    value: selectedActivityLevel,
+                    onChanged: (value) {
+                      setState(() {
+                        selectedActivityLevel = value;
+                        widget.activityLevelController.text = value ?? '';
+                      });
+                    },
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'This field is required';
+                      }
+                      return null;
+                    },
+                  ),
                 ),
                 horizontalSpace(context, 12),
                 TextFieldWithTitle(
                   title: 'Dietary Restrictions',
                   hintText: 'e.g vegetarian',
-                  controller: dietaryRestrictionsController,
+                  controller: widget.dietaryRestrictionsController,
                   validator: (value){
                     if(value == null || value.trim().isEmpty){
                       return 'This field is required';
@@ -338,7 +377,7 @@ class GenerateStep extends StatelessWidget {
                 TextFieldWithTitle(
                   title: 'Allergies',
                   hintText: 'e.g nuts',
-                  controller: allergiesController,
+                  controller: widget.allergiesController,
                   validator: (value){
                     if(value == null || value.trim().isEmpty){
                       return 'This field is required';
@@ -350,7 +389,7 @@ class GenerateStep extends StatelessWidget {
                 TextFieldWithTitle(
                   title: 'Meal Preferences',
                   hintText: 'e.g Quick Meals, High Protein',
-                  controller: mealPreferencesController,
+                  controller: widget.mealPreferencesController,
                   validator: (value){
                     if(value == null || value.trim().isEmpty){
                       return 'This field is required';
@@ -364,7 +403,7 @@ class GenerateStep extends StatelessWidget {
             TextFieldWithTitle(
               title: 'supplements',
               hintText: 'e.g Vitamin D',
-              controller: supplementsController,
+              controller: widget.supplementsController,
               validator: (value){
                     if(value == null || value.trim().isEmpty){
                       return 'This field is required';
@@ -374,7 +413,7 @@ class GenerateStep extends StatelessWidget {
             ),
             verticalSpace(context, 12),
             CustomAppButton(
-              onPressed: onGenerate,
+              onPressed: widget.onGenerate,
               btnText: 'Generate Plan',
             ),
           ],

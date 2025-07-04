@@ -11,12 +11,13 @@ class MoodAssessment extends StatelessWidget {
   final InMemoryChatController chatController;
   final VoidCallback onFinish;
   final MentalHealthChatCubit mentalHealthChatCubit;
+  final String? sessionId;
 
   const MoodAssessment(
       {super.key,
       required this.chatController,
       required this.onFinish,
-      required this.mentalHealthChatCubit});
+      required this.mentalHealthChatCubit, this.sessionId});
 
   @override
   Widget build(BuildContext context) {
@@ -28,6 +29,7 @@ class MoodAssessment extends StatelessWidget {
             iconTheme: const IconThemeData(color: Colors.white),
           ),
           body: MoodAssessmentBlocBuilder(
+            sessionId: sessionId,
             chatController: chatController,
             onFinish: onFinish,
             mentalHealthChatCubit: mentalHealthChatCubit,

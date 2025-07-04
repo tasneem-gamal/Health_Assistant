@@ -16,16 +16,13 @@ class CustomListTileSettings extends StatelessWidget {
     return Column(
       children: [
         ListTile(
+          onTap: onPressed,
           leading: Icon(leadingIcon, color: ColorsManager.mainColor,),
           title: Text(
             text,
             style: CustomTextStyles.font16LightGrayBold(context),
           ),
-          trailing: IconButton(
-            padding: EdgeInsets.zero,
-            onPressed: onPressed, 
-            icon: const Icon(Icons.arrow_forward_ios, size: 18,)
-          ),
+          trailing: const Icon(Icons.arrow_forward_ios, size: 18,)
         ),
         const Padding(
             padding: EdgeInsets.only(right: 24, top: 12),

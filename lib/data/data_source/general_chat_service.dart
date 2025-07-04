@@ -22,14 +22,34 @@ class GeneralChatService {
 
     final reply = GeneralChatResponseModel.fromJson(response.data);
 
-    await FirebaseFirestore.instanceFor(app: secondaryApp)
-        .collection('chat_history')
-        .add({
-      'user_id': generalChatRequestModel.userId,
-      'message': generalChatRequestModel.message, 
-      'timestamp': FieldValue.serverTimestamp(),
-    });
+    final chatCollection = FirebaseFirestore.instanceFor(app: secondaryApp)
+        .collection('chat_history');
+
+    if (generalChatRequestModel.historyId != null) {
+      await chatCollection.doc(generalChatRequestModel.historyId!).update({
+        'message': generalChatRequestModel.message,
+        'response': reply.response,
+        'timestamp': FieldValue.serverTimestamp(),
+        'history': [
+          ...generalChatRequestModel.history,
+          {'assistant': reply.response},
+        ],
+      });
+
+    } else {
+      await chatCollection.add({
+        'user_id': generalChatRequestModel.userId,
+        'message': generalChatRequestModel.message,
+        'response': reply.response,
+        'message_type': 'mental_health',
+        'timestamp': FieldValue.serverTimestamp(),
+        'history': [
+          {'user': generalChatRequestModel.message},
+          {'assistant': reply.response},
+        ],
+      });
+    }
 
     return reply;
-  }
+}
 }

@@ -7,7 +7,7 @@ class ChatHistoryInitial extends ChatHistoryState {}
 class ChatHistoryLoading extends ChatHistoryState {}
 
 class ChatHistoryLoaded extends ChatHistoryState {
-  final List<ChatHsitoryModel> chatList;
+  final List<ChatHistoryModel> chatList;
   ChatHistoryLoaded(this.chatList);
 }
 

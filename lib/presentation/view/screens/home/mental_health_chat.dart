@@ -8,6 +8,8 @@ import 'package:health_assistant/core/utils/extensions.dart';
 import 'package:health_assistant/core/utils/spacing.dart';
 import 'package:health_assistant/core/widgets/custom_circle_item.dart';
 import 'package:health_assistant/data/models/mental_health_chat/mental_health_request_model.dart';
+import 'package:health_assistant/data/models/mental_health_chat/mental_health_response_model.dart';
+import 'package:health_assistant/firebase_database.dart';
 import 'package:health_assistant/presentation/controllers/mental_health_chat/mental_health_chat_cubit.dart';
 import 'package:health_assistant/presentation/view/screens/home/adjustment_assessment.dart';
 import 'package:health_assistant/presentation/view/screens/home/anxiety_assessment.dart';
@@ -18,10 +20,12 @@ import 'package:health_assistant/presentation/view/widgets/home/custom_chat.dart
 import 'package:health_assistant/presentation/view/widgets/home/mental_health_chat_bloc_listner.dart';
 import 'package:health_assistant/presentation/view/widgets/home/mood_progress.dart';
 import 'package:health_assistant/presentation/view/widgets/home/option_card.dart';
+import 'package:uuid/uuid.dart';
 
 class MentalHealthChat extends StatefulWidget {
-  const MentalHealthChat({super.key, this.historyId});
+  const MentalHealthChat({super.key, this.historyId, required this.hideOptionsAtStart});
   final String? historyId;
+  final bool hideOptionsAtStart; 
 
   @override
   State<MentalHealthChat> createState() => _MentalHealthChatState();
@@ -29,6 +33,71 @@ class MentalHealthChat extends StatefulWidget {
 
 class _MentalHealthChatState extends State<MentalHealthChat> {
   final _chatController = InMemoryChatController();
+  bool showOptions = true;
+  String? sessionId;
+
+
+
+  @override
+  void initState() {
+    super.initState();
+    showOptions = !widget.hideOptionsAtStart;
+    if (widget.historyId != null) {
+      Future.microtask(() async {
+        sessionId = await loadOldMessagesFromFirestore(widget.historyId!);
+        setState(() {});
+      });
+    }
+  }
+
+
+final uuid = const Uuid();
+
+Future<String?> loadOldMessagesFromFirestore(String historyId) async {
+  final doc = await secondaryFirestore.collection('chat_history').doc(historyId).get();
+  if (doc.exists) {
+    final data = doc.data()!;
+
+    final messages = <TextMessage>[];
+
+    final historyList = data['history'] as List<dynamic>?;
+
+    if (historyList != null && historyList.isNotEmpty) {
+      for (var item in historyList) {
+        if (item is Map<String, dynamic>) {
+          if (item.containsKey('user')) {
+            final userText = item['user'] as String?;
+            if (userText != null && userText.isNotEmpty) {
+              messages.add(TextMessage(
+                id: uuid.v4(),
+                authorId: 'user1',
+                text: userText,
+              ));
+            }
+          }
+          if (item.containsKey('assistant')) {
+            final assistantText = item['assistant'] as String?;
+            if (assistantText != null && assistantText.isNotEmpty) {
+              messages.add(TextMessage(
+                id: uuid.v4(),
+                authorId: 'HealthAssistant',
+                text: assistantText,
+              ));
+            }
+          }
+        }
+      }
+    }
+
+    await _chatController.setMessages(messages);
+
+    final sessionId = data['session_id'] as String?;
+    return sessionId;
+  }
+
+  return null;
+}
+
 
 
   @override
@@ -40,6 +109,7 @@ class _MentalHealthChatState extends State<MentalHealthChat> {
           
           void openMoodAssessment() {
             context.push(MoodAssessment(
+              sessionId: sessionId,
               chatController: _chatController,
               mentalHealthChatCubit: context.read<MentalHealthChatCubit>(),
               onFinish: () {
@@ -50,6 +120,7 @@ class _MentalHealthChatState extends State<MentalHealthChat> {
 
           void openAnxietyAssessment() {
             context.push(AnxietyAssessment(
+              sessionId: sessionId,
               chatController: _chatController,
               mentalHealthChatCubit: context.read<MentalHealthChatCubit>(),
               onFinish: () {
@@ -60,6 +131,7 @@ class _MentalHealthChatState extends State<MentalHealthChat> {
 
           void openAdjustmentAssessment() {
             context.push(AdjustmentAssessment(
+              sessionId: sessionId,
               chatController: _chatController,
               mentalHealthChatCubit: context.read<MentalHealthChatCubit>(),
               onFinish: () {
@@ -103,6 +175,9 @@ class _MentalHealthChatState extends State<MentalHealthChat> {
                 onAnxietyAssessment: openAnxietyAssessment,
                 onadjustmentAssessment: openAdjustmentAssessment,
                 chatController: _chatController,
+                historyId: widget.historyId,
+                initialShowOptions: showOptions,
+                sessionId: sessionId,
                 hideOptions: (){
                   
                 },
@@ -122,12 +197,15 @@ class MentalHealthChatBody extends StatefulWidget {
       required this.onAnxietyAssessment,
       required this.onadjustmentAssessment,
       required this.hideOptions,
-      required this.chatController});
+      required this.chatController, this.historyId, required this.initialShowOptions, this.sessionId});
   final VoidCallback onMoodAssessment;
   final VoidCallback onAnxietyAssessment;
   final VoidCallback onadjustmentAssessment;
   final VoidCallback hideOptions;
   final InMemoryChatController chatController;
+  final String? historyId;
+  final bool initialShowOptions; 
+  final String? sessionId;
 
   @override
   State<MentalHealthChatBody> createState() => _MentalHealthChatBodyState();
@@ -136,18 +214,23 @@ class MentalHealthChatBody extends StatefulWidget {
 class _MentalHealthChatBodyState extends State<MentalHealthChatBody> {
   bool showOptions = true;
   bool showMoodProgress = false;
-  double moodProgressValue = 0.0;
-  String moodLabel = '';
+  MentalHealthResponseModel? moodInfo;
 
 
-  void updateMoodProgress(double sentiment, String mood) {
-    setState(() {
-      showOptions = false;
-      showMoodProgress = true;
-      moodProgressValue = sentiment;
-      moodLabel = mood;
-    });
+  @override
+  void initState() {
+    super.initState();
+    showOptions = widget.initialShowOptions;
   }
+
+
+  void updateMoodProgress(MentalHealthResponseModel info) {
+  setState(() {
+    showOptions = false;
+    showMoodProgress = true;
+    moodInfo = info;
+  });
+}
 
   void handleFocusChanged(bool hasFocus) {
     if (hasFocus && (showOptions || showMoodProgress)) {
@@ -175,13 +258,19 @@ class _MentalHealthChatBodyState extends State<MentalHealthChatBody> {
           chatController: widget.chatController,
           onSend: (text, rawHistory) {
             hideOverlaysImmediately();
-            final history = (rawHistory as List<TextMessage>)
+            final history = widget.chatController.messages
+                .whereType<TextMessage>()
                 .map((msg) =>
                     {msg.authorId == 'user1' ? 'user' : 'assistant': msg.text})
                 .toList();
 
             final requestModel = MentalHealthRequestModel(
-                message: text, sessionId: 'sessionId', history: history, userId: FirebaseAuth.instance.currentUser!.uid,);
+                message: text,
+                sessionId: widget.sessionId ?? '',
+                history: history,
+                userId: FirebaseAuth.instance.currentUser!.uid,
+                historyId: widget.historyId);
+
 
             context
                 .read<MentalHealthChatCubit>()
@@ -191,8 +280,9 @@ class _MentalHealthChatBodyState extends State<MentalHealthChatBody> {
         MentalHealthChatBlocListner(
           hideOverlays: hideOverlaysImmediately,
           chatController: widget.chatController,
-          onMoodAnalyzed: (sentiment, mood) {
-            updateMoodProgress(sentiment, mood);
+          onMoodAnalyzed: (info) {
+            print("INFO: ${info.emotionData}");
+            updateMoodProgress(info);
           },
         ),
         if (showOptions || showMoodProgress)
@@ -203,10 +293,9 @@ class _MentalHealthChatBodyState extends State<MentalHealthChatBody> {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  if (showMoodProgress)
+                  if (showMoodProgress && moodInfo != null)
                     MoodProgress(
-                      progress: moodProgressValue,
-                      mood: moodLabel,
+                      info: moodInfo!,
                       onCancel: () {
                         setState(() {
                           showMoodProgress = false;

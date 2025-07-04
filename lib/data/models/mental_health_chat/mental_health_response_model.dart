@@ -12,48 +12,48 @@ class MentalHealthResponseModel {
   });
 
   factory MentalHealthResponseModel.fromJson(Map<String, dynamic> json) {
-    return MentalHealthResponseModel(
-      contextSummary: json['contextSummary'],
-      emotionData: EmotionData.fromJson(json['emotionData']),
-      response: json['response'],
-      status: json['status'],
-    );
-  }
+  final emotionDataMap = json['emotionData'] ?? json['emotion_data'];
+
+  return MentalHealthResponseModel(
+    contextSummary: json['contextSummary'] ?? '',
+    emotionData: EmotionData.fromMap(emotionDataMap ?? {}),
+    response: json['response'] ?? '',
+    status: json['status'] ?? '',
+  );
+}
+
 }
 
 class EmotionData {
-  final Emotions emotions;
+  final double joy;
+  final double sadness;
   final double sentiment;
   final String urgency;
 
   EmotionData({
-    required this.emotions,
+    required this.joy,
+    required this.sadness,
     required this.sentiment,
     required this.urgency,
   });
 
-  factory EmotionData.fromJson(Map<String, dynamic> json) {
+  factory EmotionData.fromMap(Map<String, dynamic> map) {
     return EmotionData(
-      emotions: Emotions.fromJson(json['emotions']),
-      sentiment: (json['sentiment'] as num).toDouble(),
-      urgency: json['urgency'],
+      joy: map['emotions']['joy']?.toDouble() ?? 0.0,
+      sadness: map['emotions']['sadness']?.toDouble() ?? 0.0,
+      sentiment: map['sentiment']?.toDouble() ?? 0.0,
+      urgency: map['urgency'] ?? '',
     );
   }
-}
 
-class Emotions {
-  final double joy;
-  final double sadness;
-
-  Emotions({
-    required this.joy,
-    required this.sadness,
-  });
-
-  factory Emotions.fromJson(Map<String, dynamic> json) {
-    return Emotions(
-      joy: (json['joy'] as num).toDouble(),
-      sadness: (json['sadness'] as num).toDouble(),
-    );
+  Map<String, dynamic> toMap() {
+    return {
+      'emotions': {
+        'joy': joy,
+        'sadness': sadness,
+      },
+      'sentiment': sentiment,
+      'urgency': urgency,
+    };
   }
 }

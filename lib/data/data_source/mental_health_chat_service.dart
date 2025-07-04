@@ -14,7 +14,8 @@ class MentalHealthChatService {
   }
 
   Future<MentalHealthResponseModel> mentalHealthChatService(
-      MentalHealthRequestModel mentalHealthRequestModel) async {
+    MentalHealthRequestModel mentalHealthRequestModel,
+  ) async {
     final response = await dio.post(
       '${ApiConstants.baseUrl}${ApiConstants.mentalHealthChat}',
       data: mentalHealthRequestModel.toJson(),
@@ -22,13 +23,36 @@ class MentalHealthChatService {
 
     final reply = MentalHealthResponseModel.fromJson(response.data);
 
-    await FirebaseFirestore.instanceFor(app: secondaryApp)
-        .collection('chat_history')
-        .add({
-      'user_id': mentalHealthRequestModel.userId,
-      'message': mentalHealthRequestModel.message, 
-      'timestamp': FieldValue.serverTimestamp(),
-    });
+    final chatCollection = FirebaseFirestore.instanceFor(app: secondaryApp)
+        .collection('chat_history');
+
+    if (mentalHealthRequestModel.historyId != null) {
+      await chatCollection.doc(mentalHealthRequestModel.historyId!).update({
+        'message': mentalHealthRequestModel.message,
+        'response': reply.response,
+        'timestamp': FieldValue.serverTimestamp(),
+        'emotion_data': reply.emotionData.toMap(),
+        'history': [
+          ...mentalHealthRequestModel.history,
+          {'assistant': reply.response},
+        ],
+      });
+
+    } else {
+      await chatCollection.add({
+        'user_id': mentalHealthRequestModel.userId,
+        'message': mentalHealthRequestModel.message,
+        'response': reply.response,
+        'session_id': mentalHealthRequestModel.sessionId,
+        'message_type': 'mental_health',
+        'emotion_data': reply.emotionData.toMap(),
+        'timestamp': FieldValue.serverTimestamp(),
+        'history': [
+          {'user': mentalHealthRequestModel.message},
+          {'assistant': reply.response},
+        ],
+      });
+    }
 
     return reply;
   }

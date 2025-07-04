@@ -12,12 +12,13 @@ class AdjustmentAssessment extends StatelessWidget {
   final InMemoryChatController chatController;
   final VoidCallback onFinish;
   final MentalHealthChatCubit mentalHealthChatCubit;
+  final String? sessionId;
 
   const AdjustmentAssessment(
       {super.key,
       required this.chatController,
       required this.onFinish,
-      required this.mentalHealthChatCubit});
+      required this.mentalHealthChatCubit, this.sessionId});
 
   @override
   Widget build(BuildContext context) {
@@ -29,6 +30,7 @@ class AdjustmentAssessment extends StatelessWidget {
             iconTheme: const IconThemeData(color: Colors.white),
           ),
           body: AdjustmentAssessmentBlocBuilder(
+            sessionId: sessionId,
             chatController: chatController,
             onFinish: onFinish,
             mentalHealthChatCubit: mentalHealthChatCubit,
