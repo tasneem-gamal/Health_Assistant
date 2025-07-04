@@ -16,15 +16,15 @@ class MentalHealthChatService {
   Future<MentalHealthResponseModel> mentalHealthChatService(
     MentalHealthRequestModel mentalHealthRequestModel,
   ) async {
+    final baseUrl = await ApiConstants.baseUrl;
     final response = await dio.post(
-      '${ApiConstants.baseUrl}${ApiConstants.mentalHealthChat}',
+      '$baseUrl${ApiConstants.mentalHealthChat}',
       data: mentalHealthRequestModel.toJson(),
     );
 
     final reply = MentalHealthResponseModel.fromJson(response.data);
 
-    final chatCollection = FirebaseFirestore.instanceFor(app: secondaryApp)
-        .collection('chat_history');
+    final chatCollection = FirebaseFirestore.instanceFor(app: secondaryApp).collection('chat_history');
 
     if (mentalHealthRequestModel.historyId != null) {
       await chatCollection.doc(mentalHealthRequestModel.historyId!).update({
@@ -37,7 +37,6 @@ class MentalHealthChatService {
           {'assistant': reply.response},
         ],
       });
-
     } else {
       await chatCollection.add({
         'user_id': mentalHealthRequestModel.userId,

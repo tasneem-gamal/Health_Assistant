@@ -7,15 +7,15 @@ import 'package:health_assistant/data/models/analyze_symptoms/analyze_symptoms_r
 class AnalyzeSymptomsService {
   late Dio dio;
 
-  AnalyzeSymptomsService(){
+  AnalyzeSymptomsService() {
     dio = DioFactory.getDio();
   }
 
-  Future<AnalyzeSymptomsResponseModel> analyzeSymptomsService(AnalyzeSymptomsRequestModel analyzeSymptomsRequestModel) async{
-    final response = await dio.post(
-      '${ApiConstants.baseUrl}${ApiConstants.analyzeSymptoms}',
-      data: analyzeSymptomsRequestModel.toJson()
-    );
+  Future<AnalyzeSymptomsResponseModel> analyzeSymptomsService(
+      AnalyzeSymptomsRequestModel analyzeSymptomsRequestModel) async {
+    final baseUrl = await ApiConstants.baseUrl;
+    final response =
+        await dio.post('$baseUrl${ApiConstants.analyzeSymptoms}', data: analyzeSymptomsRequestModel.toJson());
     return AnalyzeSymptomsResponseModel.fromJson(response.data);
   }
 }

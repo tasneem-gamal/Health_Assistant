@@ -7,16 +7,15 @@ import 'package:health_assistant/data/models/generate_fitness_plan/generate_fitn
 class GenerateFitnessPlanService {
   late Dio dio;
 
-  GenerateFitnessPlanService(){
+  GenerateFitnessPlanService() {
     dio = DioFactory.getDio();
   }
 
   Future<GenerateFitnessPlanResponseModel> generateFitnessPlanService(
-    GenerateFitnessPlanRequestModel generateFitnessPlanRequestModel) async{
-    final response = await dio.post(
-      '${ApiConstants.baseUrl}${ApiConstants.generateFitnessPlan}',
-      data: generateFitnessPlanRequestModel.toJson()
-    );
+      GenerateFitnessPlanRequestModel generateFitnessPlanRequestModel) async {
+    final baseUrl = await ApiConstants.baseUrl;
+    final response =
+        await dio.post('$baseUrl${ApiConstants.generateFitnessPlan}', data: generateFitnessPlanRequestModel.toJson());
     return GenerateFitnessPlanResponseModel.fromJson(response.data);
   }
 }

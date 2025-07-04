@@ -13,17 +13,16 @@ class GeneralChatService {
     dio = DioFactory.getDio();
   }
 
-  Future<GeneralChatResponseModel> generalChatService(
-      GeneralChatRequestModel generalChatRequestModel) async {
+  Future<GeneralChatResponseModel> generalChatService(GeneralChatRequestModel generalChatRequestModel) async {
+    final baseUrl = await ApiConstants.baseUrl;
     final response = await dio.post(
-      '${ApiConstants.baseUrl}${ApiConstants.generalChat}',
+      '$baseUrl${ApiConstants.generalChat}',
       data: generalChatRequestModel.toJson(),
     );
 
     final reply = GeneralChatResponseModel.fromJson(response.data);
 
-    final chatCollection = FirebaseFirestore.instanceFor(app: secondaryApp)
-        .collection('chat_history');
+    final chatCollection = FirebaseFirestore.instanceFor(app: secondaryApp).collection('chat_history');
 
     if (generalChatRequestModel.historyId != null) {
       await chatCollection.doc(generalChatRequestModel.historyId!).update({
@@ -35,7 +34,6 @@ class GeneralChatService {
           {'assistant': reply.response},
         ],
       });
-
     } else {
       await chatCollection.add({
         'user_id': generalChatRequestModel.userId,
@@ -51,5 +49,5 @@ class GeneralChatService {
     }
 
     return reply;
-}
+  }
 }
