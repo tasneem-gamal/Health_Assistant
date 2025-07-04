@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:get/get_rx/src/rx_types/rx_types.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get/get.dart';
 import 'package:health_assistant/core/utils/app_regex.dart';
 import 'package:health_assistant/core/utils/spacing.dart';
 import 'package:health_assistant/core/widgets/custom_app_button.dart';
 import 'package:health_assistant/core/widgets/custom_text_form_field.dart';
+import 'package:health_assistant/presentation/controllers/auth/auth_cubit.dart';
 import 'package:health_assistant/presentation/view/widgets/auth/sign_up/privacy_policy_check_box.dart';
 import 'package:health_assistant/core/theming/styles.dart';
 
@@ -30,6 +32,8 @@ class _SignUpFormState extends State<SignUpForm> {
   final GlobalKey<FormState> signUpFormKey = GlobalKey();
   bool isObsecureText = true;
   bool isPasswordConfirmationObscureText = true;
+  RxBool isFormValid = false.obs;
+
   
 
   @override
@@ -46,6 +50,7 @@ class _SignUpFormState extends State<SignUpForm> {
       key: signUpFormKey,
       autovalidateMode: autovalidateMode,
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
             'Create Your Account',
@@ -54,21 +59,26 @@ class _SignUpFormState extends State<SignUpForm> {
           ),
           verticalSpace(context, 20),
           CustomTextFormField(
-              validator: emailValidate,
+              validator: (value){},
               controller: emailController, 
-              hintText: 'Email'
+              hintText: 'Email',
+              keyboardType: TextInputType.emailAddress,
+              onChanged: (_) => updateFormValidState(),
             ),
           verticalSpace(context, 20),
           CustomTextFormField(
             validator: phoneValidate,
             controller: phoneController,
             hintText: 'Phone Number',
+            keyboardType: TextInputType.phone,
+            onChanged: (_) => updateFormValidState(),
           ),
           verticalSpace(context, 20),
           CustomTextFormField(
-            validator: passwordValidate,
+            validator: (value){},
             controller: passwordController,
             isObsecureText: isObsecureText,
+            onChanged: (_) => updateFormValidState(),
             hintText: 'Password',
             suffixIcon: GestureDetector(
                 onTap: () {
@@ -85,6 +95,7 @@ class _SignUpFormState extends State<SignUpForm> {
             validator: confirmPasswordValidate,
             controller: passwordConfirmController,
             isObsecureText: isPasswordConfirmationObscureText,
+            onChanged: (_) => updateFormValidState(),
             hintText: 'Confirm Password',
             suffixIcon: GestureDetector(
                 onTap: () {
@@ -97,38 +108,20 @@ class _SignUpFormState extends State<SignUpForm> {
                 )),
           ),
           verticalSpace(context, 20),
-          PrivacyPolicyCheckBox(isChecked: widget.isChecked),
-          verticalSpace(context, 24),
-          CustomAppButton(
-            btnText: 'Sign Up',
-            onPressed: (){
-              validateThenSignUp(context);
-            },
+          PrivacyPolicyCheckBox(
+            isChecked: widget.isChecked,
+            onCheckedChanged: updateFormValidState,
           ),
+          verticalSpace(context, 24),
+          Obx(() => CustomAppButton(
+                btnText: 'Sign Up',
+                onPressed: isFormValid.value
+                    ? () => validateThenSignUp(context)
+                    : null,
+              )),
         ],
       ),
     );
-  }
-
-    emailValidate(value) {
-    if (value == null || value.isEmpty) {
-      return 'Email cannot be empty';
-    }
-    if (!AppRegex.isEmailValid(value)) {
-      return 'Enter a valid email address';
-    }
-  }
-
-  passwordValidate(value) {
-    if (value == null || value.isEmpty) {
-      return 'Password cannot be empty';
-    }
-    if (!AppRegex.hasLowerCase(value) &&
-        !AppRegex.hasMinLength(value) &&
-        !AppRegex.isPasswordValid(value) &&
-        !AppRegex.hasSpecialCharacter(value)) {
-      return "Enter a valid password: at least 8 characters,\nincluding one lowercase letter and one special char.";
-    }
   }
 
       phoneValidate(value) {
@@ -150,9 +143,21 @@ class _SignUpFormState extends State<SignUpForm> {
     return null;
   }
 
+  void updateFormValidState() {
+  isFormValid.value =
+      emailController.text.isNotEmpty &&
+      phoneController.text.isNotEmpty &&
+      passwordController.text.isNotEmpty &&
+      passwordConfirmController.text == passwordController.text &&
+      widget.isChecked.value;
+}
     void validateThenSignUp(BuildContext context){
     if(signUpFormKey.currentState!.validate()){
-      
+      context.read<AuthCubit>().emitSignUpState(
+        email: emailController.text,
+        password: passwordController.text,
+        phone: phoneController.text
+      );
     }
   }
 }

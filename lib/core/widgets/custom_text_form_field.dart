@@ -17,7 +17,7 @@ class CustomTextFormField extends StatelessWidget {
     this.maxLines,
     this.readOnly = false,
     this.onTap,
-    this.onFieldSubmitted
+    this.onFieldSubmitted, 
   });
   final Widget? suffixIcon;
   final Widget? prefixIcon;
@@ -65,7 +65,8 @@ class CustomTextFormField extends StatelessWidget {
         fillColor: ColorsManager.fieldGray,
         filled: true,
         hintText: hintText,
-        hintStyle: CustomTextStyles.font12BlackMedium(context),
+        hintStyle: CustomTextStyles.font12BlackMedium(context).copyWith(
+          color: ColorsManager.lightGray),
         prefixIcon: prefixIcon,
         prefixIconColor: ColorsManager.lightGray,
         suffixIcon: suffixIcon,

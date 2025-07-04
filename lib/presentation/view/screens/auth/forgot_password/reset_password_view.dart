@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:health_assistant/core/theming/styles.dart';
 import 'package:health_assistant/core/utils/constants.dart';
 import 'package:health_assistant/core/utils/extensions.dart';
 import 'package:health_assistant/core/utils/spacing.dart';
 import 'package:health_assistant/core/widgets/custom_app_button.dart';
+import 'package:health_assistant/presentation/controllers/auth/auth_cubit.dart';
 import 'package:health_assistant/presentation/view/screens/auth/forgot_password/verify_code_view.dart';
 import 'package:health_assistant/presentation/view/widgets/auth/forgot_password/phone_number_field.dart';
 
@@ -18,8 +20,16 @@ class ResetPasswordView extends StatelessWidget {
   }
 }
 
-class ResetPasswordViewBody extends StatelessWidget {
+class ResetPasswordViewBody extends StatefulWidget {
   const ResetPasswordViewBody ({super.key});
+
+  @override
+  State<ResetPasswordViewBody> createState() => _ResetPasswordViewBodyState();
+}
+
+class _ResetPasswordViewBodyState extends State<ResetPasswordViewBody> {
+  final TextEditingController phoneController = TextEditingController();
+  String? fullPhoneNumber;
 
   @override
   Widget build(BuildContext context) {
@@ -42,18 +52,43 @@ class ResetPasswordViewBody extends StatelessWidget {
                 style: CustomTextStyles.font16LightGrayRegular(context),
               ),
               verticalSpace(context, 24),
-              const PhoneNumberField(),
+              PhoneNumberField(
+                controller: phoneController,
+                onChanged: (value) {
+                  fullPhoneNumber = value;
+                },
+              ),
               verticalSpace(context, 24),
               CustomAppButton(
-                onPressed: (){
-                  context.push(const VerifyCodeView());
+                onPressed: () {
+                  sendCode(context);
                 },
-                btnText: 'Send'
-              )
+                btnText: 'Send',
+              ),
             ],
           ),
-        )
+        ),
       ),
     );
+  }
+
+  void sendCode(BuildContext context) {
+    if (fullPhoneNumber != null) {
+      context.read<AuthCubit>().sendOTP(
+        phone: fullPhoneNumber!,
+        onCodeSent: (verificationId) {
+          context.push(
+            VerifyCodeView(
+              verificationId: verificationId,
+              phoneNumber: fullPhoneNumber!,
+            ),
+          );
+        },
+      );
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Please enter your phone number")),
+      );
+    }
   }
 }

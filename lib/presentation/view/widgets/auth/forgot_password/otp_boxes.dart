@@ -5,8 +5,9 @@ import 'package:pinput/pinput.dart';
 
 class OtpBoxes extends StatelessWidget {
   const OtpBoxes({
-    super.key,
+    super.key, required this.otpController,
   });
+  final TextEditingController otpController;
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +15,7 @@ class OtpBoxes extends StatelessWidget {
       child: Pinput(
       separatorBuilder: (index) => horizontalSpace(context, 16),
       length: 4,
-      controller: TextEditingController(),
+      controller: otpController,
       pinAnimationType: PinAnimationType.fade,
       onCompleted: (value) {},
       defaultPinTheme: PinTheme(

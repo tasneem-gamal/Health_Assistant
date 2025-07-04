@@ -10,19 +10,32 @@ import 'package:health_assistant/presentation/view/widgets/auth/forgot_password/
 import 'package:health_assistant/presentation/view/widgets/auth/forgot_password/resend_code_button.dart';
 
 class VerifyCodeView extends StatelessWidget {
-  const VerifyCodeView({super.key});
+  const VerifyCodeView({super.key, required this.verificationId, required this.phoneNumber});
+  final String verificationId;
+  final String phoneNumber;
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      body: VerifyCodeViewBody(),
+    return Scaffold(
+      body: VerifyCodeViewBody(
+        verificationId: verificationId,
+        phoneNumber: phoneNumber,
+      ),
     );
   }
 }
 
-class VerifyCodeViewBody extends StatelessWidget {
-  const VerifyCodeViewBody({super.key});
+class VerifyCodeViewBody extends StatefulWidget {
+  const VerifyCodeViewBody({super.key, required this.verificationId, required this.phoneNumber});
+  final String verificationId;
+  final String phoneNumber;
 
+  @override
+  State<VerifyCodeViewBody> createState() => _VerifyCodeViewBodyState();
+}
+
+class _VerifyCodeViewBodyState extends State<VerifyCodeViewBody> {
+  final TextEditingController otpController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -56,7 +69,9 @@ class VerifyCodeViewBody extends StatelessWidget {
                   ),
                 ),
                 TextButton(
-                  onPressed: (){}, 
+                  onPressed: (){
+                    context.pop();
+                  }, 
                   child: Text(
                     'edit the number',
                     style: CustomTextStyles.font14MainColorRegular(context).copyWith(
@@ -65,16 +80,22 @@ class VerifyCodeViewBody extends StatelessWidget {
                   )
                 ),
                 verticalSpace(context, 16),
-                const OtpBoxes(),
+                OtpBoxes(otpController: otpController,),
                 verticalSpace(context, 16),
                 const ResendCodeButton(),
                 verticalSpace(context, 16),
                 CustomAppButton(
-                  onPressed: (){
-                    context.push(const CreateNewPasswordView());
+                  onPressed: () {
+                    final code = otpController.text.trim();
+                    if (code.length != 4) return;
+                    context.push(
+                      CreateNewPasswordView(
+                        verificationId: widget.verificationId,
+                        otpCode: code,
+                      ),
+                    );
                   },
-                  btnText: 'Next'
-                )
+                  btnText: 'Next')
             ],
           ),
         ),
